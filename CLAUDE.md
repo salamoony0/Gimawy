@@ -13,7 +13,7 @@ The owner uses it alone for now and plans to **publish it publicly later** (Verc
 The roadmap in **[PLAN.md](PLAN.md)** is implemented: all 4 phases are merged into `main` (each phase was its own branch + commit). Only steps that need the owner's own accounts remain:
 
 **Owner's manual steps to go live** (in order, details in Deploying):
-1. Push the repo to GitHub.
+1. Push to GitHub: remote `origin` = https://github.com/salamoony0/Gimawy (added, not yet pushed — this machine has no GitHub credentials; push from VS Code Source Control or a terminal `git push -u origin main`).
 2. Create a Supabase project; copy the transaction pooler URL (→ `DATABASE_URL`) and session pooler URL (→ `DIRECT_URL`).
 3. Render → New → Blueprint → this repo (`render.yaml`); fill the `sync: false` env vars.
 4. Vercel → New Project → this repo, root directory `client`. If Render's URL isn't `gymawy-api.onrender.com`, update `client/vercel.json`.
@@ -48,7 +48,7 @@ Demo login: **demo@gymawy.app / demo1234** (12 weeks of data, already onboarded)
 
 Environment notes: Node.js v24 is installed at `/usr/local/bin/node` (official installer; no Homebrew, no GitHub CLI, no Docker). Google Chrome is installed (E2E uses it via `channel: 'chrome'`). The old SQLite `server/prisma/dev.db` is kept only as a backup (gitignored); its one real account (`test@gmail.com`) was copied into Postgres.
 
-Git: repo initialised on `main`. Commit messages end with the Claude co-author line. `.env`, `*.db`, `dist`, `.claude/settings.local.json` and `*.tsbuildinfo` are ignored — never commit secrets.
+Git: `main`, remote `origin` → https://github.com/salamoony0/Gimawy (its placeholder README commit was merged in with `-s ours`). Commit messages end with the Claude co-author line. `.env`, `*.db`, `dist`, `.claude/settings.local.json` and `*.tsbuildinfo` are ignored — never commit secrets.
 
 npm in this repo uses `allowScripts` (root package.json) — only prisma, @prisma/*, esbuild, fsevents and `@embedded-postgres/{darwin-arm64,linux-x64}` (recreates dylib symlinks) may run install scripts. New packages with install scripts must be approved with `npm install-scripts approve <pkg>`.
 
