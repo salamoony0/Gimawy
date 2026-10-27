@@ -1,0 +1,103 @@
+@import 'tailwindcss';
+
+/*
+ * Gymawy design tokens — green on black.
+ * One bright green carries action/progress; macros and cardio get their own
+ * hues so charts never rely on shades of the same green to tell series apart.
+ */
+@theme {
+  --font-sans: 'Barlow', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Barlow Condensed', 'Barlow', ui-sans-serif, sans-serif;
+
+  --color-bg: #070908;
+  --color-surface: #0e1210;
+  --color-surface-2: #151a17;
+  --color-surface-3: #1c231f;
+  --color-line: #222b26;
+  --color-line-strong: #2e3a33;
+  --color-fg: #f1f5f2;
+  --color-muted: #94a29a;
+  --color-subtle: #66736b;
+
+  --color-brand: #4ade80;
+  --color-brand-strong: #22c55e;
+  --color-brand-deep: #14532d;
+  --color-on-brand: #03130a;
+
+  --color-protein: #4ade80;
+  --color-carbs: #facc15;
+  --color-fat: #38bdf8;
+  --color-cardio: #2dd4bf;
+  --color-danger: #f87171;
+  --color-warn: #fbbf24;
+  --color-pr: #fde047;
+
+  --radius-card: 1.25rem;
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    @apply bg-bg text-fg font-sans antialiased;
+    min-height: 100dvh;
+  }
+  /* Numbers line up in columns everywhere. */
+  .num {
+    font-variant-numeric: tabular-nums;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+  }
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-[var(--radius-card)] border border-line bg-surface;
+  }
+  .glow {
+    background:
+      radial-gradient(120% 80% at 0% 0%, rgb(74 222 128 / 0.16), transparent 60%),
+      var(--color-surface);
+  }
+  .grid-bg {
+    background-image:
+      linear-gradient(rgb(74 222 128 / 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(74 222 128 / 0.05) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+  .label {
+    @apply text-xs font-semibold uppercase tracking-[0.08em] text-muted;
+  }
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

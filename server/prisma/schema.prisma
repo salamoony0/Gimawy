@@ -1,0 +1,182 @@
+// Gymawy data model.
+// Weights are always stored in kg and distances in km; the client converts
+// to the user's preferred units. Calendar days are stored as "YYYY-MM-DD"
+// strings so aggregation never depends on server timezone.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite" // switch to "postgresql" when deploying
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  passwordHash  String
+  name          String
+  weightUnit    String   @default("kg") // kg | lb
+  distanceUnit  String   @default("km") // km | mi
+  heightCm      Float?
+  sex           String? // male | female (for BMR and heart-rate calorie formulas)
+  birthDate     String? // YYYY-MM-DD
+  activityLevel String? // sedentary | light | moderate | active | very_active
+  goal          String? // lose | maintain | gain
+  goalRateKg    Float? // kg per week toward the goal
+  onboarded     Boolean  @default(false)
+  calorieTarget Int      @default(2400)
+  proteinTarget Int      @default(170)
+  carbsTarget   Int      @default(260)
+  fatTarget     Int      @default(75)
+  weeklyWorkoutTarget Int @default(4)
+  createdAt     DateTime @default(now())
+
+  exercises   Exercise[]
+  workouts    Workout[]
+  routines    Routine[]
+  cardio      CardioSession[]
+  bodyWeights BodyWeight[]
+  goals       Goal[]
+  foods       FoodEntry[]
+}
+
+model Exercise {
+  id          String  @id @default(cuid())
+  name        String
+  muscleGroup String // chest | back | shoulders | biceps | triceps | legs | glutes | core | full body
+  equipment   String // barbell | dumbbell | machine | cable | bodyweight | kettlebell | other
+  userId      String? // null = built-in library exercise
+  user        User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  workoutExercises WorkoutExercise[]
+  routineExercises RoutineExercise[]
+  goals            Goal[]
+
+  @@index([userId])
+}
+
+model Workout {
+  id         String    @id @default(cuid())
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name       String
+  date       String // YYYY-MM-DD
+  startedAt  DateTime
+  endedAt    DateTime?
+  notes      String?
+  calories   Int? // estimated kcal burned
+  exercises  WorkoutExercise[]
+  createdAt  DateTime  @default(now())
+
+  @@index([userId, date])
+}
+
+model WorkoutExercise {
+  id         String       @id @default(cuid())
+  workoutId  String
+  workout    Workout      @relation(fields: [workoutId], references: [id], onDelete: Cascade)
+  exerciseId String
+  exercise   Exercise     @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+  order      Int
+  sets       WorkoutSet[]
+
+  @@index([exerciseId])
+}
+
+model WorkoutSet {
+  id                String          @id @default(cuid())
+  workoutExerciseId String
+  workoutExercise   WorkoutExercise @relation(fields: [workoutExerciseId], references: [id], onDelete: Cascade)
+  order             Int
+  reps              Int
+  weightKg          Float
+  rpe               Float?
+  isWarmup          Boolean         @default(false)
+}
+
+model Routine {
+  id        String            @id @default(cuid())
+  userId    String
+  user      User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  exercises RoutineExercise[]
+  createdAt DateTime          @default(now())
+}
+
+model RoutineExercise {
+  id         String   @id @default(cuid())
+  routineId  String
+  routine    Routine  @relation(fields: [routineId], references: [id], onDelete: Cascade)
+  exerciseId String
+  exercise   Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+  order      Int
+  targetSets Int      @default(3)
+  targetReps Int      @default(10)
+}
+
+model CardioSession {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type         String // run | walk | incline | cycle | row | swim | elliptical | stairs | hiit | other
+  date         String // YYYY-MM-DD
+  durationMin  Float
+  distanceKm   Float?
+  calories     Int?
+  avgHeartRate Int?
+  inclinePct   Float? // treadmill incline, percent grade
+  speedKmh     Float? // treadmill speed
+  notes        String?
+  createdAt    DateTime @default(now())
+
+  @@index([userId, date])
+}
+
+model BodyWeight {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date       String // YYYY-MM-DD
+  weightKg   Float
+  bodyFatPct Float?
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, date])
+}
+
+model Goal {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type        String // weight | lift | cardio
+  title       String
+  exerciseId  String?
+  exercise    Exercise? @relation(fields: [exerciseId], references: [id], onDelete: SetNull)
+  targetValue Float // kg for weight/lift, minutes per week for cardio
+  startValue  Float?
+  deadline    String? // YYYY-MM-DD
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+
+  @@index([userId])
+}
+
+model FoodEntry {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date      String // YYYY-MM-DD
+  meal      String // breakfast | lunch | dinner | snack
+  name      String
+  quantity  String?
+  calories  Float
+  protein   Float
+  carbs     Float
+  fat       Float
+  source    String   @default("manual") // manual | label | screenshot | photo | text
+  createdAt DateTime @default(now())
+
+  @@index([userId, date])
+}
