@@ -31,6 +31,7 @@ model User {
   carbsTarget   Int      @default(260)
   fatTarget     Int      @default(75)
   weeklyWorkoutTarget Int @default(4)
+  tokenVersion  Int      @default(0) // bumped to sign out every session (password change/reset, "log out everywhere")
   createdAt     DateTime @default(now())
 
   exercises   Exercise[]
@@ -40,6 +41,8 @@ model User {
   bodyWeights BodyWeight[]
   goals       Goal[]
   foods       FoodEntry[]
+  aiUsage     AiUsage[]
+  resetTokens PasswordResetToken[]
 }
 
 model Exercise {
@@ -179,4 +182,28 @@ model FoodEntry {
   createdAt DateTime @default(now())
 
   @@index([userId, date])
+}
+
+// AI scans per user per calendar day (UTC), so the daily cap survives restarts.
+model AiUsage {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  day    String // YYYY-MM-DD (UTC)
+  count  Int    @default(0)
+
+  @@unique([userId, day])
+}
+
+// Only the SHA-256 of the emailed token is stored.
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
 }

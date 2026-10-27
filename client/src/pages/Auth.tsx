@@ -133,6 +133,11 @@ export default function Auth({ mode }: { mode: 'login' | 'register' }) {
                 />
               )}
             </Field>
+            {isLogin && (
+              <Link to="/forgot" className="-my-2 inline-flex min-h-11 items-center self-end text-sm font-semibold text-brand hover:underline">
+                Forgot password?
+              </Link>
+            )}
             {submit.error && (
               <p role="alert" className="rounded-xl border border-danger/30 bg-danger/10 px-3 py-2 text-sm text-danger">
                 {submit.error.message}

@@ -1,7 +1,10 @@
+import { createHash, randomBytes } from 'node:crypto';
 import { Router } from 'express';
 import bcrypt from 'bcryptjs';
 import { z } from 'zod';
-import { prisma, HttpError, setAuthCookie, clearAuthCookie, requireAuth, zDay } from '../lib/core.js';
+import { prisma, HttpError, setAuthCookie, clearAuthCookie, requireAuth, zDay, DEMO_EMAIL } from '../lib/core.js';
+import { accountLimiter, forgotLimiter, ipAuthLimiter, registerLimiter } from '../lib/limits.js';
+import { appUrl, sendMail } from '../lib/mailer.js';
 
 export const authRouter = Router();
 
@@ -32,32 +35,162 @@ async function withLatestWeight<T extends { id: string }>(user: T) {
   return { ...user, latestWeightKg: latest?.weightKg ?? null };
 }
 
-const credentials = z.object({
-  email: z.string().trim().toLowerCase().email('enter a valid email'),
-  password: z.string().min(8, 'must be at least 8 characters'),
-});
+const zEmail = z.string().trim().toLowerCase().email('enter a valid email');
+// bcrypt only looks at the first 72 bytes, so cap the length rather than silently ignoring the rest.
+const zPassword = z.string().min(8, 'must be at least 8 characters').max(72, 'must be at most 72 characters');
+const credentials = z.object({ email: zEmail, password: zPassword });
 
-authRouter.post('/register', async (req, res) => {
+const sha256 = (s: string) => createHash('sha256').update(s).digest('hex');
+const RESET_TTL_MS = 60 * 60_000;
+// Compared against when the email is unknown, so login takes the same time either way.
+const DUMMY_HASH = bcrypt.hashSync('not-a-real-password', 10);
+
+async function findUser(id: string) {
+  const user = await prisma.user.findUnique({ where: { id } });
+  if (!user) throw new HttpError(401, 'Account not found');
+  return user;
+}
+
+async function checkPassword(hash: string, password: unknown) {
+  if (typeof password !== 'string' || !(await bcrypt.compare(password, hash))) throw new HttpError(403, 'Password is incorrect');
+}
+
+function notDemo(email: string) {
+  if (email === DEMO_EMAIL) throw new HttpError(403, 'The shared demo account can’t be changed. Create your own account to try this.');
+}
+
+authRouter.post('/register', registerLimiter, async (req, res) => {
   const body = credentials.extend({ name: z.string().trim().min(1, 'required').max(60) }).parse(req.body);
   const existing = await prisma.user.findUnique({ where: { email: body.email } });
   if (existing) throw new HttpError(409, 'An account with this email already exists');
   const user = await prisma.user.create({
     data: { email: body.email, name: body.name, passwordHash: await bcrypt.hash(body.password, 10) },
-    select: publicUser,
+    select: { ...publicUser, tokenVersion: true },
   });
-  setAuthCookie(res, user.id);
-  res.status(201).json(await withLatestWeight(user));
+  setAuthCookie(res, user);
+  const { tokenVersion: _, ...rest } = user;
+  res.status(201).json(await withLatestWeight(rest));
 });
 
-authRouter.post('/login', async (req, res) => {
-  const body = credentials.parse(req.body);
+authRouter.post('/login', ipAuthLimiter, accountLimiter, async (req, res) => {
+  const body = z.object({ email: zEmail, password: z.string().max(200) }).parse(req.body);
   const user = await prisma.user.findUnique({ where: { email: body.email } });
-  if (!user || !(await bcrypt.compare(body.password, user.passwordHash))) {
-    throw new HttpError(401, 'Email or password is incorrect');
-  }
-  setAuthCookie(res, user.id);
-  const { passwordHash: _, ...rest } = user;
+  const ok = await bcrypt.compare(body.password, user?.passwordHash ?? DUMMY_HASH);
+  if (!user || !ok) throw new HttpError(401, 'Email or password is incorrect');
+  setAuthCookie(res, user);
+  const { passwordHash: _, tokenVersion: __, ...rest } = user;
   res.json(await withLatestWeight(rest));
+});
+
+// Always answers 200 so the form can't be used to find out which emails have accounts. The email is sent in the
+// background so the response time doesn't depend on whether the account exists.
+authRouter.post('/forgot', forgotLimiter, async (req, res) => {
+  const { email } = z.object({ email: zEmail }).parse(req.body);
+  const user = await prisma.user.findUnique({ where: { email } });
+  if (user && user.email !== DEMO_EMAIL) {
+    const token = randomBytes(32).toString('base64url');
+    await prisma.passwordResetToken.create({
+      data: { userId: user.id, tokenHash: sha256(token), expiresAt: new Date(Date.now() + RESET_TTL_MS) },
+    });
+    const link = `${appUrl()}/reset?token=${token}`;
+    sendMail({
+      to: user.email,
+      subject: 'Reset your Gymawy password',
+      text: `Hi ${user.name},\n\nUse this link to choose a new password (valid for 1 hour):\n${link}\n\nIf you didn't ask for this, you can ignore this email.`,
+      html: `<p>Hi ${escapeHtml(user.name)},</p><p><a href="${link}">Choose a new password</a> (valid for 1 hour).</p><p>If you didn't ask for this, you can ignore this email.</p>`,
+    }).catch((err) => console.error('Password reset email failed:', (err as Error).message));
+  }
+  res.json({ ok: true });
+});
+
+authRouter.post('/reset', ipAuthLimiter, async (req, res) => {
+  const body = z.object({ token: z.string().min(10).max(200), password: zPassword }).parse(req.body);
+  const row = await prisma.passwordResetToken.findUnique({ where: { tokenHash: sha256(body.token) } });
+  if (!row || row.usedAt || row.expiresAt < new Date()) {
+    throw new HttpError(400, 'This reset link is invalid or has expired. Request a new one.');
+  }
+  // Every other session is signed out; this browser is signed in with the new password.
+  const [user] = await prisma.$transaction([
+    prisma.user.update({
+      where: { id: row.userId },
+      data: { passwordHash: await bcrypt.hash(body.password, 10), tokenVersion: { increment: 1 } },
+      select: { ...publicUser, tokenVersion: true },
+    }),
+    prisma.passwordResetToken.updateMany({ where: { userId: row.userId, usedAt: null }, data: { usedAt: new Date() } }),
+  ]);
+  setAuthCookie(res, user);
+  const { tokenVersion: _, ...rest } = user;
+  res.json(await withLatestWeight(rest));
+});
+
+authRouter.patch('/password', requireAuth, async (req, res) => {
+  const body = z.object({ current: z.string().max(200), next: zPassword }).parse(req.body);
+  const user = await findUser(req.userId);
+  notDemo(user.email);
+  await checkPassword(user.passwordHash, body.current);
+  const updated = await prisma.user.update({
+    where: { id: user.id },
+    data: { passwordHash: await bcrypt.hash(body.next, 10), tokenVersion: { increment: 1 } },
+    select: { id: true, tokenVersion: true },
+  });
+  setAuthCookie(res, updated);
+  res.status(204).end();
+});
+
+/** Signs out every device, this one included. */
+authRouter.post('/logout-all', requireAuth, async (req, res) => {
+  await prisma.user.update({ where: { id: req.userId }, data: { tokenVersion: { increment: 1 } } });
+  clearAuthCookie(res);
+  res.status(204).end();
+});
+
+authRouter.get('/export', requireAuth, async (req, res) => {
+  const userId = req.userId;
+  const [user, exercises, workouts, routines, cardio, bodyWeights, goals, foods] = await Promise.all([
+    prisma.user.findUnique({ where: { id: userId }, select: publicUser }),
+    prisma.exercise.findMany({ where: { userId } }),
+    prisma.workout.findMany({
+      where: { userId },
+      orderBy: { date: 'asc' },
+      include: {
+        exercises: {
+          orderBy: { order: 'asc' },
+          include: { exercise: { select: { name: true } }, sets: { orderBy: { order: 'asc' } } },
+        },
+      },
+    }),
+    prisma.routine.findMany({
+      where: { userId },
+      include: { exercises: { orderBy: { order: 'asc' }, include: { exercise: { select: { name: true } } } } },
+    }),
+    prisma.cardioSession.findMany({ where: { userId }, orderBy: { date: 'asc' } }),
+    prisma.bodyWeight.findMany({ where: { userId }, orderBy: { date: 'asc' } }),
+    prisma.goal.findMany({ where: { userId } }),
+    prisma.foodEntry.findMany({ where: { userId }, orderBy: { date: 'asc' } }),
+  ]);
+  res.setHeader('Content-Disposition', `attachment; filename="gymawy-export-${new Date().toISOString().slice(0, 10)}.json"`);
+  res.json({
+    exportedAt: new Date().toISOString(),
+    units: 'Weights in kg, distances in km, durations in minutes.',
+    user,
+    customExercises: exercises,
+    workouts,
+    routines,
+    cardio,
+    bodyWeights,
+    goals,
+    foods,
+  });
+});
+
+/** Permanently deletes the account; every row hangs off User with onDelete: Cascade. */
+authRouter.delete('/me', requireAuth, async (req, res) => {
+  const user = await findUser(req.userId);
+  notDemo(user.email);
+  await checkPassword(user.passwordHash, req.body?.password);
+  await prisma.user.delete({ where: { id: user.id } });
+  clearAuthCookie(res);
+  res.status(204).end();
 });
 
 authRouter.post('/logout', (_req, res) => {
@@ -95,3 +228,7 @@ authRouter.patch('/me', requireAuth, async (req, res) => {
   const user = await prisma.user.update({ where: { id: req.userId }, data: body, select: publicUser });
   res.json(await withLatestWeight(user));
 });
+
+function escapeHtml(s: string) {
+  return s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
+}

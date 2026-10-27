@@ -2,7 +2,8 @@ import { Router } from 'express';
 import multer from 'multer';
 import { GoogleGenAI, ThinkingLevel } from '@google/genai';
 import { z } from 'zod';
-import { HttpError } from '../lib/core.js';
+import { HttpError, prisma } from '../lib/core.js';
+import { aiLimiter } from '../lib/limits.js';
 
 export const aiRouter = Router();
 
@@ -43,21 +44,28 @@ Rules: calories in kcal, protein/carbs/fat in grams, all per item as eaten (not 
 "notes" is one short sentence about assumptions (empty string if none). "mealName" is a 2-5 word title.
 If the image contains no food or nutrition info, return an empty items array and explain in notes.`;
 
-// Per-user daily cap so the free Gemini quota isn't burned by one account.
-const usage = new Map<string, { day: string; count: number }>();
-function checkQuota(userId: string) {
+// Per-user daily cap so the free Gemini quota isn't burned by one account. Stored in the DB so it survives
+// restarts; increment first and roll back if over, so concurrent scans can't both slip under the limit.
+const utcDay = () => new Date().toISOString().slice(0, 10);
+
+async function checkQuota(userId: string) {
   const limit = Number(process.env.AI_DAILY_LIMIT ?? 40);
-  const day = new Date().toISOString().slice(0, 10);
-  const u = usage.get(userId);
-  const count = u && u.day === day ? u.count : 0;
-  if (count >= limit) throw new HttpError(429, `Daily AI scan limit reached (${limit}). Try again tomorrow or log manually.`);
-  usage.set(userId, { day, count: count + 1 });
+  const day = utcDay();
+  const row = await prisma.aiUsage.upsert({
+    where: { userId_day: { userId, day } },
+    create: { userId, day, count: 1 },
+    update: { count: { increment: 1 } },
+  });
+  if (row.count > limit) {
+    await refundQuota(userId, day);
+    throw new HttpError(429, `Daily AI scan limit reached (${limit}). Try again tomorrow or log manually.`);
+  }
+  return day;
 }
 
 /** Failed scans shouldn't eat into the user's daily allowance. */
-function refundQuota(userId: string) {
-  const u = usage.get(userId);
-  if (u && u.count > 0) u.count--;
+async function refundQuota(userId: string, day: string) {
+  await prisma.aiUsage.updateMany({ where: { userId, day, count: { gt: 0 } }, data: { count: { decrement: 1 } } });
 }
 
 // Measured on the free tier (Oct 2026): flash-lite answers in ~2s, while the
@@ -86,12 +94,12 @@ aiRouter.get('/status', (_req, res) => {
   res.json({ enabled: Boolean(process.env.GEMINI_API_KEY), model: process.env.GEMINI_MODEL || DEFAULT_MODEL });
 });
 
-aiRouter.post('/analyze-food', upload.single('image'), async (req, res) => {
+aiRouter.post('/analyze-food', aiLimiter, upload.single('image'), async (req, res) => {
   const hint = typeof req.body?.hint === 'string' ? req.body.hint.slice(0, 500).trim() : '';
   if (!req.file && !hint) throw new HttpError(400, 'Upload an image or describe your meal');
 
   const ai = gemini();
-  checkQuota(req.userId);
+  const quotaDay = await checkQuota(req.userId);
 
   const parts: Array<{ text: string } | { inlineData: { data: string; mimeType: string } }> = [];
   if (req.file) parts.push({ inlineData: { data: req.file.buffer.toString('base64'), mimeType: req.file.mimetype } });
@@ -129,7 +137,7 @@ aiRouter.post('/analyze-food', upload.single('image'), async (req, res) => {
   }
 
   if (raw === undefined) {
-    refundQuota(req.userId);
+    await refundQuota(req.userId, quotaDay);
     if (lastStatus === 429) throw new HttpError(429, 'The free Gemini quota is used up for now. Wait a minute and try again.');
     if (lastStatus === 503) throw new HttpError(503, 'Gemini is overloaded right now (free tier). Give it a minute and try again.');
     if (lastStatus === undefined) throw new HttpError(504, 'The AI took too long to answer. Try again, or log it manually.');
@@ -144,7 +152,10 @@ aiRouter.post('/analyze-food', upload.single('image'), async (req, res) => {
     // handled by the schema check below
   }
   const parsed = analysis.safeParse(json);
-  if (!parsed.success) throw new HttpError(502, 'The AI returned an unexpected answer. Try a clearer image.');
+  if (!parsed.success) {
+    await refundQuota(req.userId, quotaDay);
+    throw new HttpError(502, 'The AI returned an unexpected answer. Try a clearer image.');
+  }
   const round = (n: number) => Math.round(n * 10) / 10;
   res.json({
     ...parsed.data,

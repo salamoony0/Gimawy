@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { clsx } from 'clsx';
-import { Calculator, LogOut, Sparkles } from 'lucide-react';
+import { Calculator, Download, KeyRound, LogOut, MonitorSmartphone, ShieldCheck, Sparkles, Trash } from 'lucide-react';
 import { ACTIVITY, ageFrom } from '../lib/energy';
 import { api, type User } from '../lib/api';
 import { useMe } from '../lib/format';
 import { PageHeader } from '../components/Layout';
-import { Button, buttonClass, Card, Field, Input, Segmented, Skeleton, useToast } from '../components/ui';
+import { Button, buttonClass, Card, Field, Input, Segmented, Sheet, Skeleton, useToast } from '../components/ui';
 
 type Form = {
   name: string;
@@ -196,10 +196,145 @@ export default function Settings() {
           </div>
         </Card>
 
+        <SecurityCard email={me.email} />
+
         <Button variant="danger" size="lg" icon={<LogOut className="size-4" aria-hidden />} loading={logout.isPending} onClick={() => logout.mutate()}>
           Log out
         </Button>
       </div>
     </div>
+  );
+}
+
+const DEMO_EMAIL = 'demo@gymawy.app';
+
+function SecurityCard({ email }: { email: string }) {
+  const qc = useQueryClient();
+  const navigate = useNavigate();
+  const toast = useToast();
+  const [sheet, setSheet] = useState<'password' | 'delete' | null>(null);
+  const close = () => setSheet(null);
+  const signedOut = (message: string) => {
+    qc.clear();
+    navigate('/login', { replace: true });
+    toast(message);
+  };
+
+  const exportData = useMutation({
+    mutationFn: () => api.download('/auth/export'),
+    onError: (e) => toast(e.message, 'error'),
+  });
+  const logoutAll = useMutation({
+    mutationFn: () => api.post('/auth/logout-all'),
+    onSuccess: () => signedOut('Signed out on every device'),
+    onError: (e) => toast(e.message, 'error'),
+  });
+
+  return (
+    <Card>
+      <h2 className="mb-1 flex items-center gap-2 font-display text-xl font-semibold tracking-wide">
+        <ShieldCheck className="size-5 text-brand" aria-hidden /> Account & security
+      </h2>
+      <p className="mb-4 text-sm text-muted">
+        {email === DEMO_EMAIL ? 'This is the shared demo account, so its password can’t be changed and it can’t be deleted.' : 'Signed in as ' + email}
+      </p>
+      <div className="grid gap-3 sm:grid-cols-2">
+        <Button variant="secondary" icon={<KeyRound className="size-4" aria-hidden />} onClick={() => setSheet('password')}>
+          Change password
+        </Button>
+        <Button variant="secondary" icon={<Download className="size-4" aria-hidden />} loading={exportData.isPending} onClick={() => exportData.mutate()}>
+          Export my data
+        </Button>
+        <Button variant="secondary" icon={<MonitorSmartphone className="size-4" aria-hidden />} loading={logoutAll.isPending} onClick={() => logoutAll.mutate()}>
+          Log out everywhere
+        </Button>
+        <Button variant="danger" icon={<Trash className="size-4" aria-hidden />} onClick={() => setSheet('delete')}>
+          Delete account
+        </Button>
+      </div>
+      <PasswordSheet open={sheet === 'password'} onClose={close} />
+      <DeleteAccountSheet open={sheet === 'delete'} onClose={close} onDeleted={() => signedOut('Your account and data were deleted')} />
+    </Card>
+  );
+}
+
+function PasswordSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const toast = useToast();
+  const [f, setF] = useState({ current: '', next: '' });
+  const change = useMutation({
+    mutationFn: () => api.patch('/auth/password', f),
+    onSuccess: () => {
+      toast('Password changed. Other devices were signed out.');
+      setF({ current: '', next: '' });
+      onClose();
+    },
+  });
+
+  return (
+    <Sheet
+      open={open}
+      onClose={onClose}
+      title="Change password"
+      footer={
+        <Button size="lg" className="w-full" loading={change.isPending} disabled={!f.current || f.next.length < 8} onClick={() => change.mutate()}>
+          Change password
+        </Button>
+      }
+    >
+      <div className="flex flex-col gap-4">
+        <Field label="Current password">
+          {(id) => <Input id={id} type="password" autoComplete="current-password" value={f.current} onChange={(e) => setF({ ...f, current: e.target.value })} />}
+        </Field>
+        <Field label="New password" hint="At least 8 characters. Other devices will be signed out.">
+          {(id) => <Input id={id} type="password" autoComplete="new-password" value={f.next} onChange={(e) => setF({ ...f, next: e.target.value })} />}
+        </Field>
+        {change.error && (
+          <p role="alert" className="rounded-xl border border-danger/30 bg-danger/10 px-3 py-2 text-sm text-danger">
+            {change.error.message}
+          </p>
+        )}
+      </div>
+    </Sheet>
+  );
+}
+
+function DeleteAccountSheet({ open, onClose, onDeleted }: { open: boolean; onClose: () => void; onDeleted: () => void }) {
+  const [password, setPassword] = useState('');
+  const [typed, setTyped] = useState('');
+  const del = useMutation({ mutationFn: () => api.del('/auth/me', { password }), onSuccess: onDeleted });
+
+  return (
+    <Sheet
+      open={open}
+      onClose={onClose}
+      title="Delete account"
+      footer={
+        <div className="flex gap-2">
+          <Button variant="secondary" className="flex-1" onClick={onClose}>
+            Cancel
+          </Button>
+          <Button variant="danger" className="flex-1" loading={del.isPending} disabled={typed !== 'DELETE' || !password} onClick={() => del.mutate()}>
+            Delete forever
+          </Button>
+        </div>
+      }
+    >
+      <div className="flex flex-col gap-4">
+        <p className="text-muted">
+          This permanently deletes your account and every workout, meal, weigh-in and goal. It can’t be undone. Export your data first if you want a copy.
+        </p>
+        <Field label="Password">
+          {(id) => <Input id={id} type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} />}
+        </Field>
+        <Field label="Type DELETE to confirm">
+          {(id) => <Input id={id} autoCapitalize="characters" autoComplete="off" value={typed} onChange={(e) => setTyped(e.target.value)} />}
+        </Field>
+        {del.error && (
+          <p role="alert" className="rounded-xl border border-danger/30 bg-danger/10 px-3 py-2 text-sm text-danger">
+            {del.error.message}
+          </p>
+        )}
+      </div>
+    </Sheet>
   );
 }
