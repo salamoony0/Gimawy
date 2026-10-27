@@ -1,10 +1,11 @@
 /**
- * Seeds the built-in exercise library and a demo account with ~12 weeks of
- * realistic history so every chart has something to show.
+ * `seed.ts library` adds any missing built-in exercises (idempotent; runs on every deploy).
+ * `seed.ts demo` does that and rebuilds a demo account with ~12 weeks of
+ * realistic history so every chart has something to show:
  *
  *   demo@gymawy.app / demo1234
  *
- * Safe to re-run: the library is upserted and the demo account is rebuilt.
+ * Other accounts are never touched.
  */
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
@@ -190,7 +191,9 @@ const MEALS = {
   ],
 } as const;
 
-async function main() {
+async function main(mode: string) {
+  if (mode !== 'library' && mode !== 'demo') throw new Error('Usage: seed.ts library|demo');
+
   // Library
   const byName = new Map<string, string>();
   for (const [name, muscleGroup, equipment] of LIBRARY) {
@@ -199,6 +202,7 @@ async function main() {
     byName.set(name, ex.id);
   }
   console.log(`Exercise library: ${byName.size} exercises`);
+  if (mode === 'library') return;
 
   // Demo account
   await prisma.user.deleteMany({ where: { email: 'demo@gymawy.app' } });
@@ -362,7 +366,7 @@ async function main() {
   console.log('Demo account ready: demo@gymawy.app / demo1234');
 }
 
-main()
+main(process.argv[2] ?? '')
   .catch((e) => {
     console.error(e);
     process.exit(1);

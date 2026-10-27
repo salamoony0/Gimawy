@@ -1,0 +1,49 @@
+# Render Blueprint for the Gymawy API (free web service). The client is deployed on Vercel and reaches this
+# service through the /api rewrite in client/vercel.json, so the browser only ever talks to the Vercel domain.
+services:
+  - type: web
+    name: gymawy-api # → https://gymawy-api.onrender.com; if Render picks another URL, update client/vercel.json
+    runtime: node
+    plan: free
+    region: frankfurt
+    # Dev dependencies (TypeScript, Prisma CLI, tsx) are needed to build, migrate and seed.
+    buildCommand: >-
+      npm ci --include=dev &&
+      npm run build -w server &&
+      npm run db:migrate -w server &&
+      npm run seed:library -w server &&
+      if [ "$SEED_DEMO" = "1" ]; then npm run seed -w server; fi
+    startCommand: npm start -w server
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "24"
+      - key: NODE_ENV
+        value: production
+      # Browser → Vercel edge → Render proxy → app: trust two hops so req.ip is the visitor's address.
+      - key: TRUST_PROXY
+        value: "2"
+      - key: JWT_SECRET
+        generateValue: true
+      # Supabase → Project → Connect → ORMs → Prisma: transaction pooler (port 6543, ?pgbouncer=true)
+      - key: DATABASE_URL
+        sync: false
+      # Supabase session pooler (port 5432). The direct db.<ref>.supabase.co host is IPv6-only.
+      - key: DIRECT_URL
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: gemini-3.1-flash-lite
+      - key: AI_DAILY_LIMIT
+        value: "40"
+      - key: RESEND_API_KEY
+        sync: false
+      - key: MAIL_FROM
+        sync: false
+      # The Vercel URL, e.g. https://gymawy.vercel.app (used in password reset links)
+      - key: APP_URL
+        sync: false
+      # "1" also (re)builds the public demo account on every deploy
+      - key: SEED_DEMO
+        value: "0"

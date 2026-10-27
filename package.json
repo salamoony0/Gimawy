@@ -7,15 +7,17 @@
     "client"
   ],
   "scripts": {
-    "dev": "concurrently -n server,client -c green,cyan \"npm run dev -w server\" \"npm run dev -w client\"",
+    "dev": "concurrently -k -n db,server,client -c yellow,green,cyan \"npm run db\" \"npm run dev -w server\" \"npm run dev -w client\"",
     "build": "npm run build -w server && npm run build -w client",
-    "setup": "npm run db:push -w server && npm run seed -w server",
+    "setup": "node scripts/with-db.mjs \"npm run db:migrate -w server && npm run seed -w server\"",
     "test": "npm test -w server && npm test -w client",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "db": "node scripts/dev-db.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.64.1",
-    "concurrently": "^10.0.6"
+    "concurrently": "^10.0.6",
+    "embedded-postgres": "^18.4.0-beta.17"
   },
   "allowScripts": {
     "prisma@6.19.3": true,
@@ -24,6 +26,8 @@
     "esbuild@0.28.2": true,
     "fsevents@2.3.3": true,
     "protobufjs": false,
-    "@google/genai": false
+    "@google/genai": false,
+    "@embedded-postgres/darwin-arm64@18.4.0-beta.17": true,
+    "@embedded-postgres/linux-x64@18.4.0-beta.17": true
   }
 }

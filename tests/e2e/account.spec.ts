@@ -4,8 +4,8 @@ import { readFileSync } from 'node:fs';
 import { PrismaClient } from '@prisma/client';
 import { test, expect } from './fixtures';
 
-// Same throwaway database the E2E API uses (see playwright.config.ts).
-const prisma = new PrismaClient({ datasourceUrl: `file:${fileURLToPath(new URL('../../server/prisma/e2e.db', import.meta.url))}` });
+// Same throwaway database the E2E API uses (written by start-api.mjs).
+const prisma = new PrismaClient({ datasourceUrl: readFileSync(fileURLToPath(new URL('.db-url', import.meta.url)), 'utf8') });
 test.afterAll(() => prisma.$disconnect());
 
 test('change password, export, log out everywhere, reset by link, delete account', async ({ page }) => {
@@ -41,6 +41,7 @@ test('change password, export, log out everywhere, reset by link, delete account
     await page.getByRole('button', { name: 'Log out everywhere' }).click();
     await page.waitForURL('**/login');
     await page.getByRole('link', { name: 'Forgot password?' }).click();
+    await expect(page.getByRole('heading', { name: 'Forgot password' })).toBeVisible();
     await page.getByLabel('Email').fill(email);
     await page.getByRole('button', { name: 'Send reset link' }).click();
     await expect(page.getByText('Check your email')).toBeVisible();
@@ -54,6 +55,7 @@ test('change password, export, log out everywhere, reset by link, delete account
       data: { userId: user.id, tokenHash: createHash('sha256').update(token).digest('hex'), expiresAt: new Date(Date.now() + 3_600_000) },
     });
     await page.goto(`/reset?token=${token}`);
+    await expect(page.getByRole('heading', { name: 'New password' })).toBeVisible();
     await page.getByLabel('New password').fill('password3');
     await page.getByLabel('Confirm password').fill('password3');
     await page.getByRole('button', { name: 'Save and log in' }).click();

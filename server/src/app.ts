@@ -18,8 +18,9 @@ const hops = process.env.TRUST_PROXY ?? (isProd ? '1' : '');
 if (hops) app.set('trust proxy', Number(hops));
 app.disable('x-powered-by');
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'same-site' } }));
-// Only needed when the client calls the API cross-origin (VITE_API_URL); same-origin setups ignore it.
-app.use(cors({ origin: process.env.CLIENT_ORIGIN?.split(',') ?? false, credentials: true }));
+// Only needed when the client calls the API cross-origin (VITE_API_URL). Production goes through the same-origin
+// Vercel rewrite, so CLIENT_ORIGIN stays unset there.
+if (process.env.CLIENT_ORIGIN) app.use(cors({ origin: process.env.CLIENT_ORIGIN.split(','), credentials: true }));
 app.use(express.json({ limit: '1mb' }));
 app.use(cookieParser());
 

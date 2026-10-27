@@ -11,3 +11,5 @@ client/dev-dist
 *.tsbuildinfo
 test-results/
 playwright-report/
+server/.postgres/
+tests/e2e/.db-url

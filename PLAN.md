@@ -1,5 +1,10 @@
 # Gymawy: editing, publish-ready security, tests, deploy
 
+> **Status (2026-10-27): implemented and merged into `main`.** Only the owner's account setup remains (Phase 4 manual steps; see CLAUDE.md → Status). Deviations from this plan:
+> - Tests and local dev run on a local **embedded Postgres** (`scripts/postgres.mjs`), not a `gymawy_test` schema on Supabase. Prisma refuses `migrate reset` from AI agents without explicit consent, and a local cluster needs no network or credentials. `TEST_DATABASE_URL` can still point the API tests at an empty external database.
+> - The cookie moved to `SameSite=Lax` in Phase 2 (together with the session work), not Phase 4.
+> - `GET /auth/demo` was added so the login page only offers the demo account where it's seeded.
+
 ## Context
 Gymawy works locally but isn't ready to publish:
 1. Saved items can only be **deleted**, not edited.
