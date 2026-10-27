@@ -32,6 +32,7 @@ export default defineConfig({
   ],
   server: {
     port: 5173,
-    proxy: { '/api': 'http://localhost:4000' },
+    // API_PORT lets the E2E suite run its own API next to a normal dev session.
+    proxy: { '/api': `http://localhost:${process.env.API_PORT ?? 4000}` },
   },
 });

@@ -1,4 +1,5 @@
-import { prisma, e1rm, round1 } from './core.js';
+import type { Prisma } from '@prisma/client';
+import { prisma, e1rm, round1, HttpError } from './core.js';
 
 export type AnnotatedSet = {
   id: string;
@@ -38,24 +39,31 @@ export type AnnotatedWorkout = {
   exercises: AnnotatedExercise[];
 };
 
-/**
- * Loads every workout for a user in chronological order and annotates each
- * working set with its estimated 1RM and whether it beat every earlier set of
- * that exercise (a PR). The first session of an exercise only sets the
- * baseline, so it never counts as a PR.
- */
+const workoutInclude = {
+  exercises: {
+    orderBy: { order: 'asc' },
+    include: { exercise: true, sets: { orderBy: { order: 'asc' } } },
+  },
+} satisfies Prisma.WorkoutInclude;
+
+export type WorkoutRow = Prisma.WorkoutGetPayload<{ include: typeof workoutInclude }>;
+
+/** Loads every workout for a user in chronological order, annotated (see annotateWorkouts). */
 export async function loadTraining(userId: string): Promise<AnnotatedWorkout[]> {
   const workouts = await prisma.workout.findMany({
     where: { userId },
     orderBy: [{ date: 'asc' }, { startedAt: 'asc' }],
-    include: {
-      exercises: {
-        orderBy: { order: 'asc' },
-        include: { exercise: true, sets: { orderBy: { order: 'asc' } } },
-      },
-    },
+    include: workoutInclude,
   });
+  return annotateWorkouts(workouts);
+}
 
+/**
+ * Annotates each working set (rows in chronological order) with its estimated
+ * 1RM and whether it beat every earlier set of that exercise (a PR). The first
+ * session of an exercise only sets the baseline, so it never counts as a PR.
+ */
+export function annotateWorkouts(workouts: WorkoutRow[]): AnnotatedWorkout[] {
   const best = new Map<string, number>();
 
   return workouts.map((w) => {
@@ -135,4 +143,13 @@ export function summarize(w: AnnotatedWorkout) {
       best: e.sets.reduce<AnnotatedSet | null>((b, s) => (!s.isWarmup && (!b || s.e1rm > b.e1rm) ? s : b), null),
     })),
   };
+}
+
+/** Built-in or the user's own exercises only (ids from another account are rejected). */
+export async function assertExercisesVisible(userId: string, ids: string[]) {
+  const unique = [...new Set(ids)];
+  const count = await prisma.exercise.count({
+    where: { id: { in: unique }, OR: [{ userId: null }, { userId }] },
+  });
+  if (count !== unique.length) throw new HttpError(400, 'Unknown exercise');
 }

@@ -2,20 +2,12 @@ import { Router } from 'express';
 import { z } from 'zod';
 import type { Prisma } from '@prisma/client';
 import { prisma, HttpError, zDay, param } from '../lib/core.js';
-import { loadTraining, summarize } from '../lib/training.js';
+import { assertExercisesVisible, loadTraining, summarize } from '../lib/training.js';
 
 export const trainingRouter = Router();
 
 const MUSCLES = ['chest', 'back', 'shoulders', 'biceps', 'triceps', 'legs', 'glutes', 'core', 'full body'] as const;
 const EQUIPMENT = ['barbell', 'dumbbell', 'machine', 'cable', 'bodyweight', 'kettlebell', 'other'] as const;
-
-async function assertExercisesVisible(userId: string, ids: string[]) {
-  const unique = [...new Set(ids)];
-  const count = await prisma.exercise.count({
-    where: { id: { in: unique }, OR: [{ userId: null }, { userId }] },
-  });
-  if (count !== unique.length) throw new HttpError(400, 'Unknown exercise');
-}
 
 // ---------- exercises ----------
 

@@ -9,3 +9,5 @@ client/dev-dist
 # local tooling
 .claude/settings.local.json
 *.tsbuildinfo
+test-results/
+playwright-report/

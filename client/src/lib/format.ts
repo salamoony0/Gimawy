@@ -75,6 +75,12 @@ export function useMe() {
 const KG_PER_LB = 0.45359237;
 const KM_PER_MI = 1.609344;
 
+/** "m:ss" per distance unit. Rounds to whole seconds first so 4:59.7 becomes 5:00, not 4:60. */
+export function formatPace(min: number, distance: number) {
+  const total = Math.round((min / distance) * 60);
+  return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, '0')}`;
+}
+
 export function useUnits() {
   const { data: me } = useMe();
   const lb = me?.weightUnit === 'lb';
@@ -93,12 +99,7 @@ export function useUnits() {
     /** Default plate increment for weight steppers */
     step: lb ? 5 : 2.5,
     /** Pace in min per km/mi */
-    pace: (min: number, km: number) => {
-      const per = min / (mi ? km / KM_PER_MI : km);
-      const m = Math.floor(per);
-      const s = Math.round((per - m) * 60);
-      return `${m}:${String(s === 60 ? 0 : s).padStart(2, '0')}`;
-    },
+    pace: (min: number, km: number) => formatPace(min, mi ? km / KM_PER_MI : km),
   };
 }
 
