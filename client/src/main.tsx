@@ -10,6 +10,7 @@ import { useMe } from './lib/format';
 import './index.css';
 
 const Auth = lazy(() => import('./pages/Auth'));
+const Recover = lazy(() => import('./pages/Recover'));
 const Today = lazy(() => import('./pages/Today'));
 const Train = lazy(() => import('./pages/Train'));
 const WorkoutLogger = lazy(() => import('./pages/WorkoutLogger'));
@@ -48,9 +49,16 @@ function FullScreenSpinner() {
   );
 }
 
+// Only the very first /me request shows a spinner. A refetch of a signed-out (401) query goes back to "pending",
+// and swapping the page for a spinner then would unmount it and lose its state (e.g. the "check your email" step).
+function useSession() {
+  const { data, isLoading, isFetched } = useMe();
+  return { data, loading: isLoading && !isFetched };
+}
+
 function RequireAuth() {
-  const { data, isLoading } = useMe();
-  if (isLoading) return <FullScreenSpinner />;
+  const { data, loading } = useSession();
+  if (loading) return <FullScreenSpinner />;
   if (!data) return <Navigate to="/login" replace />;
   // New accounts set up their body stats and targets before anything else.
   if (!data.onboarded) return <Navigate to="/setup" replace />;
@@ -58,15 +66,15 @@ function RequireAuth() {
 }
 
 function RequireUser() {
-  const { data, isLoading } = useMe();
-  if (isLoading) return <FullScreenSpinner />;
+  const { data, loading } = useSession();
+  if (loading) return <FullScreenSpinner />;
   if (!data) return <Navigate to="/login" replace />;
   return <Outlet />;
 }
 
 function GuestOnly() {
-  const { data, isLoading } = useMe();
-  if (isLoading) return <FullScreenSpinner />;
+  const { data, loading } = useSession();
+  if (loading) return <FullScreenSpinner />;
   if (data) return <Navigate to="/" replace />;
   return <Outlet />;
 }
@@ -79,8 +87,11 @@ const router = createBrowserRouter([
     children: [
       { path: '/login', element: page(<Auth mode="login" />) },
       { path: '/register', element: page(<Auth mode="register" />) },
+      { path: '/forgot', element: page(<Recover mode="forgot" />) },
     ],
   },
+  // Reachable signed in or out: the emailed link may be opened in a browser that's still logged in.
+  { path: '/reset', element: page(<Recover mode="reset" />) },
   {
     element: <RequireUser />,
     children: [{ path: '/setup', element: page(<Onboarding />) }],

@@ -42,31 +42,36 @@ declare global {
   }
 }
 
-export function setAuthCookie(res: Response, userId: string) {
-  const token = jwt.sign({ sub: userId }, JWT_SECRET, { expiresIn: '30d' });
-  res.cookie(COOKIE, token, {
-    httpOnly: true,
-    // Client and API live on different domains in production (Vercel + Render).
-    sameSite: isProd ? 'none' : 'lax',
-    secure: isProd,
-    maxAge: THIRTY_DAYS,
-  });
+/** The shared demo login can't change its password, request resets or be deleted. */
+export const DEMO_EMAIL = 'demo@gymawy.app';
+
+// Production runs behind a Vercel rewrite, so the API and client share one site: Lax cookies work, and Safari
+// doesn't drop them the way it does third-party cookies.
+const cookieOptions = () => ({ httpOnly: true, sameSite: 'lax' as const, secure: isProd });
+
+/** `tokenVersion` goes into the JWT; bumping it on the user signs out every existing session. */
+export function setAuthCookie(res: Response, user: { id: string; tokenVersion: number }) {
+  const token = jwt.sign({ sub: user.id, v: user.tokenVersion }, JWT_SECRET, { expiresIn: '30d' });
+  res.cookie(COOKIE, token, { ...cookieOptions(), maxAge: THIRTY_DAYS });
 }
 
 export function clearAuthCookie(res: Response) {
-  res.clearCookie(COOKIE, { httpOnly: true, sameSite: isProd ? 'none' : 'lax', secure: isProd });
+  res.clearCookie(COOKIE, cookieOptions());
 }
 
-export function requireAuth(req: Request, _res: Response, next: NextFunction) {
+export async function requireAuth(req: Request, _res: Response, next: NextFunction) {
   const token = req.cookies?.[COOKIE];
   if (!token) throw new HttpError(401, 'Not signed in');
+  let payload: { sub: string; v?: number };
   try {
-    const payload = jwt.verify(token, JWT_SECRET) as { sub: string };
-    req.userId = payload.sub;
-    next();
+    payload = jwt.verify(token, JWT_SECRET) as { sub: string; v?: number };
   } catch {
     throw new HttpError(401, 'Session expired');
   }
+  const user = await prisma.user.findUnique({ where: { id: payload.sub }, select: { tokenVersion: true } });
+  if (!user || user.tokenVersion !== (payload.v ?? 0)) throw new HttpError(401, 'Session expired');
+  req.userId = payload.sub;
+  next();
 }
 
 // ---------- validation ----------

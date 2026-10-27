@@ -12,8 +12,8 @@ The owner uses it alone for now and plans to **publish it publicly later** (Verc
 
 The approved roadmap is in **[PLAN.md](PLAN.md)**, 4 phases, each shipped as its own commit on its own branch:
 1. ~~Edit saved items~~ ✅ done, merged into `main`
-2. **Publish-ready security** ← *next; start on a new branch `phase-2-security`* (rate limits, DB-backed AI quota, tokenVersion sessions, password reset via Resend, change password, export, delete account)
-3. Automated tests (Vitest unit + supertest API incl. cross-user isolation + Playwright E2E with system Chrome)
+2. ~~Publish-ready security~~ ✅ done, merged into `main`
+3. **Automated tests** ← *next, on branch `phase-3-tests`* (Vitest unit + supertest API incl. cross-user isolation + Playwright E2E with system Chrome)
 4. Deploy: **Supabase** Postgres (pooled `DATABASE_URL` + `DIRECT_URL`, switch to `prisma migrate`), Render API, Vercel client with an `/api` rewrite (first-party cookies for Safari)
 
 **Phase 1 (done 2026-10-27, verified in the browser with flow3 and no console errors; flow and flow2 still pass):**
@@ -26,9 +26,11 @@ The approved roadmap is in **[PLAN.md](PLAN.md)**, 4 phases, each shipped as its
   - `CustomExerciseSheet` on ExerciseDetail
   - `GoalSheet` `initial` prop (pencil on goal cards)
 
-**Next step:** Phase 2 per PLAN.md, on branch `phase-2-security`.
+**Phase 2 (done 2026-10-27, verified with flow4 + curl; flows 1–3 still pass):** rate limits + helmet, AI quota in the `AiUsage` table, `tokenVersion` sessions, forgot/reset (Resend or server log), change password, log out everywhere, JSON export, account deletion, demo account protected. See Conventions → Security.
 
-`tests/e2e-drafts/` holds the scripts used for browser checks so far (flow = core logging, flow2 = onboarding + incline, flow3 = Phase 1 edits + deletes, shots = screenshots). They use `playwright-core` with `/Applications/Google Chrome.app`. That package isn't a project dependency: install it outside the repo, copy the script next to it, and run it with `npm run seed -w server` + `npm run dev` going: `node flow3.mjs <outDir>`. Reseed before each run, since the flows change demo data. Phase 3 replaces these with `@playwright/test`.
+**Next step:** Phase 3 per PLAN.md, on branch `phase-3-tests`.
+
+`tests/e2e-drafts/` holds the scripts used for browser checks so far (flow = core logging, flow2 = onboarding + incline, flow3 = Phase 1 edits + deletes, flow4 = Phase 2 account flows, which needs the dev log path as its 2nd arg, shots = screenshots). They use `playwright-core` with `/Applications/Google Chrome.app`. That package isn't a project dependency: install it outside the repo, copy the script next to it, and run it with `npm run seed -w server` + `npm run dev` going: `node flow3.mjs <outDir>`. Reseed before each run, since the flows change demo data. Phase 3 replaces these with `@playwright/test`.
 
 ## Commands (run from repo root)
 
@@ -63,14 +65,18 @@ npm in this repo uses `allowScripts` (root package.json) — only prisma, @prism
 server/
   prisma/schema.prisma     data model (see below)
   prisma/seed.ts           69-exercise library + demo account (deterministic PRNG)
-  src/index.ts             app wiring: /api/auth, /api/stats, /api/ai, /api (training+tracking)
-  src/lib/core.ts          prisma client, HttpError, errorHandler, auth cookie + requireAuth, zDay, date math, e1rm
+  src/app.ts               Express app (exported for tests): helmet, CORS, limiters, /api/auth, /api/stats, /api/ai, /api
+  src/index.ts             only calls app.listen
+  src/lib/core.ts          prisma client, HttpError, errorHandler, auth cookie + requireAuth (checks tokenVersion), DEMO_EMAIL, zDay, date math, e1rm
+  src/lib/limits.ts        express-rate-limit limiters (account/IP/forgot/register/api/ai)
+  src/lib/mailer.ts        sendMail() via Resend REST (logs to console without a key), appUrl()
   src/lib/training.ts      loadTraining(): all workouts annotated with e1RM, PR flags, volume, calories
-  src/routes/auth.ts       register/login/logout, GET/PATCH /me (+ latestWeightKg)
+  src/routes/auth.ts       register/login/logout, GET/PATCH/DELETE /me (+ latestWeightKg), forgot, reset, PATCH password,
+                           logout-all, GET export
   src/routes/training.ts   exercises (+history, /last), workouts CRUD, routines
   src/routes/tracking.ts   cardio, body weight (PUT /body/:date upsert), goals (progress computed), food (+summary, recent)
   src/routes/stats.ts      /stats/dashboard, /stats/progress?range=30|90|365|all
-  src/routes/ai.ts         /ai/status, /ai/analyze-food (image and/or text hint → JSON draft)
+  src/routes/ai.ts         /ai/status, /ai/analyze-food (image and/or text hint → JSON draft), DB daily quota
 client/src/
   main.tsx                 router, QueryClient (every mutation invalidates all queries; a delete
                            whose page stays mounted sets `meta: { removes: queryKey }` to skip refetching it), auth gates
@@ -82,7 +88,7 @@ client/src/
   components/viz.tsx       Rings, MacroLegend, Heatmap, ChartTooltip, axis/grid props, GradientDefs
   components/Layout.tsx    sidebar (lg) / header + bottom nav (mobile), active-workout pill, PageHeader, Logo
   components/ExercisePicker.tsx  searchable picker sheet + custom exercise creation, useExercises()
-  pages/                   Auth, Onboarding (/setup), Today, Train (strength/cardio/exercises tabs, CARDIO_META),
+  pages/                   Auth, Recover (/forgot + /reset), Onboarding (/setup), Today, Train (strength/cardio/exercises tabs, CARDIO_META),
                            WorkoutLogger (/train/log), WorkoutDetail, ExerciseDetail, Food (scan + manual sheets),
                            Body (weigh-in, trend, goals), Progress, Settings
 ```
@@ -93,6 +99,7 @@ client/src/
 - **Exercise** (`userId` null = built-in library), **Workout** → **WorkoutExercise** → **WorkoutSet** (`weightKg`, `reps`, `rpe`, `isWarmup`); Workout has `calories`.
 - **Routine** → **RoutineExercise** (targetSets/targetReps).
 - **CardioSession**: `type` run|walk|incline|cycle|row|swim|elliptical|stairs|hiit|other, `durationMin`, `distanceKm`, `calories`, `avgHeartRate`, `inclinePct`, `speedKmh`.
+- **User.tokenVersion**: in every JWT; bumping it signs out all sessions. **AiUsage** (userId, UTC day, count; unique [userId,day]). **PasswordResetToken** (SHA-256 `tokenHash`, `expiresAt` 1 h, `usedAt`).
 - **BodyWeight** (one per user per day, unique [userId,date]), **Goal** (`type` weight|lift|cardio, `targetValue` kg or min/week, `startValue` snapshot), **FoodEntry** (one row per item; `meal`, `source` manual|label|screenshot|photo|text).
 
 ## Conventions & rules
@@ -105,20 +112,25 @@ client/src/
 - **Burn estimates** (`lib/energy.ts`, computed client-side and stored): cardio uses heart rate (Keytel) if HR+age+sex known → else ACSM walking/running equations from speed+incline for walk/run/incline → else MET × 3.5 × kg × min / 200. Strength = MET 5.0. Body weight = latest weigh-in (`me.latestWeightKg`, fallback 75 kg). Daily calorie targets already include activity, so exercise calories are **not** added back to the food budget.
 - **AI**: model `GEMINI_MODEL` (default `gemini-3.1-flash-lite`, ~2–3 s) → fallback `gemini-3-flash-preview`, thinking LOW, 25 s timeout per attempt, per-user daily cap `AI_DAILY_LIMIT` (refunded on failure). Responses validated with Zod; the UI always shows an editable draft — never auto-save AI output. Client downsizes images to 1280px JPEG before upload. `gemini-flash-latest` was too slow (45 s+) and gemini-2.5-* are closed to new keys.
 - **UI**: green-on-black tokens only (no raw hex in components except chart series/cardio colors); Barlow / Barlow Condensed (`font-display`), `.num` for tabular numbers; 44px+ touch targets; `Sheet` for modals; links styled as buttons via `buttonClass()` (never nest `<button>` in `<a>`); respect reduced motion (`MotionConfig reducedMotion="user"`). Design system came from the `ui-ux-pro-max` skill (fitness, Vibrant & Block-based, Barlow), recoloured green/black.
+- **Security**:
+  - Sessions: JWT `{ sub, v: tokenVersion }` in an httpOnly `SameSite=Lax` cookie (`Secure` in prod); `requireAuth` looks up the user on each request and rejects stale versions. Password change/reset and "log out everywhere" bump the version (change/reset re-issue the current cookie).
+  - Rate limits (`lib/limits.ts`, in memory, single instance): login 10 failed/15 min per email + 100 failed/15 min per IP; forgot 5/h per email; register 20/h per IP; signed-in API 300/min per user; AI 10/min per user (plus the daily cap). `RATE_LIMIT=off` disables them (tests). `TRUST_PROXY` sets proxy hops for `req.ip` (default 1 in prod; behind the Vercel rewrite check that `req.ip` is the real client, see Deploying).
+  - `/auth/forgot` always returns 200 (no account enumeration); login compares against a dummy hash when the email is unknown. Passwords are 8–72 chars (bcrypt limit).
+  - The demo account (`DEMO_EMAIL`) can't change its password, get reset emails or be deleted (403).
+  - The auth guards in `main.tsx` (`useSession`) only show a spinner before the first `/me` response; otherwise a refetch would unmount guest pages.
 - New accounts are forced through `/setup` until `onboarded` is true; Settings → "Recalculate targets" reopens it.
 - Empty states and a "Get set up" checklist exist so new accounts never look blank; demo data comes from the seed.
 - Chart margins: don't use negative `left` margins (they clip y-axis labels).
 
 ## Environment (server/.env, see .env.example)
 
-`DATABASE_URL`, `JWT_SECRET`, `PORT`, `CLIENT_ORIGIN` (comma-separated, for CORS with credentials), `GEMINI_API_KEY` (free: aistudio.google.com/apikey), `GEMINI_MODEL`, `AI_DAILY_LIMIT`. Client: `VITE_API_URL` (only in production; dev uses the Vite proxy). Never commit `.env`.
+`DATABASE_URL`, `JWT_SECRET`, `PORT`, `CLIENT_ORIGIN` (comma-separated, for CORS with credentials), `GEMINI_API_KEY` (free: aistudio.google.com/apikey), `GEMINI_MODEL`, `AI_DAILY_LIMIT`, `RESEND_API_KEY` (optional in dev: reset links are logged), `MAIL_FROM`, `APP_URL` (client URL for emailed links), `TRUST_PROXY`, `RATE_LIMIT` (`off` for tests). Client: `VITE_API_URL` (only in production; dev uses the Vite proxy). Never commit `.env`.
 
 ## Deploying (planned, not done yet)
 
 1. `schema.prisma` provider → `postgresql`, `DATABASE_URL` → Render/Neon Postgres; consider switching from `db push` to `prisma migrate`.
 2. Render: build `npm install && npm run build -w server && npx prisma db push --schema server/prisma/schema.prisma`, start `npm start -w server`; env `NODE_ENV=production` (enables `SameSite=None; Secure` cookies + trust proxy), `JWT_SECRET`, `DATABASE_URL`, `GEMINI_API_KEY`, `CLIENT_ORIGIN=https://<vercel-domain>`.
 3. Vercel: root `client`, `VITE_API_URL=https://<render-domain>`, SPA rewrite `/(.*) → /index.html`.
-4. Before going public: move the in-memory AI quota to the DB, add rate limiting on auth, password reset, account deletion/export.
 
 ## Ideas / backlog
 
@@ -131,3 +143,4 @@ Progress photos, body measurements, offline logging queue, plate calculator, sup
 - **2026-10-27** — Onboarding wizard (`/setup`): sex, DOB, height, weight, activity, goal + pace + optional target weight → computed calorie/macro targets, initial weigh-in and weight goal. Calorie-burn estimates for cardio (HR/ACSM/MET) and strength (MET), shown on dashboard, workout detail, logger summary and progress. New `incline` cardio type with incline % and speed fields (also for walk/run), presets (12-3-30 etc.).
 - **2026-10-27** — Git repository initialised (initial commit of the full app).
 - **2026-10-27** — Phase 1 (edit saved items): edit workouts, food, cardio, routines (create/reorder), goals, and custom exercises (edit/delete). Verified in the browser and merged into `main`. Also fixed a 404 refetch after deleting a workout or custom exercise (`meta.removes` in the global mutation handler).
+- **2026-10-27** — Phase 2 (publish-ready security): helmet, rate limits, DB-backed AI quota, tokenVersion sessions, forgot/reset password (Resend), change password, log out everywhere, data export, account deletion, Settings → Account & security card, `/forgot` + `/reset` pages. Split `app.ts` from `index.ts`. Cookie is now `SameSite=Lax` (prod will use a same-site Vercel rewrite). Fixed auth guards unmounting pages on `/me` refetch.

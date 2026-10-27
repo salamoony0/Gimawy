@@ -25,7 +25,17 @@ export const api = {
   post: <T,>(path: string, body?: unknown) => request<T>('POST', path, body),
   put: <T,>(path: string, body?: unknown) => request<T>('PUT', path, body),
   patch: <T,>(path: string, body?: unknown) => request<T>('PATCH', path, body),
-  del: <T = void,>(path: string) => request<T>('DELETE', path),
+  del: <T = void,>(path: string, body?: unknown) => request<T>('DELETE', path, body),
+  /** Saves a file the API sends as an attachment (uses the filename from Content-Disposition). */
+  download: async (path: string) => {
+    const res = await fetch(`${BASE}${path}`, { credentials: 'include' });
+    if (!res.ok) throw new ApiError(res.status, `Download failed (${res.status})`);
+    const name = /filename="([^"]+)"/.exec(res.headers.get('Content-Disposition') ?? '')?.[1] ?? 'download';
+    const url = URL.createObjectURL(await res.blob());
+    const a = Object.assign(document.createElement('a'), { href: url, download: name });
+    a.click();
+    URL.revokeObjectURL(url);
+  },
 };
 
 // ---------- types (mirror the server responses) ----------
