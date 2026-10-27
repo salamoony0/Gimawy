@@ -14,8 +14,8 @@ The roadmap in **[PLAN.md](PLAN.md)** is implemented: all 4 phases are merged in
 
 **Owner's manual steps to go live** (in order, details in Deploying):
 1. ~~Push to GitHub~~ ✅ done: https://github.com/salamoony0/Gimawy (SSH key `~/.ssh/id_ed25519` on this Mac; `git push` works without prompts).
-2. Create a Supabase project; copy the transaction pooler URL (→ `DATABASE_URL`) and session pooler URL (→ `DIRECT_URL`).
-3. Render → New → Blueprint → this repo (`render.yaml`); fill the `sync: false` env vars.
+2. ~~Supabase~~ ✅ done: project in `eu-west-1` (pooler URLs set on Render only, never in the repo).
+3. ~~Render~~ ✅ done: Blueprint live at https://gymawy-api.onrender.com (`/api/health` ok, migrations applied). `RESEND_API_KEY`, `MAIL_FROM`, `APP_URL` still empty.
 4. Vercel → New Project → this repo, root directory `client`. If Render's URL isn't `gymawy-api.onrender.com`, update `client/vercel.json`.
 5. Resend: get an API key (and verify a sending domain, or you can only email yourself); set `RESEND_API_KEY`, `MAIL_FROM`, `APP_URL` on Render.
 6. Verify on the live URL, on desktop **and iPhone Safari**: register → setup → log workout → scan meal → reload (session survives); reset email arrives; `/api/health` works through the rewrite; 11th bad login → 429.
