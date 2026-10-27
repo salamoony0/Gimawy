@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { z } from 'zod';
 import { prisma, HttpError, zDay, param, todayFromQuery, weekStart, round1 } from '../lib/core.js';
-import { loadTraining } from '../lib/training.js';
+import { assertExercisesVisible, loadTraining } from '../lib/training.js';
 
 export const trackingRouter = Router();
 
@@ -135,6 +135,7 @@ trackingRouter.post('/goals', async (req, res) => {
     })
     .parse(req.body);
   if (body.type === 'lift' && !body.exerciseId) throw new HttpError(400, 'Pick an exercise for a lift goal');
+  if (body.type === 'lift') await assertExercisesVisible(req.userId, [body.exerciseId!]);
 
   // Snapshot where the user is starting from, so progress has a baseline.
   let startValue: number | null = null;

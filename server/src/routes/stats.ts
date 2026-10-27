@@ -1,19 +1,9 @@
 import { Router } from 'express';
-import { prisma, todayFromQuery, addDays, weekStart, daysBetween, round1 } from '../lib/core.js';
+import { prisma, todayFromQuery, addDays, weekStart, round1 } from '../lib/core.js';
 import { loadTraining, summarize, type AnnotatedWorkout } from '../lib/training.js';
+import { withTrend } from '../lib/trend.js';
 
 export const statsRouter = Router();
-
-type Weigh = { date: string; weightKg: number };
-
-/** Adds a trailing 7-day average (over the weigh-ins within the last 7 calendar days). */
-function withTrend(entries: Weigh[]) {
-  return entries.map((e, i) => {
-    const window = entries.slice(0, i + 1).filter((x) => daysBetween(x.date, e.date) < 7);
-    const avg = window.reduce((n, x) => n + x.weightKg, 0) / window.length;
-    return { date: e.date, weightKg: e.weightKg, trendKg: round1(avg) };
-  });
-}
 
 function weeklyBuckets(from: string, to: string) {
   const weeks: string[] = [];

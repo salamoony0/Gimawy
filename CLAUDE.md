@@ -13,8 +13,8 @@ The owner uses it alone for now and plans to **publish it publicly later** (Verc
 The approved roadmap is in **[PLAN.md](PLAN.md)**, 4 phases, each shipped as its own commit on its own branch:
 1. ~~Edit saved items~~ ✅ done, merged into `main`
 2. ~~Publish-ready security~~ ✅ done, merged into `main`
-3. **Automated tests** ← *next, on branch `phase-3-tests`* (Vitest unit + supertest API incl. cross-user isolation + Playwright E2E with system Chrome)
-4. Deploy: **Supabase** Postgres (pooled `DATABASE_URL` + `DIRECT_URL`, switch to `prisma migrate`), Render API, Vercel client with an `/api` rewrite (first-party cookies for Safari)
+3. ~~Automated tests~~ ✅ done, merged into `main`
+4. **Deploy** ← *next, on branch `phase-4-deploy`*: **Supabase** Postgres (pooled `DATABASE_URL` + `DIRECT_URL`, switch to `prisma migrate`), Render API, Vercel client with an `/api` rewrite (first-party cookies for Safari)
 
 **Phase 1 (done 2026-10-27, verified in the browser with flow3 and no console errors; flow and flow2 still pass):**
 - **Server:** `PUT /workouts/:id`, `PUT /routines/:id`, `PATCH /cardio|food|goals/:id`, `PATCH`+`DELETE /exercises/:id` (custom only; 409 if used in a workout).
@@ -28,9 +28,9 @@ The approved roadmap is in **[PLAN.md](PLAN.md)**, 4 phases, each shipped as its
 
 **Phase 2 (done 2026-10-27, verified with flow4 + curl; flows 1–3 still pass):** rate limits + helmet, AI quota in the `AiUsage` table, `tokenVersion` sessions, forgot/reset (Resend or server log), change password, log out everywhere, JSON export, account deletion, demo account protected. See Conventions → Security.
 
-**Next step:** Phase 3 per PLAN.md, on branch `phase-3-tests`.
+**Phase 3 (done 2026-10-27):** 17 client unit tests, 35 server tests (unit + supertest API incl. cross-user isolation), 4 Playwright E2E specs (replaced the old `tests/e2e-drafts` scripts). See Testing. Found and fixed along the way: lift goals accepted another user's custom exercise id; `pace` showed "4:60" instead of "5:00".
 
-`tests/e2e-drafts/` holds the scripts used for browser checks so far (flow = core logging, flow2 = onboarding + incline, flow3 = Phase 1 edits + deletes, flow4 = Phase 2 account flows, which needs the dev log path as its 2nd arg, shots = screenshots). They use `playwright-core` with `/Applications/Google Chrome.app`. That package isn't a project dependency: install it outside the repo, copy the script next to it, and run it with `npm run seed -w server` + `npm run dev` going: `node flow3.mjs <outDir>`. Reseed before each run, since the flows change demo data. Phase 3 replaces these with `@playwright/test`.
+**Next step:** Phase 4 per PLAN.md, on branch `phase-4-deploy`.
 
 ## Commands (run from repo root)
 
@@ -42,7 +42,9 @@ npm run build          # server tsc + client tsc/vite build
 npm run seed -w server # rebuild demo account only (other accounts untouched)
 npm run db:push -w server   # apply schema.prisma changes (SQLite, no migrations yet)
 npx tsc -p client --noEmit  # client typecheck
-npm run typecheck -w server # server typecheck
+npm run typecheck -w server # server typecheck (src + test/)
+npm test               # Vitest: server unit + API tests, then client unit tests
+npm run test:e2e       # Playwright E2E in system Chrome (starts its own API :4100 + Vite :5174)
 ```
 
 Demo login: **demo@gymawy.app / demo1234** (12 weeks of data, already onboarded).
@@ -52,6 +54,13 @@ Environment notes: Node.js v24 is installed at `/usr/local/bin/node` (official i
 Git: repo initialised on `main`. Commit messages end with the Claude co-author line. `.env`, `*.db`, `dist`, `.claude/settings.local.json` and `*.tsbuildinfo` are ignored — never commit secrets.
 
 npm in this repo uses `allowScripts` (root package.json) — only prisma, @prisma/*, esbuild, fsevents may run install scripts. New packages with install scripts must be approved with `npm install-scripts approve <pkg>`.
+
+## Testing
+
+- **Unit** (Vitest): `client/src/lib/*.test.ts` (energy known answers, date helpers, pace) and `server/test/unit.test.ts` (e1rm, weekStart, annotateWorkouts PR rules, withTrend). Keep math pure and exported so it can be tested.
+- **API** (`server/test/*.test.ts`, supertest against `app`): run one file at a time on a throwaway DB that `global-setup.ts` recreates (`TEST_DATABASE_URL`, default SQLite `prisma/test.db`). `RATE_LIMIT=off` except in `ratelimit.test.ts`; Gemini (`vi.mock('@google/genai')`) and `sendMail` are mocked. **Every new user-owned route needs a case in `isolation.test.ts`.**
+- **E2E** (`tests/e2e/*.spec.ts`, `@playwright/test`, `channel: 'chrome'`): `playwright.config.ts` starts the API on :4100 with `prepare-db.mjs` (fresh `e2e.db` + seed) and Vite on :5174 (`API_PORT` env sets the proxy target). The `errors` fixture fails a test on any console error except 401/403/404/409. Specs: core (demo logging), onboarding, editing, account.
+- Prisma blocks `db push --force-reset` from AI agents without the user's explicit consent, so test setups delete the throwaway DB file and run a plain `db push` instead.
 
 ## Stack
 
@@ -65,12 +74,15 @@ npm in this repo uses `allowScripts` (root package.json) — only prisma, @prism
 server/
   prisma/schema.prisma     data model (see below)
   prisma/seed.ts           69-exercise library + demo account (deterministic PRNG)
+  test/                    Vitest: unit.test.ts, auth/isolation/workouts/ai/reset/ratelimit API suites (supertest),
+                           helpers.ts (newUser agent, libraryExercise, workoutBody), env.ts, global-setup.ts
   src/app.ts               Express app (exported for tests): helmet, CORS, limiters, /api/auth, /api/stats, /api/ai, /api
   src/index.ts             only calls app.listen
   src/lib/core.ts          prisma client, HttpError, errorHandler, auth cookie + requireAuth (checks tokenVersion), DEMO_EMAIL, zDay, date math, e1rm
   src/lib/limits.ts        express-rate-limit limiters (account/IP/forgot/register/api/ai)
   src/lib/mailer.ts        sendMail() via Resend REST (logs to console without a key), appUrl()
-  src/lib/training.ts      loadTraining(): all workouts annotated with e1RM, PR flags, volume, calories
+  src/lib/training.ts      loadTraining() → annotateWorkouts() (pure: e1RM, PR flags, volume), assertExercisesVisible()
+  src/lib/trend.ts         withTrend(): trailing 7-day weight average
   src/routes/auth.ts       register/login/logout, GET/PATCH/DELETE /me (+ latestWeightKg), forgot, reset, PATCH password,
                            logout-all, GET export
   src/routes/training.ts   exercises (+history, /last), workouts CRUD, routines
@@ -143,4 +155,5 @@ Progress photos, body measurements, offline logging queue, plate calculator, sup
 - **2026-10-27** — Onboarding wizard (`/setup`): sex, DOB, height, weight, activity, goal + pace + optional target weight → computed calorie/macro targets, initial weigh-in and weight goal. Calorie-burn estimates for cardio (HR/ACSM/MET) and strength (MET), shown on dashboard, workout detail, logger summary and progress. New `incline` cardio type with incline % and speed fields (also for walk/run), presets (12-3-30 etc.).
 - **2026-10-27** — Git repository initialised (initial commit of the full app).
 - **2026-10-27** — Phase 1 (edit saved items): edit workouts, food, cardio, routines (create/reorder), goals, and custom exercises (edit/delete). Verified in the browser and merged into `main`. Also fixed a 404 refetch after deleting a workout or custom exercise (`meta.removes` in the global mutation handler).
+- **2026-10-27** — Phase 3 (automated tests): Vitest (client + server), supertest API suites incl. cross-user isolation, Playwright E2E in system Chrome. Refactors: `annotateWorkouts`, `lib/trend.ts`, `formatPace` (fixed 4:60 rounding), `assertExercisesVisible` in lib (now also guards lift goals). Root package is `"type": "module"`.
 - **2026-10-27** — Phase 2 (publish-ready security): helmet, rate limits, DB-backed AI quota, tokenVersion sessions, forgot/reset password (Resend), change password, log out everywhere, data export, account deletion, Settings → Account & security card, `/forgot` + `/reset` pages. Split `app.ts` from `index.ts`. Cookie is now `SameSite=Lax` (prod will use a same-site Vercel rewrite). Fixed auth guards unmounting pages on `/me` refetch.
