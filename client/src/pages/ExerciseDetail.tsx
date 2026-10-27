@@ -270,6 +270,7 @@ function CustomExerciseSheet({
   });
   const del = useMutation({
     mutationFn: () => api.del(`/exercises/${exercise.id}`),
+    meta: { removes: ['exercise', exercise.id] },
     onSuccess: () => {
       toast('Exercise deleted');
       onClose();

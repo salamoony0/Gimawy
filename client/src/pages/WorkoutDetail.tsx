@@ -32,6 +32,7 @@ export default function WorkoutDetail() {
   const { data: w, error } = useQuery({ queryKey: ['workout', id], queryFn: () => api.get<Detail>(`/workouts/${id}`) });
   const del = useMutation({
     mutationFn: () => api.del(`/workouts/${id}`),
+    meta: { removes: ['workout', id] },
     onSuccess: () => {
       toast('Workout deleted');
       navigate('/train', { replace: true });

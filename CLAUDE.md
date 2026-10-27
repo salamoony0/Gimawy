@@ -11,12 +11,12 @@ The owner uses it alone for now and plans to **publish it publicly later** (Verc
 ## 🚧 Work in progress (read this first when resuming)
 
 The approved roadmap is in **[PLAN.md](PLAN.md)**, 4 phases, each shipped as its own commit on its own branch:
-1. **Edit saved items** ← *in progress on branch `phase-1-editing`*
-2. Publish-ready security (rate limits, DB-backed AI quota, tokenVersion sessions, password reset via Resend, change password, export, delete account)
+1. ~~Edit saved items~~ ✅ done, merged into `main`
+2. **Publish-ready security** ← *next; start on a new branch `phase-2-security`* (rate limits, DB-backed AI quota, tokenVersion sessions, password reset via Resend, change password, export, delete account)
 3. Automated tests (Vitest unit + supertest API incl. cross-user isolation + Playwright E2E with system Chrome)
 4. Deploy: **Supabase** Postgres (pooled `DATABASE_URL` + `DIRECT_URL`, switch to `prisma migrate`), Render API, Vercel client with an `/api` rewrite (first-party cookies for Safari)
 
-**Phase 1 status (2026-10-27):** code is done, typechecks pass, and it's committed on `phase-1-editing`. It is **not yet verified in the browser.**
+**Phase 1 (done 2026-10-27, verified in the browser with flow3 and no console errors; flow and flow2 still pass):**
 - **Server:** `PUT /workouts/:id`, `PUT /routines/:id`, `PATCH /cardio|food|goals/:id`, `PATCH`+`DELETE /exercises/:id` (custom only; 409 if used in a workout).
 - **Client:**
   - workout edit mode (`workoutStore.startEdit`, Edit button on WorkoutDetail, logger shows an "Editing" badge, a date picker, and saves with PUT)
@@ -26,12 +26,9 @@ The approved roadmap is in **[PLAN.md](PLAN.md)**, 4 phases, each shipped as its
   - `CustomExerciseSheet` on ExerciseDetail
   - `GoalSheet` `initial` prop (pencil on goal cards)
 
-**Next steps:**
-1. Run `npm run seed -w server`, `npm run dev`, then `node tests/e2e-drafts/flow3.mjs <outDir>` (needs `npm i playwright-core` somewhere outside the repo, or port it to `@playwright/test` in Phase 3).
-2. Last run: the workout edit saved and redirected, but the check `getByText('200', { exact: true })` timed out. That's probably just the selector: the cell renders "200 kg", so exact match fails. Confirm the set shows 200 kg and a PR badge, fix the selector, and run the remaining steps (food, cardio, routine, goal, custom exercise).
-3. When green, merge `phase-1-editing` into `main`, update this section and the changelog, then start Phase 2 on a new branch.
+**Next step:** Phase 2 per PLAN.md, on branch `phase-2-security`.
 
-`tests/e2e-drafts/` holds the scripts used for browser checks so far (flow = core logging, flow2 = onboarding + incline, flow3 = Phase 1 edits, shots = screenshots). They use `playwright-core` with `/Applications/Google Chrome.app`.
+`tests/e2e-drafts/` holds the scripts used for browser checks so far (flow = core logging, flow2 = onboarding + incline, flow3 = Phase 1 edits + deletes, shots = screenshots). They use `playwright-core` with `/Applications/Google Chrome.app`. That package isn't a project dependency: install it outside the repo, copy the script next to it, and run it with `npm run seed -w server` + `npm run dev` going: `node flow3.mjs <outDir>`. Reseed before each run, since the flows change demo data. Phase 3 replaces these with `@playwright/test`.
 
 ## Commands (run from repo root)
 
@@ -75,7 +72,8 @@ server/
   src/routes/stats.ts      /stats/dashboard, /stats/progress?range=30|90|365|all
   src/routes/ai.ts         /ai/status, /ai/analyze-food (image and/or text hint → JSON draft)
 client/src/
-  main.tsx                 router, QueryClient (every mutation invalidates all queries), auth gates
+  main.tsx                 router, QueryClient (every mutation invalidates all queries; a delete
+                           whose page stays mounted sets `meta: { removes: queryKey }` to skip refetching it), auth gates
   lib/api.ts               fetch wrapper + all response types (mirror server shapes here)
   lib/format.ts            local-day helpers, number formatting, useMe(), useUnits()
   lib/energy.ts            BMR/TDEE/targets/macros + cardio & strength burn estimates (single source of truth)
@@ -132,4 +130,4 @@ Progress photos, body measurements, offline logging queue, plate calculator, sup
 - **2026-10-27** — AI: switched default to `gemini-3.1-flash-lite` with fallback, timeouts, and quota refunds (scans went from 45 s+ to ~3 s).
 - **2026-10-27** — Onboarding wizard (`/setup`): sex, DOB, height, weight, activity, goal + pace + optional target weight → computed calorie/macro targets, initial weigh-in and weight goal. Calorie-burn estimates for cardio (HR/ACSM/MET) and strength (MET), shown on dashboard, workout detail, logger summary and progress. New `incline` cardio type with incline % and speed fields (also for walk/run), presets (12-3-30 etc.).
 - **2026-10-27** — Git repository initialised (initial commit of the full app).
-- **2026-10-27** — Phase 1 (edit saved items) implemented on branch `phase-1-editing`; browser verification pending (see Work in progress).
+- **2026-10-27** — Phase 1 (edit saved items): edit workouts, food, cardio, routines (create/reorder), goals, and custom exercises (edit/delete). Verified in the browser and merged into `main`. Also fixed a 404 refetch after deleting a workout or custom exercise (`meta.removes` in the global mutation handler).

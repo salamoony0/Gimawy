@@ -28,7 +28,7 @@ await w.fill('200');
 await page.screenshot({ path: `${out}/edit-workout.png` });
 await page.getByRole('button', { name: 'Save' }).click();
 await page.waitForURL(detailUrl);
-await page.getByText('200', { exact: true }).first().waitFor();
+await page.getByText('200 kg', { exact: true }).first().waitFor();
 await page.getByText('PR', { exact: true }).first().waitFor();
 step('workout edited: 200 kg set saved and flagged as PR');
 
@@ -90,6 +90,13 @@ await page.getByRole('button', { name: 'Edit', exact: true }).click();
 await page.getByRole('dialog', { name: 'Edit exercise' }).getByRole('button', { name: 'Delete exercise' }).click();
 await page.waitForURL(/tab=exercises/);
 step('unused custom exercise deleted');
+
+// Workout delete (should not refetch the deleted workout → no 404)
+await page.goto(detailUrl);
+await page.getByRole('button', { name: 'Delete workout' }).click();
+await page.getByRole('dialog', { name: 'Delete workout?' }).getByRole('button', { name: 'Delete', exact: true }).click();
+await page.waitForURL(/\/train$/);
+step('workout deleted');
 
 console.log(errors.length ? errors.join('\n') : 'no console errors');
 await browser.close();

@@ -1,7 +1,7 @@
 import { lazy, StrictMode, Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, Navigate, Outlet, RouterProvider } from 'react-router';
-import { MutationCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { MutationCache, QueryClient, QueryClientProvider, hashKey, type QueryKey } from '@tanstack/react-query';
 import { MotionConfig } from 'motion/react';
 import { Layout } from './components/Layout';
 import { Spinner, ToastProvider } from './components/ui';
@@ -29,8 +29,14 @@ const queryClient = new QueryClient({
     },
   },
   // Any write can move dashboard numbers (and the latest weight on `me`), so refresh everything after a mutation.
+  // Deletes pass `meta: { removes: queryKey }` so the deleted item's own query is skipped (refetching it would 404
+  // while its page is still mounted); the page navigates away and the stale entry is garbage-collected.
   mutationCache: new MutationCache({
-    onSuccess: () => queryClient.invalidateQueries(),
+    onSuccess: (_data, _vars, _ctx, mutation) => {
+      const removes = mutation.meta?.removes as QueryKey | undefined;
+      const skip = removes && hashKey(removes);
+      return queryClient.invalidateQueries({ predicate: (q) => q.queryHash !== skip });
+    },
   }),
 });
 
