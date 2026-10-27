@@ -1,7 +1,7 @@
 import { defineConfig } from '@playwright/test';
 
 // End-to-end tests drive the real app in the installed Google Chrome (no browser download).
-// They start their own API (:4100, throwaway e2e.db) and Vite (:5174), so a normal `npm run dev` can keep running.
+// They start their own API (:4100, throwaway Postgres) and Vite (:5174), so a normal `npm run dev` can keep running.
 const API = 4100;
 const WEB = 5174;
 
@@ -22,11 +22,12 @@ export default defineConfig({
   },
   webServer: [
     {
-      command: 'node tests/e2e/prepare-db.mjs && npm run dev -w server',
+      command: 'node tests/e2e/start-api.mjs',
       url: `http://localhost:${API}/api/health`,
-      env: { PORT: String(API), DATABASE_URL: 'file:./e2e.db', RATE_LIMIT: 'off', APP_URL: `http://localhost:${WEB}` },
+      env: { PORT: String(API), RATE_LIMIT: 'off', APP_URL: `http://localhost:${WEB}` },
       reuseExistingServer: false,
       timeout: 120_000,
+      gracefulShutdown: { signal: 'SIGTERM', timeout: 10_000 },
     },
     {
       command: `npm run dev -w client -- --port ${WEB} --strictPort`,

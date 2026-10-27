@@ -31,7 +31,7 @@ test('demo: log a workout with a PR, add food and cardio, switch units', async (
     await dialog.getByRole('textbox', { name: 'Food name' }).fill('Test burrito');
     await dialog.getByRole('textbox', { name: 'kcal' }).fill('650');
     await dialog.getByRole('button', { name: 'Add food' }).click();
-    await expect(page.getByText('Test burrito')).toBeVisible();
+    await expect(page.getByText('Test burrito', { exact: true })).toBeVisible();
   });
 
   await test.step('log cardio', async () => {

@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { motion } from 'motion/react';
 import { ArrowRight, Camera, ChartLine, Dumbbell, Scale } from 'lucide-react';
 import { api, type User } from '../lib/api';
@@ -20,6 +20,12 @@ export default function Auth({ mode }: { mode: 'login' | 'register' }) {
   const navigate = useNavigate();
   const qc = useQueryClient();
   const [form, setForm] = useState({ name: '', email: '', password: '' });
+  const { data: demo } = useQuery({
+    queryKey: ['demo'],
+    queryFn: () => api.get<{ available: boolean }>('/auth/demo'),
+    enabled: isLogin,
+    staleTime: Infinity,
+  });
 
   const submit = useMutation({
     mutationFn: (body: typeof form) => api.post<User>(isLogin ? '/auth/login' : '/auth/register', body),
@@ -149,7 +155,7 @@ export default function Auth({ mode }: { mode: 'login' | 'register' }) {
             </Button>
           </form>
 
-          {isLogin && (
+          {isLogin && demo?.available && (
             <Button
               variant="secondary"
               size="lg"

@@ -107,3 +107,12 @@ describe('export and delete', () => {
     expect((await agent.delete('/api/auth/me').send({ password: 'demo1234' })).status).toBe(403);
   });
 });
+
+describe('demo availability', () => {
+  it('reports whether the demo account exists', async () => {
+    await prisma.user.deleteMany({ where: { email: DEMO_EMAIL } });
+    expect((await request(app).get('/api/auth/demo')).body).toEqual({ available: false });
+    await request(app).post('/api/auth/register').send({ email: DEMO_EMAIL, password: 'demo1234', name: 'Demo' });
+    expect((await request(app).get('/api/auth/demo')).body).toEqual({ available: true });
+  });
+});

@@ -7,9 +7,13 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// Postgres everywhere: Supabase in production, a local embedded Postgres in dev/tests (scripts/postgres.mjs).
+// DATABASE_URL is the pooled connection (Supabase: port 6543, ?pgbouncer=true); DIRECT_URL is the direct one
+// (port 5432) used by migrations. Locally they're the same.
 datasource db {
-  provider = "sqlite" // switch to "postgresql" when deploying
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {

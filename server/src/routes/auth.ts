@@ -193,6 +193,11 @@ authRouter.delete('/me', requireAuth, async (req, res) => {
   res.status(204).end();
 });
 
+/** Whether the shared demo account exists (it's only seeded in dev, or in production with SEED_DEMO=1). */
+authRouter.get('/demo', async (_req, res) => {
+  res.json({ available: (await prisma.user.count({ where: { email: DEMO_EMAIL } })) > 0 });
+});
+
 authRouter.post('/logout', (_req, res) => {
   clearAuthCookie(res);
   res.status(204).end();

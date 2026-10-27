@@ -6,6 +6,7 @@ export default defineConfig({
     include: ['test/**/*.test.ts'],
     env: TEST_ENV,
     globalSetup: ['test/global-setup.ts'],
+    setupFiles: ['test/setup-env.ts'],
     // One database shared by every file, so run files one at a time.
     fileParallelism: false,
   },
