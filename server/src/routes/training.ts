@@ -100,6 +100,39 @@ trainingRouter.get('/exercises/:id', async (req, res) => {
   });
 });
 
+async function ownCustomExercise(userId: string, id: string) {
+  const e = await prisma.exercise.findFirst({ where: { id, userId } });
+  if (!e) throw new HttpError(404, 'Custom exercise not found');
+  return e;
+}
+
+trainingRouter.patch('/exercises/:id', async (req, res) => {
+  const body = z
+    .object({
+      name: z.string().trim().min(2).max(60),
+      muscleGroup: z.enum(MUSCLES),
+      equipment: z.enum(EQUIPMENT),
+    })
+    .partial()
+    .parse(req.body);
+  await ownCustomExercise(req.userId, param(req, 'id'));
+  const e = await prisma.exercise.update({ where: { id: param(req, 'id') }, data: body });
+  res.json({ ...e, isCustom: true });
+});
+
+/** Deleting would cascade into workout history, so only unused custom exercises can go. */
+trainingRouter.delete('/exercises/:id', async (req, res) => {
+  const id = param(req, 'id');
+  await ownCustomExercise(req.userId, id);
+  const used = await prisma.workoutExercise.count({ where: { exerciseId: id } });
+  if (used) throw new HttpError(409, `Used in ${used} workout${used === 1 ? '' : 's'}. Rename it instead, or delete those workouts first.`);
+  await prisma.$transaction([
+    prisma.routineExercise.deleteMany({ where: { exerciseId: id } }),
+    prisma.exercise.delete({ where: { id } }),
+  ]);
+  res.status(204).end();
+});
+
 /** The most recent sets logged for an exercise, shown as "previous" while logging. */
 trainingRouter.get('/exercises/:id/last', async (req, res) => {
   const last = await prisma.workoutExercise.findFirst({
@@ -191,6 +224,31 @@ trainingRouter.post('/workouts', async (req, res) => {
   res.status(201).json({ id: w.id });
 });
 
+trainingRouter.put('/workouts/:id', async (req, res) => {
+  const id = param(req, 'id');
+  const body = workoutInput.parse(req.body);
+  const existing = await prisma.workout.findFirst({ where: { id, userId: req.userId } });
+  if (!existing) throw new HttpError(404, 'Workout not found');
+  await assertExercisesVisible(req.userId, body.exercises.map((e) => e.exerciseId));
+  // Replace the whole exercise/set tree; simpler and safer than diffing.
+  await prisma.$transaction([
+    prisma.workoutExercise.deleteMany({ where: { workoutId: id } }),
+    prisma.workout.update({
+      where: { id },
+      data: {
+        name: body.name,
+        date: body.date,
+        startedAt: body.startedAt,
+        endedAt: body.endedAt ?? existing.endedAt,
+        notes: body.notes ?? null,
+        calories: body.calories ?? existing.calories,
+        exercises: nestedExercises(body.exercises),
+      },
+    }),
+  ]);
+  res.json({ id });
+});
+
 trainingRouter.delete('/workouts/:id', async (req, res) => {
   const { count } = await prisma.workout.deleteMany({ where: { id: param(req, 'id'), userId: req.userId } });
   if (!count) throw new HttpError(404, 'Workout not found');
@@ -252,6 +310,23 @@ trainingRouter.post('/routines', async (req, res) => {
     include: routineInclude,
   });
   res.status(201).json(shapeRoutine(r));
+});
+
+trainingRouter.put('/routines/:id', async (req, res) => {
+  const id = param(req, 'id');
+  const body = routineInput.parse(req.body);
+  const existing = await prisma.routine.findFirst({ where: { id, userId: req.userId } });
+  if (!existing) throw new HttpError(404, 'Routine not found');
+  await assertExercisesVisible(req.userId, body.exercises.map((e) => e.exerciseId));
+  const [, r] = await prisma.$transaction([
+    prisma.routineExercise.deleteMany({ where: { routineId: id } }),
+    prisma.routine.update({
+      where: { id },
+      data: { name: body.name, exercises: { create: body.exercises.map((e, i) => ({ ...e, order: i })) } },
+      include: routineInclude,
+    }),
+  ]);
+  res.json(shapeRoutine(r));
 });
 
 trainingRouter.delete('/routines/:id', async (req, res) => {

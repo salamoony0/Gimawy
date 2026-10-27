@@ -5,10 +5,10 @@ import { AnimatePresence, motion } from 'motion/react';
 import { clsx } from 'clsx';
 import { Check, ChevronRight, Clock, Dumbbell, Minus, MoreHorizontal, Plus, Timer, Trash, X } from 'lucide-react';
 import { api, type Routine } from '../lib/api';
-import { localDay, MUSCLE_LABEL, useMe, useUnits } from '../lib/format';
+import { localDay, MUSCLE_LABEL, parseDay, useMe, useUnits } from '../lib/format';
 import { bodyWeightFor, estimateStrength } from '../lib/energy';
 import { newSet, uid, useActiveWorkout, workoutStore, type ActiveWorkout, type DraftExercise } from '../lib/activeWorkout';
-import { Button, EmptyState, IconButton, Input, Sheet, useToast } from '../components/ui';
+import { Badge, Button, EmptyState, IconButton, Input, Sheet, useToast } from '../components/ui';
 import { ExercisePicker } from '../components/ExercisePicker';
 
 function defaultName() {
@@ -123,6 +123,7 @@ function Logger({ workout }: { workout: ActiveWorkout }) {
     0,
   );
 
+  const editing = Boolean(workout.editingId);
   const minutesSoFar = () => (Date.now() - new Date(workout.startedAt).getTime()) / 60000;
   const finish = useMutation({
     mutationFn: async () => {
@@ -134,6 +135,15 @@ function Logger({ workout }: { workout: ActiveWorkout }) {
             .map((s) => ({ reps: Number(s.reps) || 0, weightKg: u.toKg(Number(s.weight) || 0), isWarmup: s.isWarmup })),
         }))
         .filter((e) => e.sets.length);
+      if (workout.editingId) {
+        return api.put<{ id: string }>(`/workouts/${workout.editingId}`, {
+          name: workout.name.trim() || defaultName(),
+          date: localDay(new Date(workout.startedAt)),
+          startedAt: workout.startedAt,
+          endedAt: workout.endedAt ?? null,
+          exercises,
+        });
+      }
       const res = await api.post<{ id: string }>('/workouts', {
         name: workout.name.trim() || defaultName(),
         date: localDay(new Date(workout.startedAt)),
@@ -158,7 +168,7 @@ function Logger({ workout }: { workout: ActiveWorkout }) {
     },
     onSuccess: ({ id }) => {
       workoutStore.discard();
-      toast('Workout saved. Nice work!');
+      toast(editing ? 'Workout updated' : 'Workout saved. Nice work!');
       navigate(`/train/workouts/${id}`, { replace: true });
     },
     onError: (e) => toast(e.message, 'error'),
@@ -184,10 +194,36 @@ function Logger({ workout }: { workout: ActiveWorkout }) {
               className="w-full truncate bg-transparent font-display text-2xl font-bold uppercase tracking-wide outline-none focus:text-brand sm:text-3xl"
             />
             <p className="num flex items-center gap-3 text-sm text-muted">
-              <span className="flex items-center gap-1">
-                <Clock className="size-3.5" aria-hidden />
-                <ElapsedClock since={workout.startedAt} />
-              </span>
+              {editing ? (
+                <span className="flex items-center gap-2">
+                  <Badge tone="pr">Editing</Badge>
+                  <label className="sr-only" htmlFor="wdate">
+                    Workout date
+                  </label>
+                  <input
+                    id="wdate"
+                    type="date"
+                    max={localDay()}
+                    value={localDay(new Date(workout.startedAt))}
+                    onChange={(e) => {
+                      if (!e.target.value) return;
+                      // Move start and end together so the duration is preserved.
+                      const shift = parseDay(e.target.value).getTime() - parseDay(localDay(new Date(workout.startedAt))).getTime();
+                      set((w) => ({
+                        ...w,
+                        startedAt: new Date(new Date(w.startedAt).getTime() + shift).toISOString(),
+                        endedAt: w.endedAt ? new Date(new Date(w.endedAt).getTime() + shift).toISOString() : w.endedAt,
+                      }));
+                    }}
+                    className="rounded-lg border border-line-strong bg-surface-2 px-2 py-1 text-sm text-fg"
+                  />
+                </span>
+              ) : (
+                <span className="flex items-center gap-1">
+                  <Clock className="size-3.5" aria-hidden />
+                  <ElapsedClock since={workout.startedAt} />
+                </span>
+              )}
               <span>{doneSets.length} sets</span>
               <span>
                 {Math.round(doneVolume).toLocaleString()} {u.w}
@@ -197,8 +233,8 @@ function Logger({ workout }: { workout: ActiveWorkout }) {
           <IconButton label="Discard workout" onClick={() => setConfirmDiscard(true)}>
             <Trash className="size-5" />
           </IconButton>
-          <Button onClick={() => setConfirmFinish(true)} disabled={!doneSets.length}>
-            Finish
+          <Button onClick={() => (editing ? finish.mutate() : setConfirmFinish(true))} loading={editing && finish.isPending} disabled={!doneSets.length}>
+            {editing ? 'Save' : 'Finish'}
           </Button>
         </div>
       </div>
@@ -211,7 +247,7 @@ function Logger({ workout }: { workout: ActiveWorkout }) {
               ex={ex}
               onChange={(fn) => updateExercise(ex.key, fn)}
               onRemove={() => set((w) => ({ ...w, exercises: w.exercises.filter((e) => e.key !== ex.key) }))}
-              onSetDone={() => set((w) => ({ ...w, restEndsAt: Date.now() + w.restSeconds * 1000 }))}
+              onSetDone={() => !editing && set((w) => ({ ...w, restEndsAt: Date.now() + w.restSeconds * 1000 }))}
             />
           </motion.div>
         ))}
@@ -283,7 +319,7 @@ function Logger({ workout }: { workout: ActiveWorkout }) {
       <Sheet
         open={confirmDiscard}
         onClose={() => setConfirmDiscard(false)}
-        title="Discard workout?"
+        title={editing ? 'Discard changes?' : 'Discard workout?'}
         footer={
           <div className="flex gap-2">
             <Button variant="secondary" className="flex-1" onClick={() => setConfirmDiscard(false)}>
@@ -293,8 +329,9 @@ function Logger({ workout }: { workout: ActiveWorkout }) {
               variant="danger"
               className="flex-1"
               onClick={() => {
+                const id = workout.editingId;
                 workoutStore.discard();
-                navigate('/train');
+                navigate(id ? `/train/workouts/${id}` : '/train');
               }}
             >
               Discard
@@ -302,7 +339,7 @@ function Logger({ workout }: { workout: ActiveWorkout }) {
           </div>
         }
       >
-        <p className="text-muted">All sets logged in this session will be lost.</p>
+        <p className="text-muted">{editing ? 'The saved workout stays as it was.' : 'All sets logged in this session will be lost.'}</p>
       </Sheet>
     </div>
   );

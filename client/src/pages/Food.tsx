@@ -53,6 +53,7 @@ export default function Food() {
   const [date, setDate] = useState(localDay());
   const [scanOpen, setScanOpen] = useState(params.get('scan') === '1');
   const [manualMeal, setManualMeal] = useState<Meal | null>(null);
+  const [editing, setEditing] = useState<FoodEntry | null>(null);
   const { data: me } = useMe();
   const toast = useToast();
 
@@ -139,7 +140,12 @@ export default function Food() {
                             exit={{ opacity: 0, height: 0 }}
                             className="group flex items-center gap-3 border-t border-line/60 px-4 py-2.5"
                           >
-                            <span className="min-w-0 flex-1">
+                            <button
+                              type="button"
+                              onClick={() => setEditing(it)}
+                              aria-label={`Edit ${it.name}`}
+                              className="min-w-0 flex-1 cursor-pointer text-left"
+                            >
                               <span className="flex items-center gap-2">
                                 <span className="truncate font-medium">{it.name}</span>
                                 {it.source !== 'manual' && (
@@ -153,7 +159,7 @@ export default function Food() {
                                 <span className="text-protein">P {Math.round(it.protein)}</span> ·{' '}
                                 <span className="text-carbs">C {Math.round(it.carbs)}</span> · <span className="text-fat">F {Math.round(it.fat)}</span>
                               </span>
-                            </span>
+                            </button>
                             <span className="num font-semibold">{fmtInt(it.calories)}</span>
                             <IconButton label={`Remove ${it.name}`} onClick={() => del.mutate(it.id)} className="-mr-2 size-9 opacity-50 group-hover:opacity-100">
                               <Trash className="size-4" />
@@ -184,6 +190,7 @@ export default function Food() {
 
       <ScanSheet open={scanOpen} onClose={() => setScanOpen(false)} date={date} />
       <ManualSheet meal={manualMeal} onClose={() => setManualMeal(null)} date={date} />
+      <EditFoodSheet entry={editing} onClose={() => setEditing(null)} />
     </>
   );
 }
@@ -668,6 +675,65 @@ function ManualSheet({ meal, onClose, date }: { meal: Meal | null; onClose: () =
       <ul>
         <ItemEditor item={item} onChange={setItem} onRemove={() => setItem({ name: '', quantity: '', calories: '', protein: '', carbs: '', fat: '' })} />
       </ul>
+    </Sheet>
+  );
+}
+
+// ---------- Edit entry ----------
+
+function EditFoodSheet({ entry, onClose }: { entry: FoodEntry | null; onClose: () => void }) {
+  const toast = useToast();
+  const [item, setItem] = useState<DraftItem | null>(null);
+  const [meal, setMeal] = useState<Meal>('breakfast');
+  const [loadedId, setLoadedId] = useState<string | null>(null);
+
+  // Load the entry into the form whenever a different one is opened.
+  if (entry && entry.id !== loadedId) {
+    setLoadedId(entry.id);
+    setItem(toDraft(entry));
+    setMeal(entry.meal);
+  }
+
+  const save = useMutation({
+    mutationFn: () => api.patch(`/food/${entry!.id}`, { ...fromDraft(item!), meal }),
+    onSuccess: () => {
+      toast('Entry updated');
+      setLoadedId(null);
+      onClose();
+    },
+    onError: (e) => toast(e.message, 'error'),
+  });
+
+  return (
+    <Sheet
+      open={entry !== null}
+      onClose={() => {
+        setLoadedId(null);
+        onClose();
+      }}
+      title="Edit food"
+      footer={
+        <Button className="w-full" size="lg" disabled={!item?.name.trim()} loading={save.isPending} onClick={() => save.mutate()}>
+          Save changes
+        </Button>
+      }
+    >
+      {item && (
+        <div className="flex flex-col gap-4">
+          {entry && entry.source !== 'manual' && (
+            <p className="flex items-center gap-2 text-xs text-muted">
+              <Sparkles className="size-3.5 text-brand" aria-hidden /> Logged with {SOURCE_LABEL[entry.source]}
+            </p>
+          )}
+          <ul>
+            <ItemEditor item={item} onChange={setItem} onRemove={() => setItem({ ...item, name: '' })} />
+          </ul>
+          <div>
+            <p className="mb-1.5 text-sm font-medium text-muted">Meal</p>
+            <Segmented label="Meal" value={meal} onChange={setMeal} options={MEALS.map((m) => ({ value: m.value, label: m.label }))} />
+          </div>
+        </div>
+      )}
     </Sheet>
   );
 }
