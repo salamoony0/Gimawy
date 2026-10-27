@@ -13,6 +13,7 @@ import {
   Footprints,
   HeartPulse,
   Mountain,
+  Pencil,
   Play,
   Plus,
   Search,
@@ -28,6 +29,7 @@ import { PageHeader } from '../components/Layout';
 import { Badge, Button, buttonClass, EmptyState, Field, IconButton, Input, Segmented, Select, Sheet, Skeleton, useToast } from '../components/ui';
 import { axisProps, ChartTooltip, gridProps } from '../components/viz';
 import { useExercises } from '../components/ExercisePicker';
+import { RoutineEditor } from '../components/RoutineEditor';
 
 type Tab = 'strength' | 'cardio' | 'exercises';
 
@@ -74,6 +76,7 @@ function Strength() {
     mutationFn: (id: string) => api.del(`/routines/${id}`),
     onSuccess: () => toast('Routine deleted'),
   });
+  const [routineEdit, setRoutineEdit] = useState<{ routine: Routine | null } | null>(null);
 
   const months = useMemo(() => {
     const groups = new Map<string, WorkoutSummary[]>();
@@ -98,7 +101,12 @@ function Strength() {
       </Link>
 
       <section>
-        <h2 className="mb-3 font-display text-xl font-semibold tracking-wide">Routines</h2>
+        <div className="mb-3 flex items-center justify-between">
+          <h2 className="font-display text-xl font-semibold tracking-wide">Routines</h2>
+          <Button variant="ghost" size="sm" icon={<Plus className="size-4" aria-hidden />} onClick={() => setRoutineEdit({ routine: null })}>
+            New routine
+          </Button>
+        </div>
         {routines?.length ? (
           <div className="-mx-4 flex snap-x gap-3 overflow-x-auto px-4 pb-1 scrollbar-none sm:mx-0 sm:grid sm:grid-cols-2 sm:px-0 lg:grid-cols-4">
             {routines.map((r, i) => (
@@ -111,9 +119,14 @@ function Strength() {
               >
                 <div className="flex items-start justify-between gap-2">
                   <h3 className="font-display text-xl font-semibold tracking-wide">{r.name}</h3>
-                  <IconButton label={`Delete routine ${r.name}`} className="-mr-2 -mt-2 size-9" onClick={() => del.mutate(r.id)}>
-                    <Trash className="size-4" />
-                  </IconButton>
+                  <div className="-mr-2 -mt-2 flex">
+                    <IconButton label={`Edit routine ${r.name}`} className="size-9" onClick={() => setRoutineEdit({ routine: r })}>
+                      <Pencil className="size-4" />
+                    </IconButton>
+                    <IconButton label={`Delete routine ${r.name}`} className="size-9" onClick={() => del.mutate(r.id)}>
+                      <Trash className="size-4" />
+                    </IconButton>
+                  </div>
                 </div>
                 <ul className="mt-1 flex-1 text-sm text-muted">
                   {r.exercises.slice(0, 4).map((e) => (
@@ -130,8 +143,9 @@ function Strength() {
             ))}
           </div>
         ) : (
-          <p className="text-sm text-muted">Finish a workout and tick “Save as routine” to build your split.</p>
+          <p className="text-sm text-muted">Create one here, or finish a workout and tick “Save as routine”.</p>
         )}
+        <RoutineEditor open={routineEdit !== null} routine={routineEdit?.routine ?? null} onClose={() => setRoutineEdit(null)} />
       </section>
 
       <section>
@@ -233,6 +247,7 @@ function Cardio() {
   const u = useUnits();
   const toast = useToast();
   const [open, setOpen] = useState(false);
+  const [editing, setEditing] = useState<CardioSession | null>(null);
   const { data: sessions } = useQuery({ queryKey: ['cardio'], queryFn: () => api.get<CardioSession[]>('/cardio') });
   const del = useMutation({ mutationFn: (id: string) => api.del(`/cardio/${id}`), onSuccess: () => toast('Session deleted') });
 
@@ -365,7 +380,7 @@ function Cardio() {
                   >
                     <Icon className="size-5" aria-hidden />
                   </span>
-                  <span className="min-w-0 flex-1">
+                  <button type="button" onClick={() => setEditing(s)} aria-label={`Edit ${meta.label} on ${s.date}`} className="min-w-0 flex-1 cursor-pointer text-left">
                     <span className="block font-semibold">
                       {meta.label}
                       <span className="font-normal text-muted"> · {relativeDay(s.date)}</span>
@@ -401,7 +416,7 @@ function Cardio() {
                         </span>
                       ) : null}
                     </span>
-                  </span>
+                  </button>
                   <IconButton label="Delete session" onClick={() => del.mutate(s.id)} className="opacity-60 group-hover:opacity-100">
                     <Trash className="size-4" />
                   </IconButton>
@@ -413,6 +428,7 @@ function Cardio() {
       </section>
 
       <CardioSheet open={open} onClose={() => setOpen(false)} />
+      <CardioSheet open={editing !== null} initial={editing} onClose={() => setEditing(null)} />
     </div>
   );
 }
@@ -431,12 +447,35 @@ function MiniStat({ label, value, unit }: { label: string; value: React.ReactNod
 
 const TREADMILL_TYPES: CardioType[] = ['incline', 'walk', 'run'];
 
-function CardioSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
+function CardioSheet({ open, onClose, initial }: { open: boolean; onClose: () => void; initial?: CardioSession | null }) {
   const u = useUnits();
   const toast = useToast();
   const { data: me } = useMe();
   const blank = { type: 'run' as CardioType, date: localDay(), duration: '', distance: '', calories: '', hr: '', incline: '', speed: '' };
+  const fromSession = (c: CardioSession) => ({
+    type: c.type,
+    date: c.date,
+    duration: String(c.durationMin),
+    distance: c.distanceKm ? String(u.dist(c.distanceKm, 2)) : '',
+    calories: c.calories ? String(c.calories) : '',
+    hr: c.avgHeartRate ? String(c.avgHeartRate) : '',
+    incline: c.inclinePct != null ? String(c.inclinePct) : '',
+    speed: c.speedKmh ? String(u.dist(c.speedKmh)) : '',
+  });
   const [f, setF] = useState(blank);
+  const [loadedId, setLoadedId] = useState<string | null>(null);
+  // Prefill when a different session is opened for editing.
+  if (open && initial && initial.id !== loadedId) {
+    setLoadedId(initial.id);
+    setF(fromSession(initial));
+  }
+  const close = () => {
+    if (initial) {
+      setLoadedId(null);
+      setF(blank);
+    }
+    onClose();
+  };
   const set = (patch: Partial<typeof blank>) => setF((x) => ({ ...x, ...patch }));
 
   const treadmill = TREADMILL_TYPES.includes(f.type);
@@ -458,7 +497,7 @@ function CardioSheet({ open, onClose }: { open: boolean; onClose: () => void }) 
 
   const save = useMutation({
     mutationFn: () =>
-      api.post('/cardio', {
+      (initial ? (body: unknown) => api.patch(`/cardio/${initial.id}`, body) : (body: unknown) => api.post('/cardio', body))({
         type: f.type,
         date: f.date,
         durationMin: duration,
@@ -469,8 +508,9 @@ function CardioSheet({ open, onClose }: { open: boolean; onClose: () => void }) 
         speedKmh: speedKmh ? Math.round(speedKmh * 10) / 10 : null,
       }),
     onSuccess: () => {
-      toast('Cardio logged');
+      toast(initial ? 'Session updated' : 'Cardio logged');
       setF(blank);
+      setLoadedId(null);
       onClose();
     },
     onError: (e) => toast(e.message, 'error'),
@@ -482,11 +522,11 @@ function CardioSheet({ open, onClose }: { open: boolean; onClose: () => void }) 
   return (
     <Sheet
       open={open}
-      onClose={onClose}
-      title="Log cardio"
+      onClose={close}
+      title={initial ? 'Edit cardio' : 'Log cardio'}
       footer={
         <Button className="w-full" size="lg" disabled={!valid} loading={save.isPending} onClick={() => save.mutate()}>
-          Save session
+          {initial ? 'Save changes' : 'Save session'}
         </Button>
       }
     >

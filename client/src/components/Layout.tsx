@@ -87,7 +87,7 @@ export function Layout() {
               </span>
               <span className="flex-1 truncate text-sm font-semibold">{active.name}</span>
               <span className="text-sm text-brand">
-                <Elapsed since={active.startedAt} />
+                {active.editingId ? null : <Elapsed since={active.startedAt} />}
               </span>
             </Link>
           )}
@@ -142,9 +142,9 @@ export function Layout() {
                 className="glow flex min-h-12 items-center gap-3 rounded-2xl border border-brand/40 px-4 shadow-lg shadow-black/60"
               >
                 <Timer className="size-4 text-brand" aria-hidden />
-                <span className="flex-1 truncate text-sm font-semibold">{active.name} in progress</span>
+                <span className="flex-1 truncate text-sm font-semibold">{active.editingId ? `Editing ${active.name}` : `${active.name} in progress`}</span>
                 <span className="text-sm font-semibold text-brand">
-                  <Elapsed since={active.startedAt} />
+                  {active.editingId ? null : <Elapsed since={active.startedAt} />}
                 </span>
               </Link>
             </motion.div>

@@ -3,10 +3,11 @@ import { Link, useNavigate, useParams } from 'react-router';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { motion } from 'motion/react';
 import { clsx } from 'clsx';
-import { ChevronLeft, Clock, Dumbbell, Flame, Layers, Trash, Trophy, TrendingDown, TrendingUp } from 'lucide-react';
+import { ChevronLeft, Clock, Dumbbell, Flame, Pencil, Layers, Trash, Trophy, TrendingDown, TrendingUp } from 'lucide-react';
 import { api, type WorkoutDetail as Detail } from '../lib/api';
 import { fmtDay, fmtDuration, fmtInt, MUSCLE_LABEL, pctChange, useUnits } from '../lib/format';
 import { Badge, Button, IconButton, Sheet, Skeleton, useToast } from '../components/ui';
+import { uid, useActiveWorkout, workoutStore } from '../lib/activeWorkout';
 
 const MUSCLE_COLORS: Record<string, string> = {
   chest: '#4ade80',
@@ -26,9 +27,12 @@ export default function WorkoutDetail() {
   const toast = useToast();
   const u = useUnits();
   const [confirm, setConfirm] = useState(false);
+  const [replaceActive, setReplaceActive] = useState(false);
+  const active = useActiveWorkout();
   const { data: w, error } = useQuery({ queryKey: ['workout', id], queryFn: () => api.get<Detail>(`/workouts/${id}`) });
   const del = useMutation({
     mutationFn: () => api.del(`/workouts/${id}`),
+    meta: { removes: ['workout', id] },
     onSuccess: () => {
       toast('Workout deleted');
       navigate('/train', { replace: true });
@@ -37,6 +41,24 @@ export default function WorkoutDetail() {
 
   if (error) return <p className="text-muted">Workout not found.</p>;
   if (!w) return <Skeleton className="h-96" />;
+
+  const edit = () => {
+    workoutStore.startEdit({
+      id: w.id,
+      name: w.name,
+      startedAt: w.startedAt,
+      endedAt: w.endedAt ?? undefined,
+      exercises: w.exercises.map((e) => ({
+        key: uid(),
+        exerciseId: e.exerciseId,
+        name: e.name,
+        muscleGroup: e.muscleGroup,
+        sets: e.sets.map((s) => ({ key: uid(), weight: String(u.weight(s.weightKg)), reps: String(s.reps), done: true, isWarmup: s.isWarmup })),
+      })),
+    });
+    navigate('/train/log');
+  };
+  const requestEdit = () => (active && active.editingId !== w.id ? setReplaceActive(true) : active ? navigate('/train/log') : edit());
 
   const muscleSets = new Map<string, number>();
   for (const e of w.exercises) muscleSets.set(e.muscleGroup, (muscleSets.get(e.muscleGroup) ?? 0) + e.sets.filter((s) => !s.isWarmup).length);
@@ -48,9 +70,14 @@ export default function WorkoutDetail() {
         <Link to="/train" className="-ml-2 flex min-h-11 items-center gap-1 rounded-xl px-2 text-sm font-semibold text-muted hover:text-fg">
           <ChevronLeft className="size-4" aria-hidden /> Train
         </Link>
-        <IconButton label="Delete workout" onClick={() => setConfirm(true)}>
-          <Trash className="size-5" />
-        </IconButton>
+        <div className="flex items-center gap-1">
+          <Button variant="secondary" size="sm" icon={<Pencil className="size-4" aria-hidden />} onClick={requestEdit}>
+            Edit
+          </Button>
+          <IconButton label="Delete workout" onClick={() => setConfirm(true)}>
+            <Trash className="size-5" />
+          </IconButton>
+        </div>
       </div>
 
       <header>
@@ -167,6 +194,24 @@ export default function WorkoutDetail() {
           </motion.section>
         );
       })}
+
+      <Sheet
+        open={replaceActive}
+        onClose={() => setReplaceActive(false)}
+        title="Replace current workout?"
+        footer={
+          <div className="flex gap-2">
+            <Button variant="secondary" className="flex-1" onClick={() => navigate('/train/log')}>
+              Go to it
+            </Button>
+            <Button variant="danger" className="flex-1" onClick={edit}>
+              Discard & edit
+            </Button>
+          </div>
+        }
+      >
+        <p className="text-muted">You have “{active?.name}” open in the logger. Editing this workout will discard it.</p>
+      </Sheet>
 
       <Sheet
         open={confirm}

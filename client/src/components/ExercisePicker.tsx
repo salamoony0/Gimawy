@@ -6,8 +6,8 @@ import { api, type Exercise } from '../lib/api';
 import { MUSCLE_LABEL } from '../lib/format';
 import { Badge, Button, Field, Input, Select, Sheet, Spinner } from './ui';
 
-const MUSCLES = Object.keys(MUSCLE_LABEL);
-const EQUIPMENT = ['barbell', 'dumbbell', 'machine', 'cable', 'bodyweight', 'kettlebell', 'other'];
+export const MUSCLES = Object.keys(MUSCLE_LABEL);
+export const EQUIPMENT = ['barbell', 'dumbbell', 'machine', 'cable', 'bodyweight', 'kettlebell', 'other'];
 
 export function useExercises() {
   return useQuery({ queryKey: ['exercises'], queryFn: () => api.get<Exercise[]>('/exercises'), staleTime: 5 * 60_000 });

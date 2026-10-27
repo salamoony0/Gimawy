@@ -3,7 +3,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { motion } from 'motion/react';
 import { clsx } from 'clsx';
 import { CartesianGrid, ComposedChart, Area, Line, ReferenceLine, ResponsiveContainer, Scatter, Tooltip, XAxis, YAxis } from 'recharts';
-import { CalendarClock, Dumbbell, HeartPulse, Minus, Plus, Scale, Target, Trash } from 'lucide-react';
+import { CalendarClock, Dumbbell, HeartPulse, Minus, Pencil, Plus, Scale, Target, Trash } from 'lucide-react';
 import { api, type BodyWeight, type Goal } from '../lib/api';
 import { fmtDay, localDay, parseDay, relativeDay, shiftDay, useMe, useUnits } from '../lib/format';
 import { PageHeader } from '../components/Layout';
@@ -26,6 +26,7 @@ export default function Body() {
   const toast = useToast();
   const [range, setRange] = useState<'30' | '90' | 'all'>('90');
   const [goalOpen, setGoalOpen] = useState(false);
+  const [editGoal, setEditGoal] = useState<Goal | null>(null);
   const today = localDay();
   const { data: entries } = useQuery({ queryKey: ['body'], queryFn: () => api.get<BodyWeight[]>('/body') });
   const { data: goals } = useQuery({ queryKey: ['goals', today], queryFn: () => api.get<Goal[]>(`/goals?today=${today}`) });
@@ -163,7 +164,7 @@ export default function Body() {
           ) : (
             <ul className="grid gap-3 sm:grid-cols-2">
               {goals.map((g, i) => (
-                <GoalCard key={g.id} goal={g} index={i} onDelete={() => delGoal.mutate(g.id)} />
+                <GoalCard key={g.id} goal={g} index={i} onEdit={() => setEditGoal(g)} onDelete={() => delGoal.mutate(g.id)} />
               ))}
             </ul>
           )}
@@ -199,6 +200,7 @@ export default function Body() {
       </div>
 
       <GoalSheet open={goalOpen} onClose={() => setGoalOpen(false)} />
+      <GoalSheet open={editGoal !== null} initial={editGoal} onClose={() => setEditGoal(null)} />
     </>
   );
 }
@@ -267,7 +269,7 @@ function Tile({ label, value, unit, sub, tone }: { label: string; value: React.R
 
 const GOAL_ICON = { weight: Scale, lift: Dumbbell, cardio: HeartPulse };
 
-function GoalCard({ goal: g, index, onDelete }: { goal: Goal; index: number; onDelete: () => void }) {
+function GoalCard({ goal: g, index, onEdit, onDelete }: { goal: Goal; index: number; onEdit: () => void; onDelete: () => void }) {
   const u = useUnits();
   const Icon = GOAL_ICON[g.type];
   const fmt = (v: number | null) => (v == null ? '—' : g.type === 'cardio' ? `${Math.round(v)} min` : `${u.weight(v)} ${u.w}`);
@@ -291,9 +293,14 @@ function GoalCard({ goal: g, index, onDelete }: { goal: Goal; index: number; onD
             {daysLeft != null && ` · ${daysLeft >= 0 ? `${daysLeft} days left` : 'past deadline'}`}
           </p>
         </div>
-        <IconButton label={`Delete goal ${g.title}`} onClick={onDelete} className="-mr-2 -mt-2 size-9 opacity-50 group-hover:opacity-100">
-          <Trash className="size-4" />
-        </IconButton>
+        <div className="-mr-2 -mt-2 flex opacity-60 group-hover:opacity-100">
+          <IconButton label={`Edit goal ${g.title}`} onClick={onEdit} className="size-9">
+            <Pencil className="size-4" />
+          </IconButton>
+          <IconButton label={`Delete goal ${g.title}`} onClick={onDelete} className="size-9">
+            <Trash className="size-4" />
+          </IconButton>
+        </div>
       </div>
       <div className="mt-4 flex items-baseline justify-between">
         <span className="num font-display text-3xl font-semibold">{Math.round(g.progress * 100)}%</span>
@@ -306,7 +313,7 @@ function GoalCard({ goal: g, index, onDelete }: { goal: Goal; index: number; onD
   );
 }
 
-function GoalSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
+function GoalSheet({ open, onClose, initial }: { open: boolean; onClose: () => void; initial?: Goal | null }) {
   const u = useUnits();
   const toast = useToast();
   const { data: exercises } = useExercises();
@@ -314,6 +321,15 @@ function GoalSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [target, setTarget] = useState('');
   const [exerciseId, setExerciseId] = useState('');
   const [deadline, setDeadline] = useState('');
+  const [loadedId, setLoadedId] = useState<string | null>(null);
+  // Prefill when opened to edit a different goal.
+  if (open && initial && initial.id !== loadedId) {
+    setLoadedId(initial.id);
+    setType(initial.type);
+    setTarget(String(initial.type === 'cardio' ? initial.targetValue : u.weight(initial.targetValue)));
+    setExerciseId(initial.exerciseId ?? '');
+    setDeadline(initial.deadline ?? '');
+  }
 
   const exerciseName = exercises?.find((e) => e.id === exerciseId)?.name;
   const title =
@@ -323,19 +339,23 @@ function GoalSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
         ? `${exerciseName ?? 'Lift'} ${target || '…'} ${u.w}`
         : `${target || '…'} min cardio / week`;
 
+  const targetValue = type === 'cardio' ? Number(target) : u.toKg(Number(target));
   const save = useMutation({
     mutationFn: () =>
-      api.post('/goals', {
-        type,
-        title,
-        exerciseId: type === 'lift' ? exerciseId : null,
-        targetValue: type === 'cardio' ? Number(target) : u.toKg(Number(target)),
-        deadline: deadline || null,
-      }),
+      initial
+        ? api.patch(`/goals/${initial.id}`, { title, targetValue, deadline: deadline || null })
+        : api.post('/goals', {
+            type,
+            title,
+            exerciseId: type === 'lift' ? exerciseId : null,
+            targetValue,
+            deadline: deadline || null,
+          }),
     onSuccess: () => {
-      toast('Goal created');
+      toast(initial ? 'Goal updated' : 'Goal created');
       setTarget('');
       setDeadline('');
+      setLoadedId(null);
       onClose();
     },
     onError: (e) => toast(e.message, 'error'),
@@ -347,25 +367,27 @@ function GoalSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
     <Sheet
       open={open}
       onClose={onClose}
-      title="New goal"
+      title={initial ? 'Edit goal' : 'New goal'}
       footer={
         <Button className="w-full" size="lg" disabled={!(Number(target) > 0) || (type === 'lift' && !exerciseId)} loading={save.isPending} onClick={() => save.mutate()}>
-          Create goal
+          {initial ? 'Save goal' : 'Create goal'}
         </Button>
       }
     >
       <div className="flex flex-col gap-4">
-        <Segmented
-          label="Goal type"
-          value={type}
-          onChange={setType}
-          options={[
-            { value: 'weight', label: 'Body weight' },
-            { value: 'lift', label: 'Lift' },
-            { value: 'cardio', label: 'Cardio' },
-          ]}
-        />
-        {type === 'lift' && (
+        {!initial && (
+          <Segmented
+            label="Goal type"
+            value={type}
+            onChange={setType}
+            options={[
+              { value: 'weight', label: 'Body weight' },
+              { value: 'lift', label: 'Lift' },
+              { value: 'cardio', label: 'Cardio' },
+            ]}
+          />
+        )}
+        {type === 'lift' && !initial && (
           <Field label="Exercise" hint="Progress uses your best estimated 1-rep max.">
             {(id) => (
               <Select id={id} value={exerciseId} onChange={(e) => setExerciseId(e.target.value)}>

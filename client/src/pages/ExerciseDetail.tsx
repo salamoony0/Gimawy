@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { Area, Bar, CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import { ChevronLeft, Dumbbell, Medal, Repeat, Trophy, Weight } from 'lucide-react';
-import { api, type ExerciseHistory } from '../lib/api';
+import { ChevronLeft, Dumbbell, Medal, Pencil, Repeat, Trophy, Weight } from 'lucide-react';
+import { api, type Exercise, type ExerciseHistory } from '../lib/api';
 import { fmtCompact, fmtDay, MUSCLE_LABEL, relativeDay, useUnits } from '../lib/format';
-import { Badge, EmptyState, Segmented, Skeleton } from '../components/ui';
+import { Badge, Button, EmptyState, Field, Input, Segmented, Select, Sheet, Skeleton, useToast } from '../components/ui';
+import { EQUIPMENT, MUSCLES } from '../components/ExercisePicker';
 import { axisProps, ChartTooltip, GradientDefs, gridProps } from '../components/viz';
 
 export default function ExerciseDetail() {
@@ -13,6 +14,7 @@ export default function ExerciseDetail() {
   const navigate = useNavigate();
   const u = useUnits();
   const [metric, setMetric] = useState<'e1rm' | 'top' | 'volume'>('e1rm');
+  const [editOpen, setEditOpen] = useState(false);
   const { data, error } = useQuery({ queryKey: ['exercise', id], queryFn: () => api.get<ExerciseHistory>(`/exercises/${id}`) });
 
   if (error) return <p className="text-muted">Exercise not found.</p>;
@@ -46,8 +48,23 @@ export default function ExerciseDetail() {
           </p>
           <h1 className="mt-1 font-display text-4xl font-bold uppercase tracking-wide sm:text-5xl">{exercise.name}</h1>
         </div>
-        {exercise.isCustom && <Badge tone="muted">Custom exercise</Badge>}
+        {exercise.isCustom && (
+          <div className="flex items-center gap-2">
+            <Badge tone="muted">Custom exercise</Badge>
+            <Button variant="secondary" size="sm" icon={<Pencil className="size-4" aria-hidden />} onClick={() => setEditOpen(true)}>
+              Edit
+            </Button>
+          </div>
+        )}
       </header>
+      {exercise.isCustom && (
+        <CustomExerciseSheet
+          open={editOpen}
+          onClose={() => setEditOpen(false)}
+          exercise={exercise}
+          onDeleted={() => navigate('/train?tab=exercises', { replace: true })}
+        />
+      )}
 
       {!sessions.length ? (
         <EmptyState
@@ -227,5 +244,88 @@ function Record({
       </p>
       <p className="num truncate text-xs text-muted">{sub}</p>
     </div>
+  );
+}
+
+function CustomExerciseSheet({
+  open,
+  onClose,
+  exercise,
+  onDeleted,
+}: {
+  open: boolean;
+  onClose: () => void;
+  exercise: Pick<Exercise, 'id' | 'name' | 'muscleGroup' | 'equipment'>;
+  onDeleted: () => void;
+}) {
+  const toast = useToast();
+  const [f, setF] = useState({ name: exercise.name, muscleGroup: exercise.muscleGroup, equipment: exercise.equipment });
+  const save = useMutation({
+    mutationFn: () => api.patch(`/exercises/${exercise.id}`, { ...f, name: f.name.trim() }),
+    onSuccess: () => {
+      toast('Exercise updated');
+      onClose();
+    },
+    onError: (e) => toast(e.message, 'error'),
+  });
+  const del = useMutation({
+    mutationFn: () => api.del(`/exercises/${exercise.id}`),
+    meta: { removes: ['exercise', exercise.id] },
+    onSuccess: () => {
+      toast('Exercise deleted');
+      onClose();
+      onDeleted();
+    },
+  });
+
+  return (
+    <Sheet
+      open={open}
+      onClose={onClose}
+      title="Edit exercise"
+      footer={
+        <Button className="w-full" size="lg" disabled={f.name.trim().length < 2} loading={save.isPending} onClick={() => save.mutate()}>
+          Save changes
+        </Button>
+      }
+    >
+      <div className="flex flex-col gap-4">
+        <Field label="Name">{(id) => <Input id={id} value={f.name} onChange={(e) => setF({ ...f, name: e.target.value })} />}</Field>
+        <div className="grid grid-cols-2 gap-3">
+          <Field label="Muscle group">
+            {(id) => (
+              <Select id={id} value={f.muscleGroup} onChange={(e) => setF({ ...f, muscleGroup: e.target.value })}>
+                {MUSCLES.map((m) => (
+                  <option key={m} value={m}>
+                    {MUSCLE_LABEL[m]}
+                  </option>
+                ))}
+              </Select>
+            )}
+          </Field>
+          <Field label="Equipment">
+            {(id) => (
+              <Select id={id} value={f.equipment} onChange={(e) => setF({ ...f, equipment: e.target.value })}>
+                {EQUIPMENT.map((m) => (
+                  <option key={m} value={m}>
+                    {m[0].toUpperCase() + m.slice(1)}
+                  </option>
+                ))}
+              </Select>
+            )}
+          </Field>
+        </div>
+        <div className="mt-2 border-t border-line pt-4">
+          <Button variant="danger" className="w-full" loading={del.isPending} onClick={() => del.mutate()}>
+            Delete exercise
+          </Button>
+          {del.error && (
+            <p role="alert" className="mt-2 text-sm text-danger">
+              {del.error.message}
+            </p>
+          )}
+        </div>
+      </div>
+    </Sheet>
   );
 }

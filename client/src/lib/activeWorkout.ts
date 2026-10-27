@@ -13,6 +13,9 @@ export type ActiveWorkout = {
   exercises: DraftExercise[];
   restEndsAt: number | null;
   restSeconds: number;
+  /** Set when editing a saved workout instead of logging a new one. */
+  editingId?: string;
+  endedAt?: string;
 };
 
 const KEY = 'gymawy.activeWorkout';
@@ -48,6 +51,18 @@ export const workoutStore = {
   get: () => state,
   start(name: string, exercises: DraftExercise[] = []) {
     emit({ name, startedAt: new Date().toISOString(), exercises, restEndsAt: null, restSeconds: 120 });
+  },
+  /** Load a saved workout into the logger for editing. Sets arrive already ticked. */
+  startEdit(w: Pick<ActiveWorkout, 'name' | 'startedAt' | 'endedAt' | 'exercises'> & { id: string }) {
+    emit({
+      name: w.name,
+      startedAt: w.startedAt,
+      endedAt: w.endedAt,
+      exercises: w.exercises,
+      restEndsAt: null,
+      restSeconds: 120,
+      editingId: w.id,
+    });
   },
   update(fn: (w: ActiveWorkout) => ActiveWorkout) {
     if (state) emit(fn(state));

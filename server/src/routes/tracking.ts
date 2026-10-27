@@ -35,6 +35,13 @@ trackingRouter.post('/cardio', async (req, res) => {
   res.status(201).json(s);
 });
 
+trackingRouter.patch('/cardio/:id', async (req, res) => {
+  const body = cardioInput.partial().parse(req.body);
+  const { count } = await prisma.cardioSession.updateMany({ where: { id: param(req, 'id'), userId: req.userId }, data: body });
+  if (!count) throw new HttpError(404, 'Session not found');
+  res.json(await prisma.cardioSession.findUnique({ where: { id: param(req, 'id') } }));
+});
+
 trackingRouter.delete('/cardio/:id', async (req, res) => {
   const { count } = await prisma.cardioSession.deleteMany({ where: { id: param(req, 'id'), userId: req.userId } });
   if (!count) throw new HttpError(404, 'Session not found');
@@ -148,6 +155,20 @@ trackingRouter.post('/goals', async (req, res) => {
   res.status(201).json(goal);
 });
 
+trackingRouter.patch('/goals/:id', async (req, res) => {
+  const body = z
+    .object({
+      title: z.string().trim().min(1).max(80),
+      targetValue: z.number().positive().max(10000),
+      deadline: zDay.nullable(),
+    })
+    .partial()
+    .parse(req.body);
+  const { count } = await prisma.goal.updateMany({ where: { id: param(req, 'id'), userId: req.userId }, data: body });
+  if (!count) throw new HttpError(404, 'Goal not found');
+  res.json(await prisma.goal.findUnique({ where: { id: param(req, 'id') } }));
+});
+
 trackingRouter.delete('/goals/:id', async (req, res) => {
   const { count } = await prisma.goal.deleteMany({ where: { id: param(req, 'id'), userId: req.userId } });
   if (!count) throw new HttpError(404, 'Goal not found');
@@ -247,6 +268,16 @@ trackingRouter.post('/food', async (req, res) => {
     })),
   });
   res.status(201).json({ created: body.items.length });
+});
+
+trackingRouter.patch('/food/:id', async (req, res) => {
+  const body = foodItem
+    .partial()
+    .extend({ meal: z.enum(MEALS).optional(), date: zDay.optional() })
+    .parse(req.body);
+  const { count } = await prisma.foodEntry.updateMany({ where: { id: param(req, 'id'), userId: req.userId }, data: body });
+  if (!count) throw new HttpError(404, 'Entry not found');
+  res.json(await prisma.foodEntry.findUnique({ where: { id: param(req, 'id') } }));
 });
 
 trackingRouter.delete('/food/:id', async (req, res) => {
