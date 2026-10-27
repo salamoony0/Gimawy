@@ -16,8 +16,8 @@ The roadmap in **[PLAN.md](PLAN.md)** is implemented: all 4 phases are merged in
 1. ~~Push to GitHub~~ ✅ done: https://github.com/salamoony0/Gimawy (SSH key `~/.ssh/id_ed25519` on this Mac; `git push` works without prompts).
 2. ~~Supabase~~ ✅ done: project in `eu-west-1` (pooler URLs set on Render only, never in the repo).
 3. ~~Render~~ ✅ done: Blueprint live at https://gymawy-api.onrender.com (`/api/health` ok, migrations applied). `RESEND_API_KEY`, `MAIL_FROM`, `APP_URL` still empty.
-4. Vercel → New Project → this repo, root directory `client`. If Render's URL isn't `gymawy-api.onrender.com`, update `client/vercel.json`.
-5. Resend: get an API key (and verify a sending domain, or you can only email yourself); set `RESEND_API_KEY`, `MAIL_FROM`, `APP_URL` on Render.
+4. ~~Vercel~~ ✅ done: https://gimawy.vercel.app (project `gimawy`, root `client`, no env vars). Verified 2026-10-27: pages + deep links, `/api` rewrite, security headers, register → `Secure; HttpOnly; SameSite=Lax` cookie → `/me` → 69 library exercises → account delete.
+5. On Render set `APP_URL=https://gimawy.vercel.app`. Resend: get an API key (and verify a sending domain, or you can only email yourself); set `RESEND_API_KEY`, `MAIL_FROM`, `APP_URL` on Render.
 6. Verify on the live URL, on desktop **and iPhone Safari**: register → setup → log workout → scan meal → reload (session survives); reset email arrives; `/api/health` works through the rewrite; 11th bad login → 429.
 
 What each phase did (2026-10-27):
@@ -144,7 +144,7 @@ client/src/
 
 ## Deploying (Supabase + Render + Vercel)
 
-Configured in the repo, not yet live (needs the owner's accounts; see Status).
+Live: client https://gimawy.vercel.app, API https://gymawy-api.onrender.com, DB Supabase `eu-west-1`. Email (Resend) not configured yet.
 
 - **Supabase** (database): Project → Connect → ORMs → Prisma gives both URLs. `DATABASE_URL` = transaction pooler (`…pooler.supabase.com:6543/postgres?pgbouncer=true`), `DIRECT_URL` = session pooler (`…pooler.supabase.com:5432/postgres`); the direct `db.<ref>.supabase.co` host is IPv6-only, which Render can't reach. Free projects pause after 7 days without activity (resume from the dashboard).
 - **Render** (API, `render.yaml` Blueprint): build `npm ci --include=dev && npm run build -w server && npm run db:migrate -w server && npm run seed:library -w server` (+ demo when `SEED_DEMO=1`), start `npm start -w server`, health check `/api/health`. `JWT_SECRET` is generated. Free tier sleeps after 15 min idle, so the first request takes ~30–50 s. Migrations run on every deploy (`migrate deploy` is a no-op when up to date).
