@@ -1,4 +1,4 @@
-import { beforeAll, describe, expect, it } from 'vitest';
+import { beforeAll, describe, expect, it, vi } from 'vitest';
 import { libraryExercise, newUser, prisma, workoutBody } from './helpers.js';
 
 // User A owns one of everything; user B must not be able to read, change or delete any of it,
@@ -18,7 +18,8 @@ beforeAll(async () => {
   ids.routine = (await a.agent.post('/api/routines').send({ name: 'A day', exercises: [{ exerciseId: lib.id, targetSets: 3, targetReps: 8 }] })).body.id;
   ids.cardio = (await a.agent.post('/api/cardio').send({ type: 'run', date, durationMin: 30 })).body.id;
   await a.agent.post('/api/food').send({ date, meal: 'lunch', items: [{ name: 'Secret salad', calories: 300, protein: 10, carbs: 20, fat: 15 }] });
-  ids.food = (await a.agent.get(`/api/food?date=${date}`)).body[0].id;
+  await a.agent.post('/api/food').send({ date, meal: 'snack', source: 'barcode', items: [{ name: 'Secret bar', calories: 200, protein: 9, carbs: 20, fat: 8, barcode: '4000000000017' }] });
+  ids.food = (await a.agent.get(`/api/food?date=${date}`)).body.find((f: { name: string }) => f.name === 'Secret salad').id;
   await a.agent.put(`/api/body/${date}`).send({ weightKg: 90 });
   ids.goal = (await a.agent.post('/api/goals').send({ type: 'weight', title: 'Cut', targetValue: 80 })).body.id;
   ids.liftGoal = (await a.agent.post('/api/goals').send({ type: 'lift', title: 'Press', exerciseId: ids.exercise, targetValue: 120 })).body.id;
@@ -87,6 +88,17 @@ describe('cross-user isolation', () => {
     expect(exercises.body.some((e: { id: string }) => e.id === ids.exercise)).toBe(false);
     expect(dash.status).toBe(200);
     expect(JSON.stringify(dash.body)).not.toMatch(/Secret|Cut/);
+  });
+
+  it('B’s barcode lookups never return A’s saved products', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify({ status: 0 }), { status: 404 })));
+    try {
+      const res = await b.agent.get('/api/food/barcode/4000000000017');
+      expect(res.status).toBe(404);
+      expect(JSON.stringify(res.body)).not.toContain('Secret');
+    } finally {
+      vi.unstubAllGlobals();
+    }
   });
 
   it('A’s data is untouched after all of that', async () => {

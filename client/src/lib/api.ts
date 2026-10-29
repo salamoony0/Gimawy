@@ -179,7 +179,7 @@ export type Goal = {
 };
 
 export type Meal = 'breakfast' | 'lunch' | 'dinner' | 'snack';
-export type FoodSource = 'manual' | 'label' | 'screenshot' | 'photo' | 'text';
+export type FoodSource = 'manual' | 'label' | 'screenshot' | 'photo' | 'text' | 'barcode';
 
 export type FoodItem = {
   name: string;
@@ -193,12 +193,23 @@ export type FoodItem = {
 export type FoodEntry = FoodItem & { id: string; date: string; meal: Meal; source: FoodSource };
 
 export type FoodAnalysis = {
-  source: Exclude<FoodSource, 'manual'>;
+  source: Exclude<FoodSource, 'manual' | 'barcode'>;
   confidence: 'high' | 'medium' | 'low';
   mealName: string;
   notes: string;
   items: (FoodItem & { quantity: string })[];
 };
+
+export type BarcodeProduct = {
+  code: string;
+  name: string;
+  brand: string | null;
+  per100g: { calories: number; protein: number; carbs: number; fat: number } | null;
+  serving: { label: string; grams: number } | null;
+};
+
+/** GET /food/barcode/:code — `mine` is the user's own last entry for that code (takes priority). */
+export type BarcodeLookup = { code: string; product: BarcodeProduct | null; mine: FoodItem | null };
 
 export type TrendPoint = { date: string; weightKg: number; trendKg: number };
 

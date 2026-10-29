@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { z } from 'zod';
 import { prisma, HttpError, zDay, param, todayFromQuery, weekStart, round1 } from '../lib/core.js';
 import { assertExercisesVisible, loadTraining } from '../lib/training.js';
+import { lookupBarcode } from '../lib/openfoodfacts.js';
 
 export const trackingRouter = Router();
 
@@ -187,7 +188,10 @@ const foodItem = z.object({
   protein: z.number().min(0).max(1000),
   carbs: z.number().min(0).max(1000),
   fat: z.number().min(0).max(1000),
+  barcode: z.string().regex(/^\d{8,14}$/).nullable().optional(),
 });
+
+const FOOD_SOURCES = ['manual', 'label', 'screenshot', 'photo', 'text', 'barcode'] as const;
 
 trackingRouter.get('/food', async (req, res) => {
   const date = zDay.parse(req.query.date);
@@ -249,12 +253,33 @@ trackingRouter.get('/food/recent', async (req, res) => {
   );
 });
 
+/**
+ * Barcode lookup: the user's own last entry for that code first (so corrected or home-entered products stick),
+ * then Open Food Facts. 404 when neither knows it; 502 when Open Food Facts can't be reached.
+ */
+trackingRouter.get('/food/barcode/:code', async (req, res) => {
+  const code = z.string().regex(/^\d{8,14}$/, 'not a valid barcode').parse(param(req, 'code'));
+  const mine = await prisma.foodEntry.findFirst({
+    where: { userId: req.userId, barcode: code },
+    orderBy: { createdAt: 'desc' },
+    select: { name: true, quantity: true, calories: true, protein: true, carbs: true, fat: true },
+  });
+  let product = null;
+  try {
+    product = await lookupBarcode(code);
+  } catch {
+    if (!mine) throw new HttpError(502, 'Couldn’t reach the product database. Try again, or enter it manually.');
+  }
+  if (!mine && !product) throw new HttpError(404, 'Product not found');
+  res.json({ code, product, mine });
+});
+
 trackingRouter.post('/food', async (req, res) => {
   const body = z
     .object({
       date: zDay,
       meal: z.enum(MEALS),
-      source: z.enum(['manual', 'label', 'screenshot', 'photo', 'text']).default('manual'),
+      source: z.enum(FOOD_SOURCES).default('manual'),
       items: z.array(foodItem).min(1).max(30),
     })
     .parse(req.body);
@@ -262,6 +287,7 @@ trackingRouter.post('/food', async (req, res) => {
     data: body.items.map((i) => ({
       ...i,
       quantity: i.quantity ?? null,
+      barcode: i.barcode ?? null,
       userId: req.userId,
       date: body.date,
       meal: body.meal,

@@ -12,6 +12,7 @@ import {
   Info,
   Pencil,
   Plus,
+  ScanBarcode,
   ScanLine,
   Sparkles,
   Trash,
@@ -22,21 +23,8 @@ import { fmtCompact, fmtDay, fmtInt, localDay, relativeDay, shiftDay, useMe } fr
 import { PageHeader } from '../components/Layout';
 import { Badge, Button, Field, IconButton, Input, Segmented, Sheet, Skeleton, useToast } from '../components/ui';
 import { axisProps, ChartTooltip, gridProps, Rings } from '../components/viz';
-
-const MEALS: { value: Meal; label: string }[] = [
-  { value: 'breakfast', label: 'Breakfast' },
-  { value: 'lunch', label: 'Lunch' },
-  { value: 'dinner', label: 'Dinner' },
-  { value: 'snack', label: 'Snacks' },
-];
-
-function guessMeal(): Meal {
-  const h = new Date().getHours();
-  if (h < 11) return 'breakfast';
-  if (h < 16) return 'lunch';
-  if (h < 21) return 'dinner';
-  return 'snack';
-}
+import { BarcodeSheet } from '../components/BarcodeSheet';
+import { fromDraft, guessMeal, ItemEditor, MEALS, sum, toDraft, type DraftItem } from '../components/FoodForm';
 
 const SOURCE_LABEL: Record<FoodSource, string> = {
   manual: 'Manual',
@@ -44,14 +32,14 @@ const SOURCE_LABEL: Record<FoodSource, string> = {
   screenshot: 'AI · screenshot',
   photo: 'AI · photo',
   text: 'AI · text',
+  barcode: 'Barcode',
 };
-
-const sum = (items: FoodItem[], k: 'calories' | 'protein' | 'carbs' | 'fat') => items.reduce((n, i) => n + (Number(i[k]) || 0), 0);
 
 export default function Food() {
   const [params, setParams] = useSearchParams();
   const [date, setDate] = useState(localDay());
   const [scanOpen, setScanOpen] = useState(params.get('scan') === '1');
+  const [barcodeOpen, setBarcodeOpen] = useState(false);
   const [manualMeal, setManualMeal] = useState<Meal | null>(null);
   const [editing, setEditing] = useState<FoodEntry | null>(null);
   const { data: me } = useMe();
@@ -112,6 +100,9 @@ export default function Food() {
             </span>
             <ChevronRight className="relative size-5 text-brand transition-transform group-hover:translate-x-1" aria-hidden />
           </button>
+          <Button variant="secondary" size="lg" icon={<ScanBarcode className="size-5" aria-hidden />} onClick={() => setBarcodeOpen(true)} className="-mt-2">
+            Scan a barcode
+          </Button>
 
           {/* Meals */}
           {!entries ? (
@@ -150,7 +141,11 @@ export default function Food() {
                                 <span className="truncate font-medium">{it.name}</span>
                                 {it.source !== 'manual' && (
                                   <span title={SOURCE_LABEL[it.source]} className="text-brand">
-                                    <Sparkles className="size-3.5" aria-label={SOURCE_LABEL[it.source]} />
+                                    {it.source === 'barcode' ? (
+                                      <ScanBarcode className="size-3.5" aria-label={SOURCE_LABEL[it.source]} />
+                                    ) : (
+                                      <Sparkles className="size-3.5" aria-label={SOURCE_LABEL[it.source]} />
+                                    )}
                                   </span>
                                 )}
                               </span>
@@ -188,6 +183,7 @@ export default function Food() {
         </aside>
       </div>
 
+      <BarcodeSheet open={barcodeOpen} onClose={() => setBarcodeOpen(false)} date={date} />
       <ScanSheet open={scanOpen} onClose={() => setScanOpen(false)} date={date} />
       <ManualSheet meal={manualMeal} onClose={() => setManualMeal(null)} date={date} />
       <EditFoodSheet entry={editing} onClose={() => setEditing(null)} />
@@ -339,24 +335,6 @@ async function compress(file: File): Promise<Blob> {
     return file;
   }
 }
-
-type DraftItem = { name: string; quantity: string; calories: string; protein: string; carbs: string; fat: string };
-const toDraft = (i: FoodItem): DraftItem => ({
-  name: i.name,
-  quantity: i.quantity ?? '',
-  calories: String(i.calories),
-  protein: String(i.protein),
-  carbs: String(i.carbs),
-  fat: String(i.fat),
-});
-const fromDraft = (d: DraftItem): FoodItem => ({
-  name: d.name.trim() || 'Food',
-  quantity: d.quantity.trim() || null,
-  calories: Number(d.calories) || 0,
-  protein: Number(d.protein) || 0,
-  carbs: Number(d.carbs) || 0,
-  fat: Number(d.fat) || 0,
-});
 
 function ScanSheet({ open, onClose, date }: { open: boolean; onClose: () => void; date: string }) {
   const toast = useToast();
@@ -579,41 +557,6 @@ function ScanSheet({ open, onClose, date }: { open: boolean; onClose: () => void
   );
 }
 
-function ItemEditor({ item, onChange, onRemove }: { item: DraftItem; onChange: (d: DraftItem) => void; onRemove: () => void }) {
-  const num = (k: keyof DraftItem, label: string, color?: string) => (
-    <label className="flex flex-col gap-1">
-      <span className="text-[11px] font-semibold" style={{ color: color ?? 'var(--color-muted)' }}>
-        {label}
-      </span>
-      <Input
-        inputMode="decimal"
-        value={item[k]}
-        onChange={(e) => onChange({ ...item, [k]: e.target.value.replace(',', '.').replace(/[^\d.]/g, '') })}
-        className="num min-h-10 px-2 text-center"
-      />
-    </label>
-  );
-  return (
-    <li className="rounded-2xl border border-line p-3">
-      <div className="flex items-start gap-2">
-        <div className="grid flex-1 grid-cols-[1fr_6.5rem] gap-2">
-          <Input aria-label="Food name" value={item.name} onChange={(e) => onChange({ ...item, name: e.target.value })} placeholder="Food name" className="min-h-10 font-semibold" />
-          <Input aria-label="Quantity" value={item.quantity} onChange={(e) => onChange({ ...item, quantity: e.target.value })} placeholder="Qty" className="min-h-10" />
-        </div>
-        <IconButton label={`Remove ${item.name || 'item'}`} onClick={onRemove} className="size-10">
-          <Trash className="size-4" />
-        </IconButton>
-      </div>
-      <div className="mt-2 grid grid-cols-4 gap-2">
-        {num('calories', 'kcal')}
-        {num('protein', 'Protein g', 'var(--color-protein)')}
-        {num('carbs', 'Carbs g', 'var(--color-carbs)')}
-        {num('fat', 'Fat g', 'var(--color-fat)')}
-      </div>
-    </li>
-  );
-}
-
 // ---------- Manual add ----------
 
 function ManualSheet({ meal, onClose, date }: { meal: Meal | null; onClose: () => void; date: string }) {
@@ -722,7 +665,8 @@ function EditFoodSheet({ entry, onClose }: { entry: FoodEntry | null; onClose: (
         <div className="flex flex-col gap-4">
           {entry && entry.source !== 'manual' && (
             <p className="flex items-center gap-2 text-xs text-muted">
-              <Sparkles className="size-3.5 text-brand" aria-hidden /> Logged with {SOURCE_LABEL[entry.source]}
+              {entry.source === 'barcode' ? <ScanBarcode className="size-3.5 text-brand" aria-hidden /> : <Sparkles className="size-3.5 text-brand" aria-hidden />}
+              {entry.source === 'barcode' ? 'Logged from a barcode. Fixing it here also updates what your next scan finds.' : `Logged with ${SOURCE_LABEL[entry.source]}`}
             </p>
           )}
           <ul>
