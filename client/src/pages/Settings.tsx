@@ -6,6 +6,7 @@ import { Calculator, Download, KeyRound, LogOut, MonitorSmartphone, ShieldCheck,
 import { ACTIVITY, ageFrom } from '../lib/energy';
 import { api, type User } from '../lib/api';
 import { useMe } from '../lib/format';
+import { clearApiCache, setOutboxOwner } from '../lib/offline';
 import { PageHeader } from '../components/Layout';
 import { Button, buttonClass, Card, Field, Input, Segmented, Sheet, Skeleton, useToast } from '../components/ui';
 
@@ -59,6 +60,8 @@ export default function Settings() {
   const logout = useMutation({
     mutationFn: () => api.post('/auth/logout'),
     onSuccess: () => {
+      setOutboxOwner(null);
+      void clearApiCache();
       qc.clear();
       navigate('/login', { replace: true });
     },
@@ -215,6 +218,8 @@ function SecurityCard({ email }: { email: string }) {
   const [sheet, setSheet] = useState<'password' | 'delete' | null>(null);
   const close = () => setSheet(null);
   const signedOut = (message: string) => {
+    setOutboxOwner(null);
+    void clearApiCache();
     qc.clear();
     navigate('/login', { replace: true });
     toast(message);

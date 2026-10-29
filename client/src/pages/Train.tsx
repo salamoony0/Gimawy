@@ -22,7 +22,7 @@ import {
   Waves,
   Zap,
 } from 'lucide-react';
-import { api, type CardioSession, type CardioType, type Routine, type WorkoutSummary } from '../lib/api';
+import { api, isQueued, type CardioSession, type CardioType, type Routine, type WorkoutSummary } from '../lib/api';
 import { fmtCompact, fmtDay, fmtDuration, localDay, MUSCLE_LABEL, relativeDay, shiftDay, useMe, useUnits } from '../lib/format';
 import { BURN_METHOD_LABEL, estimateCardio, profileFor } from '../lib/energy';
 import { PageHeader } from '../components/Layout';
@@ -497,7 +497,7 @@ function CardioSheet({ open, onClose, initial }: { open: boolean; onClose: () =>
 
   const save = useMutation({
     mutationFn: () =>
-      (initial ? (body: unknown) => api.patch(`/cardio/${initial.id}`, body) : (body: unknown) => api.post('/cardio', body))({
+      api.offline(initial ? 'PATCH' : 'POST', initial ? `/cardio/${initial.id}` : '/cardio', {
         type: f.type,
         date: f.date,
         durationMin: duration,
@@ -506,9 +506,9 @@ function CardioSheet({ open, onClose, initial }: { open: boolean; onClose: () =>
         avgHeartRate: f.hr ? Math.round(Number(f.hr)) : null,
         inclinePct,
         speedKmh: speedKmh ? Math.round(speedKmh * 10) / 10 : null,
-      }),
-    onSuccess: () => {
-      toast(initial ? 'Session updated' : 'Cardio logged');
+      }, `${CARDIO_META[f.type].label} session`),
+    onSuccess: (res) => {
+      toast(isQueued(res) ? 'No connection. Saved on this device, it will sync automatically.' : initial ? 'Session updated' : 'Cardio logged');
       setF(blank);
       setLoadedId(null);
       onClose();

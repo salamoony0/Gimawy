@@ -18,7 +18,7 @@ import {
   Trash,
   X,
 } from 'lucide-react';
-import { api, type FoodAnalysis, type FoodEntry, type FoodItem, type FoodSource, type Meal, type User } from '../lib/api';
+import { api, isQueued, type FoodAnalysis, type FoodEntry, type FoodItem, type FoodSource, type Meal, type User } from '../lib/api';
 import { fmtCompact, fmtDay, fmtInt, localDay, relativeDay, shiftDay, useMe } from '../lib/format';
 import { PageHeader } from '../components/Layout';
 import { Badge, Button, Field, IconButton, Input, Segmented, Sheet, Skeleton, useToast } from '../components/ui';
@@ -381,9 +381,10 @@ function ScanSheet({ open, onClose, date }: { open: boolean; onClose: () => void
   });
 
   const save = useMutation({
-    mutationFn: () => api.post('/food', { date, meal, source: result?.source ?? 'photo', items: items.map(fromDraft) }),
-    onSuccess: () => {
-      toast(`Added ${items.length} item${items.length === 1 ? '' : 's'} to ${meal}`);
+    mutationFn: () =>
+      api.offline('POST', '/food', { date, meal, source: result?.source ?? 'photo', items: items.map(fromDraft) }, result?.mealName || 'Scanned meal'),
+    onSuccess: (res) => {
+      toast(isQueued(res) ? 'No connection. Saved on this device, it will sync automatically.' : `Added ${items.length} item${items.length === 1 ? '' : 's'} to ${meal}`);
       reset();
       onClose();
     },
@@ -568,9 +569,9 @@ function ManualSheet({ meal, onClose, date }: { meal: Meal | null; onClose: () =
     enabled: meal !== null,
   });
   const save = useMutation({
-    mutationFn: (items: FoodItem[]) => api.post('/food', { date, meal, source: 'manual', items }),
-    onSuccess: (_, items) => {
-      toast(`Added ${items[0].name}`);
+    mutationFn: (items: FoodItem[]) => api.offline('POST', '/food', { date, meal, source: 'manual', items }, items[0].name),
+    onSuccess: (res, items) => {
+      toast(isQueued(res) ? `${items[0].name} saved on this device, it will sync automatically.` : `Added ${items[0].name}`);
       setItem({ name: '', quantity: '', calories: '', protein: '', carbs: '', fat: '' });
       onClose();
     },
@@ -638,9 +639,9 @@ function EditFoodSheet({ entry, onClose }: { entry: FoodEntry | null; onClose: (
   }
 
   const save = useMutation({
-    mutationFn: () => api.patch(`/food/${entry!.id}`, { ...fromDraft(item!), meal }),
-    onSuccess: () => {
-      toast('Entry updated');
+    mutationFn: () => api.offline('PATCH', `/food/${entry!.id}`, { ...fromDraft(item!), meal }, fromDraft(item!).name),
+    onSuccess: (res) => {
+      toast(isQueued(res) ? 'Saved on this device, it will sync automatically.' : 'Entry updated');
       setLoadedId(null);
       onClose();
     },

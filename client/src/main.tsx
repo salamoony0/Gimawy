@@ -26,8 +26,12 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 30_000,
+      // Always try the request: offline, the service worker answers from its cache (see vite.config.ts).
+      networkMode: 'offlineFirst',
       retry: (count, err) => !(err instanceof ApiError && err.status < 500) && count < 2,
     },
+    // Writes decide for themselves what to do offline (api.offline queues logging, everything else fails fast).
+    mutations: { networkMode: 'always' },
   },
   // Any write can move dashboard numbers (and the latest weight on `me`), so refresh everything after a mutation.
   // Deletes pass `meta: { removes: queryKey }` so the deleted item's own query is skipped (refetching it would 404

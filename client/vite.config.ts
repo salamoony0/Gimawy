@@ -27,6 +27,25 @@ export default defineConfig({
       },
       workbox: {
         navigateFallbackDenylist: [/^\/api\//],
+        // Offline reading: signed-in GET responses are cached and served when the network fails (the outbox in
+        // src/lib/offline.ts handles writes). NetworkFirst without a timeout, so a slow cold start on Render never
+        // shows stale data. Auth (except /me), AI and barcode lookups are never cached. The cache is per account:
+        // it's cleared on log out and when another account signs in (setOutboxOwner).
+        runtimeCaching: [
+          {
+            urlPattern: ({ url, request, sameOrigin }) =>
+              sameOrigin &&
+              request.method === 'GET' &&
+              url.pathname.startsWith('/api/') &&
+              !/^\/api\/(auth\/(?!me$)|ai\/|food\/barcode\/|health)/.test(url.pathname),
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'gymawy-api',
+              expiration: { maxEntries: 300, maxAgeSeconds: 14 * 24 * 60 * 60 },
+              cacheableResponse: { statuses: [200] },
+            },
+          },
+        ],
       },
     }),
   ],

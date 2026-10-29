@@ -5,6 +5,8 @@ import { clsx } from 'clsx';
 import { ChartLine, Dumbbell, House, Scale, Settings, Timer, Utensils } from 'lucide-react';
 import { useActiveWorkout } from '../lib/activeWorkout';
 import { useMe } from '../lib/format';
+import { setOutboxOwner } from '../lib/offline';
+import { OfflineBar } from './OfflineBar';
 
 const NAV = [
   { to: '/', label: 'Today', icon: House, end: true },
@@ -52,6 +54,11 @@ export function Layout() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
+
+  // Offline entries and cached API responses are tied to the signed-in account.
+  useEffect(() => {
+    setOutboxOwner(me?.id ?? null);
+  }, [me?.id]);
 
   return (
     <div className="min-h-dvh lg:pl-64">
@@ -129,6 +136,7 @@ export function Layout() {
       </header>
 
       <main className="mx-auto w-full max-w-6xl px-4 pb-32 pt-5 sm:px-6 lg:px-10 lg:pb-12 lg:pt-10">
+        <OfflineBar />
         <Outlet />
       </main>
 

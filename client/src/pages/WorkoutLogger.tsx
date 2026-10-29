@@ -4,7 +4,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { AnimatePresence, motion } from 'motion/react';
 import { clsx } from 'clsx';
 import { Check, ChevronRight, Clock, Dumbbell, Link2, Minus, MoreHorizontal, Plus, Timer, Trash, Unlink, X } from 'lucide-react';
-import { api, type Routine } from '../lib/api';
+import { api, isQueued, type Routine } from '../lib/api';
 import { localDay, MUSCLE_LABEL, parseDay, useMe, useUnits } from '../lib/format';
 import { bodyWeightFor, estimateStrength } from '../lib/energy';
 import {
@@ -149,25 +149,31 @@ function Logger({ workout }: { workout: ActiveWorkout }) {
             .map((s) => ({ reps: Number(s.reps) || 0, weightKg: u.toKg(Number(s.weight) || 0), isWarmup: s.isWarmup })),
         }))
         .filter((e) => e.sets.length);
+      const name = workout.name.trim() || defaultName();
       if (workout.editingId) {
-        return api.put<{ id: string }>(`/workouts/${workout.editingId}`, {
-          name: workout.name.trim() || defaultName(),
+        return api.offline<{ id: string }>(
+          'PUT',
+          `/workouts/${workout.editingId}`,
+          { name, date: localDay(new Date(workout.startedAt)), startedAt: workout.startedAt, endedAt: workout.endedAt ?? null, exercises },
+          name,
+        );
+      }
+      const res = await api.offline<{ id: string }>(
+        'POST',
+        '/workouts',
+        {
+          name,
           date: localDay(new Date(workout.startedAt)),
           startedAt: workout.startedAt,
-          endedAt: workout.endedAt ?? null,
+          endedAt: new Date().toISOString(),
+          calories: estimateStrength(minutesSoFar(), bodyWeightFor(me)),
           exercises,
-        });
-      }
-      const res = await api.post<{ id: string }>('/workouts', {
-        name: workout.name.trim() || defaultName(),
-        date: localDay(new Date(workout.startedAt)),
-        startedAt: workout.startedAt,
-        endedAt: new Date().toISOString(),
-        calories: estimateStrength(minutesSoFar(), bodyWeightFor(me)),
-        exercises,
-      });
+        },
+        name,
+      );
       if (saveAsRoutine) {
-        await api.post('/routines', {
+        // Queued after the workout when offline, so it syncs in the same order.
+        await api.offline('POST', '/routines', {
           name: workout.name.trim() || defaultName(),
           exercises: workout.exercises
             .map((e, i) => ({ e, group: slots[i]?.groupIndex ?? null }))
@@ -178,14 +184,18 @@ function Logger({ workout }: { workout: ActiveWorkout }) {
               targetSets: e.sets.filter((s) => !s.isWarmup).length || 1,
               targetReps: Number(e.sets.find((s) => !s.isWarmup)?.reps) || 10,
             })),
-        });
+        }, `Routine “${name}”`);
       }
       return res;
     },
-    onSuccess: ({ id }) => {
+    onSuccess: (res) => {
       workoutStore.discard();
+      if (isQueued(res)) {
+        toast('No connection. Saved on this device, it will sync automatically.');
+        return navigate('/train', { replace: true });
+      }
       toast(editing ? 'Workout updated' : 'Workout saved. Nice work!');
-      navigate(`/train/workouts/${id}`, { replace: true });
+      navigate(`/train/workouts/${res.id}`, { replace: true });
     },
     onError: (e) => toast(e.message, 'error'),
   });

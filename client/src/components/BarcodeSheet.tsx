@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { motion } from 'motion/react';
 import { CameraOff, Keyboard, ScanBarcode } from 'lucide-react';
-import { api, ApiError, type BarcodeLookup, type Meal } from '../lib/api';
+import { api, ApiError, isQueued, type BarcodeLookup, type Meal } from '../lib/api';
 import { createDetector, isValidGtin, scaleMacros } from '../lib/barcode';
 import { fmtInt } from '../lib/format';
 import { Badge, Button, Field, Input, Segmented, Sheet, useToast } from './ui';
@@ -42,9 +42,9 @@ export function BarcodeSheet({ open, onClose, date }: { open: boolean; onClose: 
 
   const save = useMutation({
     mutationFn: (item: ReturnType<typeof fromDraft>) =>
-      api.post('/food', { date, meal, source: 'barcode', items: [{ ...item, barcode: code }] }),
-    onSuccess: (_, item) => {
-      toast(`Added ${item.name}`);
+      api.offline('POST', '/food', { date, meal, source: 'barcode', items: [{ ...item, barcode: code }] }, item.name),
+    onSuccess: (res, item) => {
+      toast(isQueued(res) ? `${item.name} saved on this device, it will sync automatically.` : `Added ${item.name}`);
       close();
     },
     onError: (e) => toast(e.message, 'error'),
