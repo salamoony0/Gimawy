@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { z } from 'zod';
 import type { Prisma } from '@prisma/client';
 import { prisma, HttpError, zDay, param } from '../lib/core.js';
-import { assertExercisesVisible, loadTraining, summarize } from '../lib/training.js';
+import { assertExercisesVisible, loadTraining, normalizeSupersets, summarize } from '../lib/training.js';
 
 export const trainingRouter = Router();
 
@@ -152,16 +152,24 @@ const workoutInput = z.object({
   notes: z.string().max(2000).nullable().optional(),
   calories: z.number().int().min(0).max(5000).nullable().optional(),
   exercises: z
-    .array(z.object({ exerciseId: z.string(), sets: z.array(setInput).min(1).max(50) }))
+    .array(
+      z.object({
+        exerciseId: z.string(),
+        supersetGroup: z.number().int().min(0).max(100).nullable().optional(),
+        sets: z.array(setInput).min(1).max(50),
+      }),
+    )
     .min(1, 'add at least one exercise')
     .max(40),
 });
 
 function nestedExercises(exercises: z.infer<typeof workoutInput>['exercises']) {
+  const groups = normalizeSupersets(exercises.map((e) => e.supersetGroup));
   return {
     create: exercises.map((e, i) => ({
       exerciseId: e.exerciseId,
       order: i,
+      supersetGroup: groups[i],
       sets: {
         create: e.sets.map((s, j) => ({
           order: j,
@@ -201,6 +209,10 @@ trainingRouter.get('/workouts/:id', async (req, res) => {
 trainingRouter.post('/workouts', async (req, res) => {
   const body = workoutInput.parse(req.body);
   await assertExercisesVisible(req.userId, body.exercises.map((e) => e.exerciseId));
+  // An offline save is replayed until a response arrives, so the same session may be posted twice.
+  // startedAt identifies a session, so answer with the one already saved instead of duplicating it.
+  const existing = await prisma.workout.findFirst({ where: { userId: req.userId, startedAt: body.startedAt }, select: { id: true } });
+  if (existing) return void res.status(200).json(existing);
   const w = await prisma.workout.create({
     data: {
       userId: req.userId,
@@ -257,6 +269,7 @@ const routineInput = z.object({
         exerciseId: z.string(),
         targetSets: z.number().int().min(1).max(20),
         targetReps: z.number().int().min(1).max(100),
+        supersetGroup: z.number().int().min(0).max(100).nullable().optional(),
       }),
     )
     .min(1)
@@ -277,8 +290,14 @@ function shapeRoutine(r: Prisma.RoutineGetPayload<{ include: typeof routineInclu
       muscleGroup: e.exercise.muscleGroup,
       targetSets: e.targetSets,
       targetReps: e.targetReps,
+      supersetGroup: e.supersetGroup,
     })),
   };
+}
+
+function routineRows(exercises: z.infer<typeof routineInput>['exercises']) {
+  const groups = normalizeSupersets(exercises.map((e) => e.supersetGroup));
+  return exercises.map((e, i) => ({ ...e, order: i, supersetGroup: groups[i] }));
 }
 
 trainingRouter.get('/routines', async (req, res) => {
@@ -297,7 +316,7 @@ trainingRouter.post('/routines', async (req, res) => {
     data: {
       userId: req.userId,
       name: body.name,
-      exercises: { create: body.exercises.map((e, i) => ({ ...e, order: i })) },
+      exercises: { create: routineRows(body.exercises) },
     },
     include: routineInclude,
   });
@@ -314,7 +333,7 @@ trainingRouter.put('/routines/:id', async (req, res) => {
     prisma.routineExercise.deleteMany({ where: { routineId: id } }),
     prisma.routine.update({
       where: { id },
-      data: { name: body.name, exercises: { create: body.exercises.map((e, i) => ({ ...e, order: i })) } },
+      data: { name: body.name, exercises: { create: routineRows(body.exercises) } },
       include: routineInclude,
     }),
   ]);

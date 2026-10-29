@@ -3,11 +3,11 @@ import { Link, useNavigate, useParams } from 'react-router';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { motion } from 'motion/react';
 import { clsx } from 'clsx';
-import { ChevronLeft, Clock, Dumbbell, Flame, Pencil, Layers, Trash, Trophy, TrendingDown, TrendingUp } from 'lucide-react';
+import { ChevronLeft, Clock, Dumbbell, Flame, Link2, Pencil, Layers, Trash, Trophy, TrendingDown, TrendingUp } from 'lucide-react';
 import { api, type WorkoutDetail as Detail } from '../lib/api';
 import { fmtDay, fmtDuration, fmtInt, MUSCLE_LABEL, pctChange, useUnits } from '../lib/format';
-import { Badge, Button, IconButton, Sheet, Skeleton, useToast } from '../components/ui';
-import { uid, useActiveWorkout, workoutStore } from '../lib/activeWorkout';
+import { Badge, Button, IconButton, Sheet, Skeleton, SupersetBadge, useToast } from '../components/ui';
+import { supersetSlots, uid, useActiveWorkout, workoutStore } from '../lib/activeWorkout';
 
 const MUSCLE_COLORS: Record<string, string> = {
   chest: '#4ade80',
@@ -53,6 +53,7 @@ export default function WorkoutDetail() {
         exerciseId: e.exerciseId,
         name: e.name,
         muscleGroup: e.muscleGroup,
+        superset: e.supersetGroup != null ? `s${e.supersetGroup}` : undefined,
         sets: e.sets.map((s) => ({ key: uid(), weight: String(u.weight(s.weightKg)), reps: String(s.reps), done: true, isWarmup: s.isWarmup })),
       })),
     });
@@ -63,6 +64,7 @@ export default function WorkoutDetail() {
   const muscleSets = new Map<string, number>();
   for (const e of w.exercises) muscleSets.set(e.muscleGroup, (muscleSets.get(e.muscleGroup) ?? 0) + e.sets.filter((s) => !s.isWarmup).length);
   const totalSets = [...muscleSets.values()].reduce((a, b) => a + b, 0);
+  const slots = supersetSlots(w.exercises.map((e) => ({ superset: e.supersetGroup })));
 
   return (
     <div className="mx-auto flex max-w-3xl flex-col gap-5">
@@ -121,22 +123,31 @@ export default function WorkoutDetail() {
       {w.exercises.map((e, i) => {
         const volDelta = e.previous ? pctChange(e.volume, e.previous.volume) : null;
         const e1Delta = e.previous ? Math.round((e.bestE1rm - e.previous.bestE1rm) * 10) / 10 : null;
+        const slot = slots[i];
         return (
           <motion.section
             key={e.id}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.05 * i }}
-            className="card p-0"
+            className={clsx('card p-0', slot && 'border-l-4 border-l-brand', slot && slot.index > 0 && '-mt-3')}
           >
+            {slot?.index === 0 && (
+              <p className="flex items-center gap-1.5 px-4 pt-3 text-xs font-semibold uppercase tracking-wider text-brand">
+                <Link2 className="size-3.5" aria-hidden /> Superset {slot.letter}
+              </p>
+            )}
             <div className="flex flex-wrap items-start justify-between gap-2 p-4 pb-2">
-              <div>
+              <div className="flex items-start gap-2">
+                {slot && <SupersetBadge slot={slot} />}
+                <div>
                 <Link to={`/train/exercises/${e.exerciseId}`} className="font-display text-xl font-semibold tracking-wide text-brand hover:underline">
                   {e.name}
                 </Link>
                 <p className="text-xs capitalize text-muted">
                   {MUSCLE_LABEL[e.muscleGroup]} · {e.equipment}
                 </p>
+                </div>
               </div>
               {e.previous && (
                 <div className="flex gap-2">

@@ -3,12 +3,23 @@ import { Link, useNavigate, useSearchParams } from 'react-router';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { AnimatePresence, motion } from 'motion/react';
 import { clsx } from 'clsx';
-import { Check, ChevronRight, Clock, Dumbbell, Minus, MoreHorizontal, Plus, Timer, Trash, X } from 'lucide-react';
+import { Check, ChevronRight, Clock, Dumbbell, Link2, Minus, MoreHorizontal, Plus, Timer, Trash, Unlink, X } from 'lucide-react';
 import { api, type Routine } from '../lib/api';
 import { localDay, MUSCLE_LABEL, parseDay, useMe, useUnits } from '../lib/format';
 import { bodyWeightFor, estimateStrength } from '../lib/energy';
-import { newSet, uid, useActiveWorkout, workoutStore, type ActiveWorkout, type DraftExercise } from '../lib/activeWorkout';
-import { Badge, Button, EmptyState, IconButton, Input, Sheet, useToast } from '../components/ui';
+import {
+  linkWithNext,
+  newSet,
+  supersetSlots,
+  uid,
+  unlink,
+  useActiveWorkout,
+  workoutStore,
+  type ActiveWorkout,
+  type DraftExercise,
+  type SupersetSlot,
+} from '../lib/activeWorkout';
+import { Badge, Button, EmptyState, IconButton, Input, Sheet, SupersetBadge, useToast } from '../components/ui';
 import { ExercisePicker } from '../components/ExercisePicker';
 
 function defaultName() {
@@ -42,6 +53,7 @@ function startRoutine(r: Routine) {
       exerciseId: e.exerciseId,
       name: e.name,
       muscleGroup: e.muscleGroup,
+      superset: e.supersetGroup != null ? `r${e.supersetGroup}` : undefined,
       sets: Array.from({ length: e.targetSets }, () => newSet('', '')),
     })),
   );
@@ -124,12 +136,14 @@ function Logger({ workout }: { workout: ActiveWorkout }) {
   );
 
   const editing = Boolean(workout.editingId);
+  const slots = supersetSlots(workout.exercises);
   const minutesSoFar = () => (Date.now() - new Date(workout.startedAt).getTime()) / 60000;
   const finish = useMutation({
     mutationFn: async () => {
       const exercises = workout.exercises
-        .map((e) => ({
+        .map((e, i) => ({
           exerciseId: e.exerciseId,
+          supersetGroup: slots[i]?.groupIndex ?? null,
           sets: e.sets
             .filter((s) => s.done)
             .map((s) => ({ reps: Number(s.reps) || 0, weightKg: u.toKg(Number(s.weight) || 0), isWarmup: s.isWarmup })),
@@ -156,9 +170,11 @@ function Logger({ workout }: { workout: ActiveWorkout }) {
         await api.post('/routines', {
           name: workout.name.trim() || defaultName(),
           exercises: workout.exercises
-            .filter((e) => e.sets.some((s) => s.done))
-            .map((e) => ({
+            .map((e, i) => ({ e, group: slots[i]?.groupIndex ?? null }))
+            .filter(({ e }) => e.sets.some((s) => s.done))
+            .map(({ e, group }) => ({
               exerciseId: e.exerciseId,
+              supersetGroup: group,
               targetSets: e.sets.filter((s) => !s.isWarmup).length || 1,
               targetReps: Number(e.sets.find((s) => !s.isWarmup)?.reps) || 10,
             })),
@@ -241,16 +257,27 @@ function Logger({ workout }: { workout: ActiveWorkout }) {
 
       {/* Exercises */}
       <AnimatePresence initial={false}>
-        {workout.exercises.map((ex) => (
-          <motion.div key={ex.key} layout initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, x: -30 }}>
-            <ExerciseBlock
-              ex={ex}
-              onChange={(fn) => updateExercise(ex.key, fn)}
-              onRemove={() => set((w) => ({ ...w, exercises: w.exercises.filter((e) => e.key !== ex.key) }))}
-              onSetDone={() => !editing && set((w) => ({ ...w, restEndsAt: Date.now() + w.restSeconds * 1000 }))}
-            />
-          </motion.div>
-        ))}
+        {workout.exercises.map((ex, i) => {
+          const slot = slots[i];
+          const next = workout.exercises[i + 1];
+          const linkedToNext = slot != null && slot.index < slot.size - 1;
+          return (
+            <motion.div key={ex.key} layout initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, x: -30 }}>
+              <ExerciseBlock
+                ex={ex}
+                slot={slot}
+                canLink={Boolean(next) && !linkedToNext}
+                onLink={() => set((w) => ({ ...w, exercises: linkWithNext(w.exercises, i) }))}
+                onUnlink={() => set((w) => ({ ...w, exercises: unlink(w.exercises, i) }))}
+                onChange={(fn) => updateExercise(ex.key, fn)}
+                onRemove={() => set((w) => ({ ...w, exercises: w.exercises.filter((e) => e.key !== ex.key) }))}
+                // In a superset you go straight to the next exercise; rest only starts after the last one of the round.
+                onSetDone={() => !editing && !linkedToNext && set((w) => ({ ...w, restEndsAt: Date.now() + w.restSeconds * 1000 }))}
+              />
+              {linkedToNext && next && <SupersetConnector next={next.name} />}
+            </motion.div>
+          );
+        })}
       </AnimatePresence>
 
       {!workout.exercises.length && (
@@ -370,15 +397,33 @@ function ElapsedClock({ since }: { since: string }) {
   );
 }
 
+function SupersetConnector({ next }: { next: string }) {
+  return (
+    <p className="flex items-center gap-2 py-1.5 pl-5 text-xs font-semibold text-brand">
+      <span className="h-5 w-0.5 rounded-full bg-brand/60" aria-hidden />
+      <Link2 className="size-3.5" aria-hidden />
+      No rest, straight to {next}
+    </p>
+  );
+}
+
 type LastSets = { date: string; sets: { reps: number; weightKg: number; isWarmup: boolean }[] } | null;
 
 function ExerciseBlock({
   ex,
+  slot,
+  canLink,
+  onLink,
+  onUnlink,
   onChange,
   onRemove,
   onSetDone,
 }: {
   ex: DraftExercise;
+  slot: SupersetSlot | null;
+  canLink: boolean;
+  onLink: () => void;
+  onUnlink: () => void;
   onChange: (fn: (e: DraftExercise) => DraftExercise) => void;
   onRemove: () => void;
   onSetDone: () => void;
@@ -395,12 +440,15 @@ function ExerciseBlock({
     onChange((e) => ({ ...e, sets: e.sets.map((s) => (s.key === key ? { ...s, ...patch } : s)) }));
 
   return (
-    <section className="card overflow-hidden p-0">
+    <section className={clsx('card overflow-hidden p-0', slot && 'border-l-4 border-l-brand')}>
       <div className="flex items-center gap-3 px-4 pb-2 pt-4">
         <div className="min-w-0 flex-1">
-          <Link to={`/train/exercises/${ex.exerciseId}`} className="block truncate font-display text-xl font-semibold tracking-wide text-brand hover:underline">
-            {ex.name}
-          </Link>
+          <div className="flex items-center gap-2">
+            {slot && <SupersetBadge slot={slot} />}
+            <Link to={`/train/exercises/${ex.exerciseId}`} className="block truncate font-display text-xl font-semibold tracking-wide text-brand hover:underline">
+              {ex.name}
+            </Link>
+          </div>
           <p className="text-xs text-muted">
             {MUSCLE_LABEL[ex.muscleGroup]}
             {last && ` · last time ${last.sets.filter((s) => !s.isWarmup).length} sets`}
@@ -411,7 +459,31 @@ function ExerciseBlock({
             <MoreHorizontal className="size-5" />
           </IconButton>
           {menu && (
-            <div className="absolute right-0 top-11 z-10 w-44 rounded-xl border border-line-strong bg-surface-2 p-1 shadow-xl shadow-black/50">
+            <div className="absolute right-0 top-11 z-10 w-56 rounded-xl border border-line-strong bg-surface-2 p-1 shadow-xl shadow-black/50">
+              {canLink && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMenu(false);
+                    onLink();
+                  }}
+                  className="flex min-h-11 w-full cursor-pointer items-center gap-2 rounded-lg px-3 text-sm font-semibold hover:bg-surface-3"
+                >
+                  <Link2 className="size-4 text-brand" aria-hidden /> Superset with next
+                </button>
+              )}
+              {slot && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMenu(false);
+                    onUnlink();
+                  }}
+                  className="flex min-h-11 w-full cursor-pointer items-center gap-2 rounded-lg px-3 text-sm font-semibold hover:bg-surface-3"
+                >
+                  <Unlink className="size-4" aria-hidden /> Remove from superset
+                </button>
+              )}
               <button
                 type="button"
                 onClick={onRemove}

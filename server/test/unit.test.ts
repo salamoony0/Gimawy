@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { addDays, daysBetween, e1rm, weekStart } from '../src/lib/core.js';
-import { annotateWorkouts, type WorkoutRow } from '../src/lib/training.js';
+import { annotateWorkouts, normalizeSupersets, type WorkoutRow } from '../src/lib/training.js';
 import { withTrend } from '../src/lib/trend.js';
 
 describe('date math', () => {
@@ -44,6 +44,7 @@ function workout(date: string, exercises: Array<{ exerciseId: string; sets: Arra
       workoutId: id,
       exerciseId: e.exerciseId,
       order: i,
+      supersetGroup: null,
       exercise: { id: e.exerciseId, name: e.exerciseId, muscleGroup: 'chest', equipment: 'barbell', userId: null },
       sets: e.sets.map(([weightKg, reps, isWarmup = false], j) => ({
         id: `${id}e${i}s${j}`,
@@ -115,5 +116,19 @@ describe('withTrend', () => {
       { date: '2026-10-08', weightKg: 79 }, // 10-01 is now 7 days back, so it drops out
     ]);
     expect(t.map((x) => x.trendKg)).toEqual([80, 81, 81, 80.7]);
+  });
+});
+
+describe('normalizeSupersets', () => {
+  it('renumbers runs of 2+ consecutive exercises and drops singletons', () => {
+    expect(normalizeSupersets([5, 5, null, 9, 9, 9, 2])).toEqual([0, 0, null, 1, 1, 1, null]);
+  });
+  it('splits a number that reappears after a gap', () => {
+    expect(normalizeSupersets([1, 1, null, 1, 1])).toEqual([0, 0, null, 1, 1]);
+    expect(normalizeSupersets([1, null, 1])).toEqual([null, null, null]);
+  });
+  it('handles empty and undefined input', () => {
+    expect(normalizeSupersets([])).toEqual([]);
+    expect(normalizeSupersets([undefined, undefined])).toEqual([null, null]);
   });
 });

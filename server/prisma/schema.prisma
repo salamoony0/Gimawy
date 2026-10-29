@@ -35,6 +35,8 @@ model User {
   carbsTarget   Int      @default(260)
   fatTarget     Int      @default(75)
   weeklyWorkoutTarget Int @default(4)
+  autoAdjustTargets Boolean @default(false) // re-fit the calorie target to the observed TDEE once a week
+  targetsAdjustedAt String? // YYYY-MM-DD of the last automatic adjustment
   tokenVersion  Int      @default(0) // bumped to sign out every session (password change/reset, "log out everywhere")
   createdAt     DateTime @default(now())
 
@@ -87,6 +89,8 @@ model WorkoutExercise {
   exerciseId String
   exercise   Exercise     @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
   order      Int
+  // Consecutive exercises sharing a number are a superset (done back to back, rest after the round).
+  supersetGroup Int?
   sets       WorkoutSet[]
 
   @@index([exerciseId])
@@ -119,6 +123,7 @@ model RoutineExercise {
   exerciseId String
   exercise   Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
   order      Int
+  supersetGroup Int? // same meaning as WorkoutExercise.supersetGroup
   targetSets Int      @default(3)
   targetReps Int      @default(10)
 }
@@ -182,10 +187,12 @@ model FoodEntry {
   protein   Float
   carbs     Float
   fat       Float
-  source    String   @default("manual") // manual | label | screenshot | photo | text
+  source    String   @default("manual") // manual | label | screenshot | photo | text | barcode
+  barcode   String? // EAN/UPC when logged from a barcode, so the next scan finds the user's own entry first
   createdAt DateTime @default(now())
 
   @@index([userId, date])
+  @@index([userId, barcode])
 }
 
 // AI scans per user per calendar day (UTC), so the daily cap survives restarts.

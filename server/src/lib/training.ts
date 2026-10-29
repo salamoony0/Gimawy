@@ -19,6 +19,7 @@ export type AnnotatedExercise = {
   muscleGroup: string;
   equipment: string;
   order: number;
+  supersetGroup: number | null;
   volume: number;
   bestE1rm: number;
   sets: AnnotatedSet[];
@@ -103,6 +104,7 @@ export function annotateWorkouts(workouts: WorkoutRow[]): AnnotatedWorkout[] {
         muscleGroup: we.exercise.muscleGroup,
         equipment: we.exercise.equipment,
         order: we.order,
+        supersetGroup: we.supersetGroup,
         volume: Math.round(exVolume),
         bestE1rm: sessionBest,
         sets: sets.map(({ workoutExerciseId: _, ...rest }) => rest),
@@ -143,6 +145,26 @@ export function summarize(w: AnnotatedWorkout) {
       best: e.sets.reduce<AnnotatedSet | null>((b, s) => (!s.isWarmup && (!b || s.e1rm > b.e1rm) ? s : b), null),
     })),
   };
+}
+
+/**
+ * Normalises superset numbers for an ordered list: a superset is a run of consecutive exercises with the same
+ * number. Runs are renumbered 0, 1, 2… in order; a number that only covers one exercise (or reappears later,
+ * non-adjacent) is dropped or split, so stored groups are always contiguous and have 2+ members.
+ */
+export function normalizeSupersets(groups: (number | null | undefined)[]): (number | null)[] {
+  const out: (number | null)[] = groups.map(() => null);
+  let next = 0;
+  for (let i = 0; i < groups.length; ) {
+    let j = i + 1;
+    if (groups[i] != null) while (j < groups.length && groups[j] === groups[i]) j++;
+    if (j - i >= 2) {
+      for (let k = i; k < j; k++) out[k] = next;
+      next++;
+    }
+    i = j;
+  }
+  return out;
 }
 
 /** Built-in or the user's own exercises only (ids from another account are rejected). */

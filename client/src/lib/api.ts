@@ -113,6 +113,7 @@ export type WorkoutDetail = {
     name: string;
     muscleGroup: string;
     equipment: string;
+    supersetGroup: number | null;
     volume: number;
     bestE1rm: number;
     sets: SetRow[];
@@ -144,7 +145,7 @@ export type ExerciseHistory = {
 export type Routine = {
   id: string;
   name: string;
-  exercises: { exerciseId: string; name: string; muscleGroup: string; targetSets: number; targetReps: number }[];
+  exercises: { exerciseId: string; name: string; muscleGroup: string; targetSets: number; targetReps: number; supersetGroup: number | null }[];
 };
 
 export type CardioType = 'run' | 'walk' | 'incline' | 'cycle' | 'row' | 'swim' | 'elliptical' | 'stairs' | 'hiit' | 'other';

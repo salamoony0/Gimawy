@@ -408,3 +408,16 @@ export function Badge({ children, tone = 'brand', className }: { children: React
     </span>
   );
 }
+
+/** "A1", "A2"… badge for an exercise in a superset. */
+export function SupersetBadge({ slot }: { slot: { letter: string; index: number; size: number } }) {
+  return (
+    <span
+      className="num inline-flex h-6 items-center rounded-md bg-brand/15 px-1.5 text-xs font-bold text-brand"
+      aria-label={`Superset ${slot.letter}, exercise ${slot.index + 1} of ${slot.size}`}
+    >
+      {slot.letter}
+      {slot.index + 1}
+    </span>
+  );
+}
