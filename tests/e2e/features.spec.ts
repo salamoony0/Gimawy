@@ -96,3 +96,27 @@ test('adaptive target: the demo’s month of logs gives a measured maintenance a
   await page.goto('/settings');
   await expect(page.getByRole('checkbox', { name: /Adjust my targets automatically/ })).toBeChecked();
 });
+
+test('records: every exercise by muscle, enter a PR by hand, previous record moves down', async ({ page }) => {
+  await loginAsDemo(page);
+  await page.goto('/train?tab=records');
+  await expect(page.getByRole('heading', { name: 'Chest' })).toBeVisible();
+  await page.getByRole('textbox', { name: 'Search exercises' }).fill('Bench Press');
+  const row = page.getByRole('button', { name: /^Bench Press: current/ });
+  const before = (await row.getAttribute('aria-label'))!;
+  const current = /current ([\d.]+) kg × (\d+)/.exec(before)!;
+
+  await row.click();
+  const sheet = page.getByRole('dialog', { name: 'Bench Press' });
+  await sheet.getByRole('textbox', { name: 'Weight (kg)' }).fill('200');
+  await sheet.getByRole('textbox', { name: 'Reps' }).fill('3');
+  await sheet.getByRole('button', { name: 'Save record' }).click();
+  await expect(page.getByText('Record saved for Bench Press')).toBeVisible();
+  await expect(row).toHaveAttribute('aria-label', new RegExp(`current 200 kg × 3, previous ${current[1]} kg × ${current[2]}`));
+
+  // Removing it brings the old record back.
+  await row.click();
+  await sheet.getByRole('button', { name: /Remove 200 kg × 3/ }).click();
+  await expect(page.getByText('Record removed')).toBeVisible();
+  await expect(row).toHaveAttribute('aria-label', new RegExp(`current ${current[1]} kg × ${current[2]}`));
+});

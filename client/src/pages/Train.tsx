@@ -30,8 +30,9 @@ import { Badge, Button, buttonClass, EmptyState, Field, IconButton, Input, Segme
 import { axisProps, ChartTooltip, gridProps } from '../components/viz';
 import { useExercises } from '../components/ExercisePicker';
 import { RoutineEditor } from '../components/RoutineEditor';
+import { RecordsTab } from '../components/RecordsTab';
 
-type Tab = 'strength' | 'cardio' | 'exercises';
+type Tab = 'strength' | 'cardio' | 'records' | 'exercises';
 
 export default function Train() {
   const [params, setParams] = useSearchParams();
@@ -54,12 +55,14 @@ export default function Train() {
         options={[
           { value: 'strength', label: 'Strength' },
           { value: 'cardio', label: 'Cardio' },
+          { value: 'records', label: 'Records' },
           { value: 'exercises', label: 'Exercises' },
         ]}
         className="mb-6 max-w-md"
       />
       {tab === 'strength' && <Strength />}
       {tab === 'cardio' && <Cardio />}
+      {tab === 'records' && <RecordsTab />}
       {tab === 'exercises' && <Exercises />}
     </>
   );

@@ -49,6 +49,7 @@ model User {
   foods       FoodEntry[]
   aiUsage     AiUsage[]
   resetTokens PasswordResetToken[]
+  records     PersonalRecord[]
 }
 
 model Exercise {
@@ -62,6 +63,7 @@ model Exercise {
   workoutExercises WorkoutExercise[]
   routineExercises RoutineExercise[]
   goals            Goal[]
+  records          PersonalRecord[]
 
   @@index([userId])
 }
@@ -193,6 +195,22 @@ model FoodEntry {
 
   @@index([userId, date])
   @@index([userId, barcode])
+}
+
+// A best set entered by hand (Train → Records), for lifts the user didn't log as a workout. Counts like a workout
+// set for records, PR flags and lift goals.
+model PersonalRecord {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  exerciseId String
+  exercise   Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+  date       String // YYYY-MM-DD
+  weightKg   Float
+  reps       Int
+  createdAt  DateTime @default(now())
+
+  @@index([userId, exerciseId])
 }
 
 // AI scans per user per calendar day (UTC), so the daily cap survives restarts.

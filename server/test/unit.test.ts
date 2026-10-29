@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { addDays, daysBetween, e1rm, weekStart } from '../src/lib/core.js';
-import { annotateWorkouts, normalizeSupersets, type WorkoutRow } from '../src/lib/training.js';
+import { annotateWorkouts, normalizeSupersets, recordProgressions, type WorkoutRow } from '../src/lib/training.js';
 import { withTrend } from '../src/lib/trend.js';
 
 describe('date math', () => {
@@ -130,5 +130,31 @@ describe('normalizeSupersets', () => {
   it('handles empty and undefined input', () => {
     expect(normalizeSupersets([])).toEqual([]);
     expect(normalizeSupersets([undefined, undefined])).toEqual([null, null]);
+  });
+});
+
+describe('manual records', () => {
+  it('raise the PR baseline for later workouts only', () => {
+    const ws = [workout('2026-01-01', [{ exerciseId: 'squat', sets: [[100, 5]] }]), workout('2026-01-10', [{ exerciseId: 'squat', sets: [[110, 5]] }])];
+    // 120 × 5 entered on Jan 5: the Jan 10 session (110 × 5) no longer counts as a PR.
+    expect(annotateWorkouts(ws, [{ exerciseId: 'squat', date: '2026-01-05', weightKg: 120, reps: 5 }])[1].prCount).toBe(0);
+    // Entered after the session, it doesn't change history.
+    expect(annotateWorkouts(ws, [{ exerciseId: 'squat', date: '2026-01-20', weightKg: 120, reps: 5 }])[1].prCount).toBe(1);
+    // A manual record before the first session makes that session comparable (no longer just a baseline).
+    expect(annotateWorkouts([ws[0]], [{ exerciseId: 'squat', date: '2025-12-01', weightKg: 90, reps: 5 }])[0].prCount).toBe(1);
+  });
+
+  it('recordProgressions lists each new best in order (current = last, previous = the one before)', () => {
+    const training = annotateWorkouts([
+      workout('2026-02-01', [{ exerciseId: 'bench', sets: [[80, 5], [85, 3], [60, 10, true]] }]),
+      workout('2026-02-08', [{ exerciseId: 'bench', sets: [[80, 5]] }]), // no improvement
+    ]);
+    const list = recordProgressions(training, [{ id: 'r1', exerciseId: 'bench', date: '2026-02-15', weightKg: 90, reps: 5 }]).get('bench')!;
+    expect(list.map((r) => [r.date, r.weightKg, r.reps, r.source])).toEqual([
+      ['2026-02-01', 80, 5, 'workout'], // e1RM 93.3, then 85 × 3 = 93.5 edges it
+      ['2026-02-01', 85, 3, 'workout'],
+      ['2026-02-15', 90, 5, 'manual'],
+    ]);
+    expect(list.at(-1)).toMatchObject({ recordId: 'r1', e1rm: 105 });
   });
 });

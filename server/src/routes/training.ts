@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { z } from 'zod';
 import type { Prisma } from '@prisma/client';
 import { prisma, HttpError, zDay, param } from '../lib/core.js';
-import { assertExercisesVisible, loadTraining, normalizeSupersets, summarize } from '../lib/training.js';
+import { assertExercisesVisible, loadManualRecords, loadTraining, normalizeSupersets, recordProgressions, summarize } from '../lib/training.js';
 
 export const trainingRouter = Router();
 
@@ -256,6 +256,58 @@ trainingRouter.put('/workouts/:id', async (req, res) => {
 trainingRouter.delete('/workouts/:id', async (req, res) => {
   const { count } = await prisma.workout.deleteMany({ where: { id: param(req, 'id'), userId: req.userId } });
   if (!count) throw new HttpError(404, 'Workout not found');
+  res.status(204).end();
+});
+
+// ---------- records ----------
+
+/**
+ * Every exercise the user can see, with its current and previous best set (by e1RM) from workouts and records
+ * entered by hand, plus the hand-entered ones so they can be removed.
+ */
+trainingRouter.get('/records', async (req, res) => {
+  const [exercises, training, manual] = await Promise.all([
+    prisma.exercise.findMany({ where: { OR: [{ userId: null }, { userId: req.userId }] }, orderBy: { name: 'asc' } }),
+    loadTraining(req.userId),
+    loadManualRecords(req.userId),
+  ]);
+  const progressions = recordProgressions(training, manual);
+  res.json(
+    exercises.map((e) => {
+      const list = progressions.get(e.id) ?? [];
+      return {
+        exerciseId: e.id,
+        name: e.name,
+        muscleGroup: e.muscleGroup,
+        equipment: e.equipment,
+        isCustom: e.userId !== null,
+        current: list.at(-1) ?? null,
+        previous: list.at(-2) ?? null,
+        manual: manual.filter((r) => r.exerciseId === e.id).reverse(),
+      };
+    }),
+  );
+});
+
+trainingRouter.post('/records', async (req, res) => {
+  const body = z
+    .object({
+      exerciseId: z.string(),
+      date: zDay,
+      weightKg: z.number().min(0).max(1500),
+      reps: z.number().int().min(1).max(1000),
+    })
+    .parse(req.body);
+  await assertExercisesVisible(req.userId, [body.exerciseId]);
+  const r = await prisma.personalRecord.create({
+    data: { ...body, weightKg: Math.round(body.weightKg * 100) / 100, userId: req.userId },
+  });
+  res.status(201).json(r);
+});
+
+trainingRouter.delete('/records/:id', async (req, res) => {
+  const { count } = await prisma.personalRecord.deleteMany({ where: { id: param(req, 'id'), userId: req.userId } });
+  if (!count) throw new HttpError(404, 'Record not found');
   res.status(204).end();
 });
 

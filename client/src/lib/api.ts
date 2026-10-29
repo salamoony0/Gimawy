@@ -194,6 +194,29 @@ export type ExerciseHistory = {
   };
 };
 
+/** A best set: from a workout (`workoutId`) or entered by hand on the Records tab (`recordId`). */
+export type RecordSet = {
+  date: string;
+  weightKg: number;
+  reps: number;
+  e1rm: number;
+  source: 'workout' | 'manual';
+  workoutId?: string;
+  recordId?: string;
+};
+
+/** GET /records: one row per visible exercise. */
+export type RecordRow = {
+  exerciseId: string;
+  name: string;
+  muscleGroup: string;
+  equipment: string;
+  isCustom: boolean;
+  current: RecordSet | null;
+  previous: RecordSet | null;
+  manual: { id: string; date: string; weightKg: number; reps: number }[];
+};
+
 export type Routine = {
   id: string;
   name: string;

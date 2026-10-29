@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { z } from 'zod';
-import { prisma, HttpError, zDay, param, todayFromQuery, weekStart, round1 } from '../lib/core.js';
-import { assertExercisesVisible, loadTraining } from '../lib/training.js';
+import { prisma, HttpError, zDay, param, todayFromQuery, weekStart, round1, e1rm } from '../lib/core.js';
+import { assertExercisesVisible, loadManualRecords, loadTraining } from '../lib/training.js';
 import { lookupBarcode } from '../lib/openfoodfacts.js';
 
 export const trackingRouter = Router();
@@ -79,7 +79,7 @@ trackingRouter.delete('/body/:date', async (req, res) => {
 
 trackingRouter.get('/goals', async (req, res) => {
   const today = todayFromQuery(req);
-  const [goals, latestWeight, training, cardio] = await Promise.all([
+  const [goals, latestWeight, training, cardio, manual] = await Promise.all([
     prisma.goal.findMany({
       where: { userId: req.userId },
       orderBy: { createdAt: 'asc' },
@@ -88,11 +88,13 @@ trackingRouter.get('/goals', async (req, res) => {
     prisma.bodyWeight.findFirst({ where: { userId: req.userId }, orderBy: { date: 'desc' } }),
     loadTraining(req.userId),
     prisma.cardioSession.findMany({ where: { userId: req.userId, date: { gte: weekStart(today) } } }),
+    loadManualRecords(req.userId),
   ]);
 
   const bestE1rm = new Map<string, number>();
   for (const w of training)
     for (const e of w.exercises) bestE1rm.set(e.exerciseId, Math.max(bestE1rm.get(e.exerciseId) ?? 0, e.bestE1rm));
+  for (const r of manual) bestE1rm.set(r.exerciseId, Math.max(bestE1rm.get(r.exerciseId) ?? 0, round1(e1rm(r.weightKg, r.reps))));
   const cardioThisWeek = cardio.reduce((n, s) => n + s.durationMin, 0);
 
   res.json(
@@ -144,11 +146,14 @@ trackingRouter.post('/goals', async (req, res) => {
     const latest = await prisma.bodyWeight.findFirst({ where: { userId: req.userId }, orderBy: { date: 'desc' } });
     startValue = latest?.weightKg ?? null;
   } else if (body.type === 'lift') {
-    const training = await loadTraining(req.userId);
-    startValue = training
-      .flatMap((w) => w.exercises)
-      .filter((e) => e.exerciseId === body.exerciseId)
-      .reduce((m, e) => Math.max(m, e.bestE1rm), 0);
+    const [training, manual] = await Promise.all([loadTraining(req.userId), loadManualRecords(req.userId)]);
+    startValue = Math.max(
+      training
+        .flatMap((w) => w.exercises)
+        .filter((e) => e.exerciseId === body.exerciseId)
+        .reduce((m, e) => Math.max(m, e.bestE1rm), 0),
+      ...manual.filter((r) => r.exerciseId === body.exerciseId).map((r) => round1(e1rm(r.weightKg, r.reps))),
+    );
   }
 
   const goal = await prisma.goal.create({

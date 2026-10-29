@@ -49,25 +49,45 @@ const workoutInclude = {
 
 export type WorkoutRow = Prisma.WorkoutGetPayload<{ include: typeof workoutInclude }>;
 
+export type ManualRecord = { id: string; exerciseId: string; date: string; weightKg: number; reps: number };
+
 /** Loads every workout for a user in chronological order, annotated (see annotateWorkouts). */
 export async function loadTraining(userId: string): Promise<AnnotatedWorkout[]> {
-  const workouts = await prisma.workout.findMany({
+  const [workouts, manual] = await Promise.all([
+    prisma.workout.findMany({
+      where: { userId },
+      orderBy: [{ date: 'asc' }, { startedAt: 'asc' }],
+      include: workoutInclude,
+    }),
+    loadManualRecords(userId),
+  ]);
+  return annotateWorkouts(workouts, manual);
+}
+
+export function loadManualRecords(userId: string): Promise<ManualRecord[]> {
+  return prisma.personalRecord.findMany({
     where: { userId },
-    orderBy: [{ date: 'asc' }, { startedAt: 'asc' }],
-    include: workoutInclude,
+    orderBy: [{ date: 'asc' }, { createdAt: 'asc' }],
+    select: { id: true, exerciseId: true, date: true, weightKg: true, reps: true },
   });
-  return annotateWorkouts(workouts);
 }
 
 /**
  * Annotates each working set (rows in chronological order) with its estimated
  * 1RM and whether it beat every earlier set of that exercise (a PR). The first
- * session of an exercise only sets the baseline, so it never counts as a PR.
+ * session of an exercise only sets the baseline, so it never counts as a PR. Records entered by hand (`manual`)
+ * count as history from their date on: a later workout is only a PR if it beats them too.
  */
-export function annotateWorkouts(workouts: WorkoutRow[]): AnnotatedWorkout[] {
+export function annotateWorkouts(workouts: WorkoutRow[], manual: Omit<ManualRecord, 'id'>[] = []): AnnotatedWorkout[] {
   const best = new Map<string, number>();
+  const pending = [...manual].sort((a, b) => a.date.localeCompare(b.date));
+  let next = 0;
 
   return workouts.map((w) => {
+    for (; next < pending.length && pending[next].date < w.date; next++) {
+      const r = pending[next];
+      best.set(r.exerciseId, Math.max(best.get(r.exerciseId) ?? 0, round1(e1rm(r.weightKg, r.reps))));
+    }
     let prCount = 0;
     let volume = 0;
     let setCount = 0;
@@ -145,6 +165,52 @@ export function summarize(w: AnnotatedWorkout) {
       best: e.sets.reduce<AnnotatedSet | null>((b, s) => (!s.isWarmup && (!b || s.e1rm > b.e1rm) ? s : b), null),
     })),
   };
+}
+
+export type RecordEntry = {
+  date: string;
+  weightKg: number;
+  reps: number;
+  e1rm: number;
+  source: 'workout' | 'manual';
+  workoutId?: string;
+  recordId?: string;
+};
+
+/**
+ * Per exercise, the sets that set a new best e1RM when they happened, oldest first: the last one is the current
+ * record and the one before it the previous record. Workout sets (warm-ups excluded) and manual records are
+ * merged by date; on the same day a manual record counts after that day's workouts.
+ */
+export function recordProgressions(training: AnnotatedWorkout[], manual: ManualRecord[]): Map<string, RecordEntry[]> {
+  const entries: (RecordEntry & { exerciseId: string; rank: number })[] = [];
+  training.forEach((w, wi) => {
+    for (const e of w.exercises)
+      for (const s of e.sets)
+        if (!s.isWarmup && s.reps > 0)
+          entries.push({ exerciseId: e.exerciseId, date: w.date, weightKg: s.weightKg, reps: s.reps, e1rm: s.e1rm, source: 'workout', workoutId: w.id, rank: wi });
+  });
+  manual.forEach((r, i) =>
+    entries.push({
+      exerciseId: r.exerciseId,
+      date: r.date,
+      weightKg: r.weightKg,
+      reps: r.reps,
+      e1rm: round1(e1rm(r.weightKg, r.reps)),
+      source: 'manual',
+      recordId: r.id,
+      rank: training.length + i,
+    }),
+  );
+  entries.sort((a, b) => a.date.localeCompare(b.date) || a.rank - b.rank);
+
+  const out = new Map<string, RecordEntry[]>();
+  for (const { exerciseId, rank: _, ...entry } of entries) {
+    const list = out.get(exerciseId) ?? [];
+    if (!list.length || entry.e1rm > list[list.length - 1].e1rm) list.push(entry);
+    out.set(exerciseId, list);
+  }
+  return out;
 }
 
 /**

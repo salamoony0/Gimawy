@@ -5,7 +5,7 @@ import { libraryExercise, newUser, prisma, workoutBody } from './helpers.js';
 // and must not see it in their own lists or stats.
 let a: Awaited<ReturnType<typeof newUser>>;
 let b: Awaited<ReturnType<typeof newUser>>;
-const ids = {} as Record<'workout' | 'routine' | 'cardio' | 'food' | 'goal' | 'liftGoal' | 'exercise', string>;
+const ids = {} as Record<'workout' | 'routine' | 'cardio' | 'food' | 'goal' | 'liftGoal' | 'exercise' | 'record', string>;
 const date = '2026-10-05';
 
 beforeAll(async () => {
@@ -23,6 +23,7 @@ beforeAll(async () => {
   await a.agent.put(`/api/body/${date}`).send({ weightKg: 90 });
   ids.goal = (await a.agent.post('/api/goals').send({ type: 'weight', title: 'Cut', targetValue: 80 })).body.id;
   ids.liftGoal = (await a.agent.post('/api/goals').send({ type: 'lift', title: 'Press', exerciseId: ids.exercise, targetValue: 120 })).body.id;
+  ids.record = (await a.agent.post('/api/records').send({ exerciseId: lib.id, date, weightKg: 222, reps: 2 })).body.id;
   expect(Object.values(ids).every(Boolean)).toBe(true);
 });
 
@@ -88,6 +89,15 @@ describe('cross-user isolation', () => {
     expect(exercises.body.some((e: { id: string }) => e.id === ids.exercise)).toBe(false);
     expect(dash.status).toBe(200);
     expect(JSON.stringify(dash.body)).not.toMatch(/Secret|Cut/);
+  });
+
+  it('B can’t see, delete or add records for A', async () => {
+    expect((await b.agent.delete(`/api/records/${ids.record}`)).status).toBe(404);
+    expect((await b.agent.post('/api/records').send({ exerciseId: ids.exercise, date, weightKg: 50, reps: 5 })).status).toBe(400);
+    const rows = (await b.agent.get('/api/records')).body as { exerciseId: string; current: unknown; manual: unknown[] }[];
+    expect(rows.some((r) => r.exerciseId === ids.exercise)).toBe(false); // A's custom exercise
+    expect(rows.every((r) => r.current === null && r.manual.length === 0)).toBe(true);
+    expect(JSON.stringify(rows)).not.toContain('222');
   });
 
   it('B’s barcode lookups never return A’s saved products', async () => {
