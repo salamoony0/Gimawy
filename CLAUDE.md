@@ -15,7 +15,7 @@ The roadmap in **[PLAN.md](PLAN.md)** is implemented: all 4 phases are merged in
 **Owner's manual steps to go live** (in order, details in Deploying):
 1. ~~Push to GitHub~~ ✅ done: https://github.com/salamoony0/Gimawy (SSH key `~/.ssh/id_ed25519` on this Mac; `git push` works without prompts).
 2. ~~Supabase~~ ✅ done: project in `eu-west-1` (pooler URLs set on Render only, never in the repo).
-3. ~~Render~~ ✅ done: Blueprint live at https://gymawy-api.onrender.com (`/api/health` ok, migrations applied). `RESEND_API_KEY`, `MAIL_FROM`, `APP_URL` still empty.
+3. ~~Render~~ ✅ done: Blueprint live at https://gymawy-api.onrender.com (`/api/health` ok, migrations applied). Resend key set by the owner (2026-10-29). Deploys were manual-only until 2026-10-29 (owner was asked to turn on Auto-Deploy → On Commit); if a push doesn't show up, check Render → Events.
 4. ~~Vercel~~ ✅ done: https://gimawy.vercel.app (project `gimawy`, root `client`, no env vars). Verified 2026-10-27: pages + deep links, `/api` rewrite, security headers, register → `Secure; HttpOnly; SameSite=Lax` cookie → `/me` → 69 library exercises → account delete.
 5. On Render set `APP_URL=https://gimawy.vercel.app`. Resend: get an API key (and verify a sending domain, or you can only email yourself); set `RESEND_API_KEY`, `MAIL_FROM`, `APP_URL` on Render.
 6. Verify on the live URL, on desktop **and iPhone Safari**: register → setup → log workout → scan meal → reload (session survives); reset email arrives; `/api/health` works through the rewrite; 11th bad login → 429.
@@ -24,7 +24,7 @@ What each phase did (2026-10-27):
 - **Phase 1, editing:** `PUT /workouts/:id`, `PUT /routines/:id`, `PATCH /cardio|food|goals/:id`, `PATCH`+`DELETE /exercises/:id` (custom only; 409 if used). Client: workout edit mode (`workoutStore.startEdit`), `EditFoodSheet`, `CardioSheet`/`GoalSheet` `initial` prop, `components/RoutineEditor.tsx`, `CustomExerciseSheet`.
 - **Phase 2, security:** see Conventions → Security.
 - **Phase 3, tests:** see Testing.
-- **Phase 5, features (2026-10-29, branch `phase-5-features`):** supersets, barcode scanning, offline logging, adaptive calorie targets, Train → Records tab. Formulas: [docs/CALORIES.md](docs/CALORIES.md).
+- **Phase 5, features (2026-10-29, branch `phase-5-features`, live since 2026-10-29 — verified /records, barcode lookup, autoAdjustTargets on production):** supersets, barcode scanning, offline logging, adaptive calorie targets, Train → Records tab. Formulas: [docs/CALORIES.md](docs/CALORIES.md).
 - **Phase 4, deploy prep:** Postgres everywhere with Prisma migrations, local embedded Postgres for dev/tests/E2E, seed split (`library` / `demo`), `render.yaml`, `client/vercel.json`, demo button only when the demo account exists. Verified a production build (`NODE_ENV=production`, same-origin proxy) in Chrome: `Secure; HttpOnly; SameSite=Lax` cookie, session survives reload, SPA deep links work.
 
 ## Commands (run from repo root)
@@ -167,7 +167,7 @@ client/src/
 
 ## Deploying (Supabase + Render + Vercel)
 
-Live: client https://gimawy.vercel.app, API https://gymawy-api.onrender.com, DB Supabase `eu-west-1`. Email (Resend) not configured yet.
+Live: client https://gimawy.vercel.app, API https://gymawy-api.onrender.com, DB Supabase `eu-west-1`. Email: Resend key set (sending-domain verification and a real reset-email test still pending).
 
 - **Supabase** (database): Project → Connect → ORMs → Prisma gives both URLs. `DATABASE_URL` = transaction pooler (`…pooler.supabase.com:6543/postgres?pgbouncer=true`), `DIRECT_URL` = session pooler (`…pooler.supabase.com:5432/postgres`); the direct `db.<ref>.supabase.co` host is IPv6-only, which Render can't reach. Free projects pause after 7 days without activity (resume from the dashboard).
 - **Render** (API, `render.yaml` Blueprint): build `npm ci --include=dev && npm run build -w server && npm run db:migrate -w server && npm run seed:library -w server` (+ demo when `SEED_DEMO=1`), start `npm start -w server`, health check `/api/health`. `JWT_SECRET` is generated. Free tier sleeps after 15 min idle, so the first request takes ~30–50 s. Migrations run on every deploy (`migrate deploy` is a no-op when up to date).
