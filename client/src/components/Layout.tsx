@@ -7,6 +7,7 @@ import { useActiveWorkout } from '../lib/activeWorkout';
 import { useMe } from '../lib/format';
 import { setOutboxOwner } from '../lib/offline';
 import { OfflineBar } from './OfflineBar';
+import { AutoAdjustTargets } from './AdaptiveTargets';
 
 const NAV = [
   { to: '/', label: 'Today', icon: House, end: true },
@@ -137,6 +138,7 @@ export function Layout() {
 
       <main className="mx-auto w-full max-w-6xl px-4 pb-32 pt-5 sm:px-6 lg:px-10 lg:pb-12 lg:pt-10">
         <OfflineBar />
+        {me?.autoAdjustTargets && <AutoAdjustTargets me={me} />}
         <Outlet />
       </main>
 

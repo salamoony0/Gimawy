@@ -107,6 +107,9 @@ export type User = {
   goal: 'lose' | 'maintain' | 'gain' | null;
   goalRateKg: number | null;
   onboarded: boolean;
+  /** Re-fit the calorie target to the observed TDEE once a week (see lib/energy.ts adaptiveTargets). */
+  autoAdjustTargets: boolean;
+  targetsAdjustedAt: string | null;
   latestWeightKg: number | null;
   createdAt: string;
 };

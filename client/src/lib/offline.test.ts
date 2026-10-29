@@ -40,7 +40,7 @@ describe('syncOutbox', () => {
   it('sends in order, drops entries the server rejects and stops at the first network failure', async () => {
     await queue('one', 'two', 'three', 'four');
     const responses = [ok(), ok({ error: 'Unknown exercise' }, 400), Promise.reject(new TypeError('offline again'))];
-    const fetch = vi.fn(async () => responses.shift() ?? ok());
+    const fetch = vi.fn(async (_url: string) => responses.shift() ?? ok());
     vi.stubGlobal('fetch', fetch);
 
     expect(await syncOutbox()).toEqual({ sent: 1, failed: [{ label: 'two', message: 'Unknown exercise' }] });

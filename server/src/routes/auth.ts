@@ -26,6 +26,8 @@ const publicUser = {
   goal: true,
   goalRateKg: true,
   onboarded: true,
+  autoAdjustTargets: true,
+  targetsAdjustedAt: true,
   createdAt: true,
 } as const;
 
@@ -227,6 +229,8 @@ authRouter.patch('/me', requireAuth, async (req, res) => {
       goal: z.enum(['lose', 'maintain', 'gain']),
       goalRateKg: z.number().min(0).max(1.5),
       onboarded: z.boolean(),
+      autoAdjustTargets: z.boolean(),
+      targetsAdjustedAt: zDay.nullable(),
     })
     .partial()
     .parse(req.body);

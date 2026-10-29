@@ -8,6 +8,7 @@ import { api, type User } from '../lib/api';
 import { useMe } from '../lib/format';
 import { clearApiCache, setOutboxOwner } from '../lib/offline';
 import { PageHeader } from '../components/Layout';
+import { AutoAdjustToggle } from '../components/AdaptiveTargets';
 import { Button, buttonClass, Card, Field, Input, Segmented, Sheet, Skeleton, useToast } from '../components/ui';
 
 type Form = {
@@ -171,6 +172,10 @@ export default function Settings() {
             Your macros add up to {macroKcal.toLocaleString()} kcal
             {Math.abs(kcalGap) > 100 && ` (${kcalGap > 0 ? '+' : ''}${kcalGap} vs your calorie target)`}.
           </p>
+          <div className="mt-4">
+            <AutoAdjustToggle me={me} />
+          </div>
+          <p className="mt-2 text-xs text-subtle">The Food page shows your measured maintenance calories once there’s enough data.</p>
         </Card>
 
         <Card>

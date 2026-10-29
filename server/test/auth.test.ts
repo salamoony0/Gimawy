@@ -21,6 +21,14 @@ describe('register / login / me / logout', () => {
     expect((await agent.get('/api/auth/me')).status).toBe(200);
   });
 
+  it('stores the adaptive-target settings on the profile', async () => {
+    const { agent } = await newUser();
+    expect((await agent.get('/api/auth/me')).body).toMatchObject({ autoAdjustTargets: false, targetsAdjustedAt: null });
+    const res = await agent.patch('/api/auth/me').send({ autoAdjustTargets: true, targetsAdjustedAt: '2026-10-29', calorieTarget: 2450 });
+    expect(res.body).toMatchObject({ autoAdjustTargets: true, targetsAdjustedAt: '2026-10-29', calorieTarget: 2450 });
+    expect((await agent.patch('/api/auth/me').send({ targetsAdjustedAt: 'last week' })).status).toBe(400);
+  });
+
   it('rejects duplicate emails, short passwords and wrong passwords', async () => {
     const { email } = await newUser();
     expect((await request(app).post('/api/auth/register').send({ email, password: PASSWORD, name: 'x' })).status).toBe(409);

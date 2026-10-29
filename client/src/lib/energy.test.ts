@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { ageFrom, bmr, estimateCardio, estimateStrength, planTargets } from './energy';
+import { adaptiveTargets, ageFrom, bmr, estimateCardio, estimateStrength, planTargets } from './energy';
 
 const male = { sex: 'male' as const, weightKg: 85, heightCm: 178, age: 28 };
 
@@ -62,5 +62,47 @@ describe('estimateStrength / ageFrom', () => {
   it('counts birthdays correctly', () => {
     expect(ageFrom('1998-06-15', new Date(2026, 5, 14))).toBe(27);
     expect(ageFrom('1998-06-15', new Date(2026, 5, 15))).toBe(28);
+  });
+});
+
+describe('adaptiveTargets', () => {
+  const today = '2026-10-29';
+  const day = (offset: number) => {
+    const d = new Date(Date.UTC(2026, 9, 29 + offset));
+    return d.toISOString().slice(0, 10);
+  };
+  // 28 days of 2,500 kcal while losing exactly 0.5 kg/week (90 → 88 kg).
+  const intake = Array.from({ length: 28 }, (_, i) => ({ date: day(-28 + i), calories: 2500 }));
+  const weighIns = Array.from({ length: 29 }, (_, i) => ({ date: day(-28 + i), weightKg: 90 - (0.5 / 7) * i }));
+  const base = { today, intake, weighIns, currentTarget: 2200, sex: 'male' as const, goal: 'lose' as const, rateKgPerWeek: 0.5 };
+
+  it('recovers maintenance from intake and the weight slope', () => {
+    const r = adaptiveTargets(base);
+    expect(r.status).toBe('ready');
+    if (r.status !== 'ready') return;
+    // 2,500 eaten + 0.5 kg/week × 7,700 ÷ 7 = 550 released from body stores → 3,050 burned.
+    expect(r).toMatchObject({ avgIntake: 2500, weightChangePerWeek: -0.5, tdee: 3050, idealTarget: 2500, loggedDays: 28 });
+    // Moves at most 250 kcal at a time: 2,200 → 2,450, macros from the latest weight (88 kg, cutting).
+    expect(r.suggested).toEqual({ calories: 2450, protein: 194, fat: 68, carbs: 266 });
+    expect(r.change).toBe(250);
+  });
+
+  it('ignores today and partially logged days', () => {
+    const noisy = [...intake, { date: today, calories: 300 }, { date: day(-3), calories: 400 }];
+    const r = adaptiveTargets({ ...base, intake: noisy.filter((d, i, all) => all.findIndex((x) => x.date === d.date) === i) });
+    expect(r.status === 'ready' && r.avgIntake).toBe(2500);
+  });
+
+  it('keeps collecting until there are 14 logged days and 4 weigh-ins over 14+ days', () => {
+    expect(adaptiveTargets({ ...base, intake: intake.slice(-13) })).toMatchObject({ status: 'collecting', loggedDays: 13 });
+    expect(adaptiveTargets({ ...base, weighIns: weighIns.slice(-10) })).toMatchObject({ status: 'collecting', weighSpanDays: 9 });
+    expect(adaptiveTargets({ ...base, weighIns: [weighIns[0], weighIns[28]] })).toMatchObject({ status: 'collecting', weighIns: 2 });
+  });
+
+  it('maintenance goals target the observed TDEE, and the floor still applies', () => {
+    const r = adaptiveTargets({ ...base, goal: 'maintain', currentTarget: 3000 });
+    expect(r.status === 'ready' && r.suggested.calories).toBe(3050);
+    const low = adaptiveTargets({ ...base, intake: intake.map((d) => ({ ...d, calories: 1000 })), currentTarget: 1300, sex: 'female', goal: 'lose', rateKgPerWeek: 1 });
+    expect(low.status === 'ready' && low.suggested.calories).toBe(1200);
   });
 });

@@ -23,6 +23,7 @@ import { fmtCompact, fmtDay, fmtInt, localDay, relativeDay, shiftDay, useMe } fr
 import { PageHeader } from '../components/Layout';
 import { Badge, Button, Field, IconButton, Input, Segmented, Sheet, Skeleton, useToast } from '../components/ui';
 import { axisProps, ChartTooltip, gridProps, Rings } from '../components/viz';
+import { AdaptiveCard } from '../components/AdaptiveTargets';
 import { BarcodeSheet } from '../components/BarcodeSheet';
 import { fromDraft, guessMeal, ItemEditor, MEALS, sum, toDraft, type DraftItem } from '../components/FoodForm';
 
@@ -180,6 +181,7 @@ export default function Food() {
 
         <aside className="flex flex-col gap-5">
           <TrendCard date={date} me={me} />
+          {me && <AdaptiveCard me={me} />}
         </aside>
       </div>
 
