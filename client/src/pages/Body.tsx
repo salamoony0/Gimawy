@@ -4,7 +4,7 @@ import { motion } from 'motion/react';
 import { clsx } from 'clsx';
 import { CartesianGrid, ComposedChart, Area, Line, ReferenceLine, ResponsiveContainer, Scatter, Tooltip, XAxis, YAxis } from 'recharts';
 import { CalendarClock, Dumbbell, HeartPulse, Minus, Pencil, Plus, Scale, Target, Trash } from 'lucide-react';
-import { api, type BodyWeight, type Goal } from '../lib/api';
+import { api, isQueued, type BodyWeight, type Goal } from '../lib/api';
 import { fmtDay, localDay, parseDay, relativeDay, shiftDay, useMe, useUnits } from '../lib/format';
 import { PageHeader } from '../components/Layout';
 import { Bar, Button, EmptyState, Field, IconButton, Input, Segmented, Select, Sheet, Skeleton, useToast } from '../components/ui';
@@ -212,9 +212,9 @@ function WeighIn({ latestKg }: { latestKg?: number }) {
   const [value, setValue] = useState('');
   const shown = value || (latestKg ? String(u.weight(latestKg)) : '');
   const save = useMutation({
-    mutationFn: () => api.put(`/body/${date}`, { weightKg: u.toKg(Number(shown)) }),
-    onSuccess: () => {
-      toast(`Logged ${shown} ${u.w}`);
+    mutationFn: () => api.offline('PUT', `/body/${date}`, { weightKg: u.toKg(Number(shown)) }, `Weigh-in ${shown} ${u.w}`),
+    onSuccess: (res) => {
+      toast(isQueued(res) ? `${shown} ${u.w} saved on this device, it will sync automatically.` : `Logged ${shown} ${u.w}`);
       setValue('');
     },
     onError: (e) => toast(e.message, 'error'),

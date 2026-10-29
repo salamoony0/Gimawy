@@ -5,7 +5,7 @@ import { MutationCache, QueryClient, QueryClientProvider, hashKey, type QueryKey
 import { MotionConfig } from 'motion/react';
 import { Layout } from './components/Layout';
 import { Spinner, ToastProvider } from './components/ui';
-import { ApiError } from './lib/api';
+import { ApiError, isQueued } from './lib/api';
 import { useMe } from './lib/format';
 import './index.css';
 
@@ -26,14 +26,21 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 30_000,
+      // Always try the request: offline, the service worker answers from its cache (see vite.config.ts).
+      networkMode: 'offlineFirst',
       retry: (count, err) => !(err instanceof ApiError && err.status < 500) && count < 2,
     },
+    // Writes decide for themselves what to do offline (api.offline queues logging, everything else fails fast).
+    mutations: { networkMode: 'always' },
   },
   // Any write can move dashboard numbers (and the latest weight on `me`), so refresh everything after a mutation.
   // Deletes pass `meta: { removes: queryKey }` so the deleted item's own query is skipped (refetching it would 404
   // while its page is still mounted); the page navigates away and the stale entry is garbage-collected.
+  // A write queued offline changed nothing on the server yet (and refetching would wait for the network), so it
+  // skips this; OfflineBar refreshes everything once the outbox has synced.
   mutationCache: new MutationCache({
-    onSuccess: (_data, _vars, _ctx, mutation) => {
+    onSuccess: (data, _vars, _ctx, mutation) => {
+      if (isQueued(data)) return;
       const removes = mutation.meta?.removes as QueryKey | undefined;
       const skip = removes && hashKey(removes);
       return queryClient.invalidateQueries({ predicate: (q) => q.queryHash !== skip });

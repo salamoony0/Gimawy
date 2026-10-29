@@ -6,7 +6,9 @@ import { Calculator, Download, KeyRound, LogOut, MonitorSmartphone, ShieldCheck,
 import { ACTIVITY, ageFrom } from '../lib/energy';
 import { api, type User } from '../lib/api';
 import { useMe } from '../lib/format';
+import { clearApiCache, setOutboxOwner } from '../lib/offline';
 import { PageHeader } from '../components/Layout';
+import { AutoAdjustToggle } from '../components/AdaptiveTargets';
 import { Button, buttonClass, Card, Field, Input, Segmented, Sheet, Skeleton, useToast } from '../components/ui';
 
 type Form = {
@@ -59,6 +61,8 @@ export default function Settings() {
   const logout = useMutation({
     mutationFn: () => api.post('/auth/logout'),
     onSuccess: () => {
+      setOutboxOwner(null);
+      void clearApiCache();
       qc.clear();
       navigate('/login', { replace: true });
     },
@@ -168,6 +172,10 @@ export default function Settings() {
             Your macros add up to {macroKcal.toLocaleString()} kcal
             {Math.abs(kcalGap) > 100 && ` (${kcalGap > 0 ? '+' : ''}${kcalGap} vs your calorie target)`}.
           </p>
+          <div className="mt-4">
+            <AutoAdjustToggle me={me} />
+          </div>
+          <p className="mt-2 text-xs text-subtle">The Food page shows your measured maintenance calories once there’s enough data.</p>
         </Card>
 
         <Card>
@@ -215,6 +223,8 @@ function SecurityCard({ email }: { email: string }) {
   const [sheet, setSheet] = useState<'password' | 'delete' | null>(null);
   const close = () => setSheet(null);
   const signedOut = (message: string) => {
+    setOutboxOwner(null);
+    void clearApiCache();
     qc.clear();
     navigate('/login', { replace: true });
     toast(message);

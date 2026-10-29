@@ -1,3 +1,5 @@
+import { isNetworkError, outbox, type Outgoing } from './offline';
+
 const BASE = `${import.meta.env.VITE_API_URL ?? ''}/api`;
 
 export class ApiError extends Error {
@@ -20,7 +22,24 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
   return data as T;
 }
 
+/** What `api.offline()` returns when the write was queued on the device instead of sent. */
+export type Queued = { queued: true };
+export const isQueued = (r: unknown): r is Queued => typeof r === 'object' && r !== null && (r as Queued).queued === true;
+
 export const api = {
+  /**
+   * A logging write that may happen without signal (at the gym): sent now if possible, otherwise queued in the
+   * offline outbox and replayed later by `syncOutbox()`. HTTP errors (validation etc.) are thrown as usual.
+   */
+  offline: async <T,>(method: Outgoing['method'], path: string, body: unknown, label: string): Promise<T | Queued> => {
+    try {
+      return await request<T>(method, path, body);
+    } catch (e) {
+      if (!isNetworkError(e)) throw e;
+      outbox.add({ method, path, body, label });
+      return { queued: true };
+    }
+  },
   get: <T,>(path: string) => request<T>('GET', path),
   post: <T,>(path: string, body?: unknown) => request<T>('POST', path, body),
   put: <T,>(path: string, body?: unknown) => request<T>('PUT', path, body),
@@ -37,6 +56,36 @@ export const api = {
     URL.revokeObjectURL(url);
   },
 };
+
+export type SyncResult = { sent: number; failed: { label: string; message: string }[] };
+let syncing: Promise<SyncResult> | null = null;
+
+/**
+ * Replays the signed-in account's queued writes in order. Stops at the first one that can't be delivered yet
+ * (still offline, signed out, rate limited, server error) and keeps it for next time; one the server rejects
+ * outright (4xx) is dropped and reported, so a bad entry can't block the rest forever.
+ */
+export function syncOutbox(): Promise<SyncResult> {
+  syncing ??= (async () => {
+    const result: SyncResult = { sent: 0, failed: [] };
+    for (const item of outbox.mine()) {
+      try {
+        await request(item.method, item.path, item.body);
+        outbox.remove(item.id);
+        result.sent++;
+      } catch (e) {
+        if (e instanceof ApiError && e.status >= 400 && e.status < 500 && e.status !== 401 && e.status !== 408 && e.status !== 429) {
+          outbox.remove(item.id);
+          result.failed.push({ label: item.label, message: e.message });
+          continue;
+        }
+        break;
+      }
+    }
+    return result;
+  })().finally(() => (syncing = null));
+  return syncing;
+}
 
 // ---------- types (mirror the server responses) ----------
 
@@ -58,6 +107,9 @@ export type User = {
   goal: 'lose' | 'maintain' | 'gain' | null;
   goalRateKg: number | null;
   onboarded: boolean;
+  /** Re-fit the calorie target to the observed TDEE once a week (see lib/energy.ts adaptiveTargets). */
+  autoAdjustTargets: boolean;
+  targetsAdjustedAt: string | null;
   latestWeightKg: number | null;
   createdAt: string;
 };
@@ -113,6 +165,7 @@ export type WorkoutDetail = {
     name: string;
     muscleGroup: string;
     equipment: string;
+    supersetGroup: number | null;
     volume: number;
     bestE1rm: number;
     sets: SetRow[];
@@ -141,10 +194,33 @@ export type ExerciseHistory = {
   };
 };
 
+/** A best set: from a workout (`workoutId`) or entered by hand on the Records tab (`recordId`). */
+export type RecordSet = {
+  date: string;
+  weightKg: number;
+  reps: number;
+  e1rm: number;
+  source: 'workout' | 'manual';
+  workoutId?: string;
+  recordId?: string;
+};
+
+/** GET /records: one row per visible exercise. */
+export type RecordRow = {
+  exerciseId: string;
+  name: string;
+  muscleGroup: string;
+  equipment: string;
+  isCustom: boolean;
+  current: RecordSet | null;
+  previous: RecordSet | null;
+  manual: { id: string; date: string; weightKg: number; reps: number }[];
+};
+
 export type Routine = {
   id: string;
   name: string;
-  exercises: { exerciseId: string; name: string; muscleGroup: string; targetSets: number; targetReps: number }[];
+  exercises: { exerciseId: string; name: string; muscleGroup: string; targetSets: number; targetReps: number; supersetGroup: number | null }[];
 };
 
 export type CardioType = 'run' | 'walk' | 'incline' | 'cycle' | 'row' | 'swim' | 'elliptical' | 'stairs' | 'hiit' | 'other';
@@ -178,7 +254,7 @@ export type Goal = {
 };
 
 export type Meal = 'breakfast' | 'lunch' | 'dinner' | 'snack';
-export type FoodSource = 'manual' | 'label' | 'screenshot' | 'photo' | 'text';
+export type FoodSource = 'manual' | 'label' | 'screenshot' | 'photo' | 'text' | 'barcode';
 
 export type FoodItem = {
   name: string;
@@ -192,12 +268,23 @@ export type FoodItem = {
 export type FoodEntry = FoodItem & { id: string; date: string; meal: Meal; source: FoodSource };
 
 export type FoodAnalysis = {
-  source: Exclude<FoodSource, 'manual'>;
+  source: Exclude<FoodSource, 'manual' | 'barcode'>;
   confidence: 'high' | 'medium' | 'low';
   mealName: string;
   notes: string;
   items: (FoodItem & { quantity: string })[];
 };
+
+export type BarcodeProduct = {
+  code: string;
+  name: string;
+  brand: string | null;
+  per100g: { calories: number; protein: number; carbs: number; fat: number } | null;
+  serving: { label: string; grams: number } | null;
+};
+
+/** GET /food/barcode/:code — `mine` is the user's own last entry for that code (takes priority). */
+export type BarcodeLookup = { code: string; product: BarcodeProduct | null; mine: FoodItem | null };
 
 export type TrendPoint = { date: string; weightKg: number; trendKg: number };
 

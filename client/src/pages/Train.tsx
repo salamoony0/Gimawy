@@ -22,7 +22,7 @@ import {
   Waves,
   Zap,
 } from 'lucide-react';
-import { api, type CardioSession, type CardioType, type Routine, type WorkoutSummary } from '../lib/api';
+import { api, isQueued, type CardioSession, type CardioType, type Routine, type WorkoutSummary } from '../lib/api';
 import { fmtCompact, fmtDay, fmtDuration, localDay, MUSCLE_LABEL, relativeDay, shiftDay, useMe, useUnits } from '../lib/format';
 import { BURN_METHOD_LABEL, estimateCardio, profileFor } from '../lib/energy';
 import { PageHeader } from '../components/Layout';
@@ -30,8 +30,9 @@ import { Badge, Button, buttonClass, EmptyState, Field, IconButton, Input, Segme
 import { axisProps, ChartTooltip, gridProps } from '../components/viz';
 import { useExercises } from '../components/ExercisePicker';
 import { RoutineEditor } from '../components/RoutineEditor';
+import { RecordsTab } from '../components/RecordsTab';
 
-type Tab = 'strength' | 'cardio' | 'exercises';
+type Tab = 'strength' | 'cardio' | 'records' | 'exercises';
 
 export default function Train() {
   const [params, setParams] = useSearchParams();
@@ -54,12 +55,14 @@ export default function Train() {
         options={[
           { value: 'strength', label: 'Strength' },
           { value: 'cardio', label: 'Cardio' },
+          { value: 'records', label: 'Records' },
           { value: 'exercises', label: 'Exercises' },
         ]}
         className="mb-6 max-w-md"
       />
       {tab === 'strength' && <Strength />}
       {tab === 'cardio' && <Cardio />}
+      {tab === 'records' && <RecordsTab />}
       {tab === 'exercises' && <Exercises />}
     </>
   );
@@ -497,7 +500,7 @@ function CardioSheet({ open, onClose, initial }: { open: boolean; onClose: () =>
 
   const save = useMutation({
     mutationFn: () =>
-      (initial ? (body: unknown) => api.patch(`/cardio/${initial.id}`, body) : (body: unknown) => api.post('/cardio', body))({
+      api.offline(initial ? 'PATCH' : 'POST', initial ? `/cardio/${initial.id}` : '/cardio', {
         type: f.type,
         date: f.date,
         durationMin: duration,
@@ -506,9 +509,9 @@ function CardioSheet({ open, onClose, initial }: { open: boolean; onClose: () =>
         avgHeartRate: f.hr ? Math.round(Number(f.hr)) : null,
         inclinePct,
         speedKmh: speedKmh ? Math.round(speedKmh * 10) / 10 : null,
-      }),
-    onSuccess: () => {
-      toast(initial ? 'Session updated' : 'Cardio logged');
+      }, `${CARDIO_META[f.type].label} session`),
+    onSuccess: (res) => {
+      toast(isQueued(res) ? 'No connection. Saved on this device, it will sync automatically.' : initial ? 'Session updated' : 'Cardio logged');
       setF(blank);
       setLoadedId(null);
       onClose();

@@ -24,6 +24,7 @@ What each phase did (2026-10-27):
 - **Phase 1, editing:** `PUT /workouts/:id`, `PUT /routines/:id`, `PATCH /cardio|food|goals/:id`, `PATCH`+`DELETE /exercises/:id` (custom only; 409 if used). Client: workout edit mode (`workoutStore.startEdit`), `EditFoodSheet`, `CardioSheet`/`GoalSheet` `initial` prop, `components/RoutineEditor.tsx`, `CustomExerciseSheet`.
 - **Phase 2, security:** see Conventions → Security.
 - **Phase 3, tests:** see Testing.
+- **Phase 5, features (2026-10-29, branch `phase-5-features`):** supersets, barcode scanning, offline logging, adaptive calorie targets, Train → Records tab. Formulas: [docs/CALORIES.md](docs/CALORIES.md).
 - **Phase 4, deploy prep:** Postgres everywhere with Prisma migrations, local embedded Postgres for dev/tests/E2E, seed split (`library` / `demo`), `render.yaml`, `client/vercel.json`, demo button only when the demo account exists. Verified a production build (`NODE_ENV=production`, same-origin proxy) in Chrome: `Secure; HttpOnly; SameSite=Lax` cookie, session survives reload, SPA deep links work.
 
 ## Commands (run from repo root)
@@ -46,6 +47,8 @@ npm run test:e2e       # Playwright E2E in system Chrome (starts its own API :41
 
 Demo login: **demo@gymawy.app / demo1234** (12 weeks of data, already onboarded).
 
+⚠️ **`server/.env` may point at the live Supabase database** (the owner put the pooler URLs there on 2026-10-29). Prisma CLI, `npm run dev` and seeds read it, so for local work prefix commands with the local DB: `L=postgresql://postgres:postgres@localhost:5433/gymawy; DATABASE_URL=$L DIRECT_URL=$L npx prisma migrate dev --create-only --name x` (env vars beat `--env-file`). Tests and E2E always use their own throwaway databases. The `phase5_features` migration was applied to Supabase by accident this way (additive only, harmless).
+
 Environment notes: Node.js v24 is installed at `/usr/local/bin/node` (official installer; no Homebrew, no GitHub CLI, no Docker). Google Chrome is installed (E2E uses it via `channel: 'chrome'`). The old SQLite `server/prisma/dev.db` is kept only as a backup (gitignored); its one real account (`test@gmail.com`) was copied into Postgres.
 
 Git: `main`, remote `origin` → `git@github.com:salamoony0/Gimawy.git` (SSH) (its placeholder README commit was merged in with `-s ours`). Commit messages end with the Claude co-author line. `.env`, `*.db`, `dist`, `.claude/settings.local.json` and `*.tsbuildinfo` are ignored — never commit secrets.
@@ -56,7 +59,7 @@ npm in this repo uses `allowScripts` (root package.json) — only prisma, @prism
 
 - **Unit** (Vitest): `client/src/lib/*.test.ts` (energy known answers, date helpers, pace) and `server/test/unit.test.ts` (e1rm, weekStart, annotateWorkouts PR rules, withTrend). Keep math pure and exported so it can be tested.
 - **API** (`server/test/*.test.ts`, supertest against `app`): run one file at a time. `global-setup.ts` starts a throwaway embedded Postgres on a free port (or uses `TEST_DATABASE_URL`, which must be empty), runs `migrate deploy`, and hands the URL to workers via `provide`/`inject` (`setup-env.ts`). `RATE_LIMIT=off` except in `ratelimit.test.ts`; Gemini (`vi.mock('@google/genai')`) and `sendMail` are mocked. **Every new user-owned route needs a case in `isolation.test.ts`.**
-- **E2E** (`tests/e2e/*.spec.ts`, `@playwright/test`, `channel: 'chrome'`): `playwright.config.ts` starts the API on :4100 via `start-api.mjs` (throwaway Postgres on a free port, migrated + seeded; URL written to `tests/e2e/.db-url`) and Vite on :5174 (`API_PORT` env sets the proxy target). The `errors` fixture fails a test on any console error except 401/403/404/409. Specs: core (demo logging), onboarding, editing, account.
+- **E2E** (`tests/e2e/*.spec.ts`, `@playwright/test`, `channel: 'chrome'`): `playwright.config.ts` starts the API on :4100 via `start-api.mjs` (throwaway Postgres on a free port, migrated + seeded; URL written to `tests/e2e/.db-url`) and Vite on :5174 (`API_PORT` env sets the proxy target). The `errors` fixture fails a test on any console error except 401/403/404/409. Specs: core (demo logging), onboarding, editing, account, features (supersets, barcode with a mocked lookup, offline sync via `context.setOffline`, adaptive target, records). The dev server doesn't run the service worker, so offline *reading* is only exercised in a production build.
 - Prisma blocks destructive commands (`db push --force-reset`, `migrate reset`) from AI agents without the user's explicit consent, so test setups always start from a brand-new database instead of resetting one.
 
 ## Stack
@@ -84,12 +87,16 @@ server/
   src/lib/core.ts          prisma client, HttpError, errorHandler, auth cookie + requireAuth (checks tokenVersion), DEMO_EMAIL, zDay, date math, e1rm
   src/lib/limits.ts        express-rate-limit limiters (account/IP/forgot/register/api/ai)
   src/lib/mailer.ts        sendMail() via Resend REST (logs to console without a key), appUrl()
-  src/lib/training.ts      loadTraining() → annotateWorkouts() (pure: e1RM, PR flags, volume), assertExercisesVisible()
+  src/lib/training.ts      loadTraining() → annotateWorkouts(rows, manualRecords) (pure: e1RM, PR flags, volume),
+                           recordProgressions(), normalizeSupersets(), loadManualRecords(), assertExercisesVisible()
+  src/lib/openfoodfacts.ts lookupBarcode() (Open Food Facts v2, 8 s timeout, 1-day cache incl. misses), mapProduct()
   src/lib/trend.ts         withTrend(): trailing 7-day weight average
   src/routes/auth.ts       register/login/logout, GET/PATCH/DELETE /me (+ latestWeightKg), forgot, reset, PATCH password,
                            logout-all, GET export, GET demo (is the demo account seeded?)
-  src/routes/training.ts   exercises (+history, /last), workouts CRUD, routines
-  src/routes/tracking.ts   cardio, body weight (PUT /body/:date upsert), goals (progress computed), food (+summary, recent)
+  src/routes/training.ts   exercises (+history, /last), workouts CRUD (POST dedupes on startedAt), routines,
+                           records (GET list, POST manual, DELETE)
+  src/routes/tracking.ts   cardio, body weight (PUT /body/:date upsert), goals (progress computed; lift goals include manual
+                           records), food (+summary, recent, GET /food/barcode/:code)
   src/routes/stats.ts      /stats/dashboard, /stats/progress?range=30|90|365|all
   src/routes/ai.ts         /ai/status, /ai/analyze-food (image and/or text hint → JSON draft), DB daily quota
 client/src/
@@ -97,12 +104,21 @@ client/src/
                            whose page stays mounted sets `meta: { removes: queryKey }` to skip refetching it), auth gates
   lib/api.ts               fetch wrapper + all response types (mirror server shapes here)
   lib/format.ts            local-day helpers, number formatting, useMe(), useUnits()
-  lib/energy.ts            BMR/TDEE/targets/macros + cardio & strength burn estimates (single source of truth)
-  lib/activeWorkout.ts     in-progress workout store (localStorage + useSyncExternalStore)
+  lib/energy.ts            BMR/TDEE/targets/macros (macrosFor, goalAdjustment, calorieFloor), adaptiveTargets(), cardio &
+                           strength burn estimates (single source of truth; explained in docs/CALORIES.md)
+  lib/activeWorkout.ts     in-progress workout store (localStorage + useSyncExternalStore); superset helpers
+                           (supersetSlots, linkWithNext, unlink, splitAfter)
+  lib/offline.ts           offline outbox (localStorage, per account), useOnline/useOutbox, API cache owner + clearing
+  lib/barcode.ts           createDetector() (native BarcodeDetector or zxing-wasm ponyfill), isValidGtin, scaleMacros
   components/ui.tsx        Button/buttonClass, IconButton, Field, Input, Select, Segmented, Sheet, Toast, Stat, Bar, Badge…
   components/viz.tsx       Rings, MacroLegend, Heatmap, ChartTooltip, axis/grid props, GradientDefs
   components/Layout.tsx    sidebar (lg) / header + bottom nav (mobile), active-workout pill, PageHeader, Logo
-  components/ExercisePicker.tsx  searchable picker sheet + custom exercise creation, useExercises()
+  components/ExercisePicker.tsx  searchable picker sheet + custom exercise creation, useExercises(), MUSCLES
+  components/FoodForm.tsx  shared food form bits: MEALS, guessMeal, DraftItem/toDraft/fromDraft, ItemEditor, sum
+  components/BarcodeSheet.tsx    camera/typed barcode → lookup → portion → log (manual entry when unknown)
+  components/OfflineBar.tsx      offline/pending banner + outbox sync loop (in Layout)
+  components/AdaptiveTargets.tsx useAdaptive(), AdaptiveCard (Food), AutoAdjustToggle (Food + Settings), AutoAdjustTargets (Layout)
+  components/RecordsTab.tsx      Train → Records: every exercise by muscle, current/previous best, manual PR sheet
   pages/                   Auth, Recover (/forgot + /reset), Onboarding (/setup), Today, Train (strength/cardio/exercises tabs, CARDIO_META),
                            WorkoutLogger (/train/log), WorkoutDetail, ExerciseDetail, Food (scan + manual sheets),
                            Body (weigh-in, trend, goals), Progress, Settings
@@ -111,8 +127,10 @@ client/src/
 ## Data model (Prisma)
 
 - **User**: credentials, units (`weightUnit` kg|lb, `distanceUnit` km|mi), targets (calorie/protein/carbs/fat/weeklyWorkout), profile (`sex`, `birthDate`, `heightCm`, `activityLevel`, `goal` lose|maintain|gain, `goalRateKg`), `onboarded`.
-- **Exercise** (`userId` null = built-in library), **Workout** → **WorkoutExercise** → **WorkoutSet** (`weightKg`, `reps`, `rpe`, `isWarmup`); Workout has `calories`.
-- **Routine** → **RoutineExercise** (targetSets/targetReps).
+- **Exercise** (`userId` null = built-in library), **Workout** → **WorkoutExercise** (`supersetGroup`) → **WorkoutSet** (`weightKg`, `reps`, `rpe`, `isWarmup`); Workout has `calories`.
+- **Routine** → **RoutineExercise** (targetSets/targetReps, `supersetGroup`).
+- **PersonalRecord** (userId, exerciseId, date, weightKg, reps): a best set entered by hand on Train → Records.
+- **User.autoAdjustTargets** / **targetsAdjustedAt** (YYYY-MM-DD of the last adaptive adjustment). **FoodEntry.barcode** (+ index [userId, barcode]); `source` also `barcode`.
 - **CardioSession**: `type` run|walk|incline|cycle|row|swim|elliptical|stairs|hiit|other, `durationMin`, `distanceKm`, `calories`, `avgHeartRate`, `inclinePct`, `speedKmh`.
 - **User.tokenVersion**: in every JWT; bumping it signs out all sessions. **AiUsage** (userId, UTC day, count; unique [userId,day]). **PasswordResetToken** (SHA-256 `tokenHash`, `expiresAt` 1 h, `usedAt`).
 - **BodyWeight** (one per user per day, unique [userId,date]), **Goal** (`type` weight|lift|cardio, `targetValue` kg or min/week, `startValue` snapshot), **FoodEntry** (one row per item; `meal`, `source` manual|label|screenshot|photo|text).
@@ -134,6 +152,11 @@ client/src/
   - `/auth/forgot` always returns 200 (no account enumeration); login compares against a dummy hash when the email is unknown. Passwords are 8–72 chars (bcrypt limit).
   - The demo account (`DEMO_EMAIL`) can't change its password, get reset emails or be deleted (403). The login page only shows "Explore the demo account" when `GET /auth/demo` says it exists (production: `SEED_DEMO=1`, rebuilt on every deploy).
   - The auth guards in `main.tsx` (`useSession`) only show a spinner before the first `/me` response; otherwise a refetch would unmount guest pages.
+- **Supersets**: consecutive exercises with the same `supersetGroup` (2+, renumbered 0,1,2… by `normalizeSupersets` on save, the client mirrors it in `supersetSlots`), lettered A1/A2. In the logger the rest timer only starts after the last exercise of the round. Client drafts use string keys (`superset`), converted to numbers on save.
+- **Barcodes**: `GET /food/barcode/:code` answers the user's own last entry with that code (`mine`) and/or the Open Food Facts product (`product`, per 100 g + serving); 404 unknown, 502 when OFF is down and there's no own entry. Codes are GTIN check-digit validated on the client and read twice in a row before accepting. Entries logged this way keep `barcode`, so editing one corrects the next scan. The zxing wasm (~460 KB gz) is bundled and loaded only when the scanner opens.
+- **Offline**: logging writes go through `api.offline(method, path, body, label)` (workouts POST/PUT, routines from "save as routine", food POST/PATCH, cardio POST/PATCH, body PUT). A network error (TypeError) queues it in the outbox and returns `{ queued: true }` (`isQueued`); HTTP errors still throw. `OfflineBar` replays in order on mount, on `online` and every 30 s; a 4xx (not 401/408/429) drops and reports the entry. Queued results skip the global invalidate (it would wait for the network). Reads: the service worker caches signed-in GETs NetworkFirst (`gymawy-api`, no timeout; never auth except /me, AI, barcode, health); cleared on log out and when another account signs in. Queries use `networkMode: 'offlineFirst'`, mutations `'always'`.
+- **Adaptive targets** (`adaptiveTargets` in energy.ts, client-side): 28 days before today, days < 40% of target skipped, ≥14 logged days + ≥4 weigh-ins over ≥14 days; TDEE = avg intake − weigh-in regression slope × 7700; ideal = TDEE + goal adjustment (floored); a step is capped at ±250 kcal; macros via `macrosFor`. Auto mode applies it at most every 7 days when |change| ≥ 50.
+- **Records**: current/previous = the last two entries of `recordProgressions` (each set that beat the running best e1RM; workout sets + manual records merged by date, manual after same-day workouts). Manual records count as PR history from their date (`annotateWorkouts`) and for lift goals. 0 kg displays as "BW".
 - New accounts are forced through `/setup` until `onboarded` is true; Settings → "Recalculate targets" reopens it.
 - Empty states and a "Get set up" checklist exist so new accounts never look blank; demo data comes from the seed.
 - Chart margins: don't use negative `left` margins (they clip y-axis labels).
@@ -153,7 +176,7 @@ Live: client https://gimawy.vercel.app, API https://gymawy-api.onrender.com, DB 
 
 ## Ideas / backlog
 
-Progress photos, body measurements, offline logging queue, plate calculator, supersets, data export (CSV), barcode scanning, adaptive TDEE from weight trend + intake.
+Progress photos, body measurements, plate calculator, data export (CSV), idempotency keys for queued food/cardio (only workouts dedupe today), offline barcode cache.
 
 ## Changelog
 
@@ -165,3 +188,4 @@ Progress photos, body measurements, offline logging queue, plate calculator, sup
 - **2026-10-27** — Phase 2 (publish-ready security): helmet, rate limits, DB-backed AI quota, tokenVersion sessions, forgot/reset password (Resend), change password, log out everywhere, data export, account deletion, Settings → Account & security card, `/forgot` + `/reset` pages. Split `app.ts` from `index.ts`. Cookie is now `SameSite=Lax` (prod will use a same-site Vercel rewrite). Fixed auth guards unmounting pages on `/me` refetch.
 - **2026-10-27** — Phase 3 (automated tests): Vitest (client + server), supertest API suites incl. cross-user isolation, Playwright E2E in system Chrome. Refactors: `annotateWorkouts`, `lib/trend.ts`, `formatPace` (fixed 4:60 rounding), `assertExercisesVisible` in lib (now also guards lift goals). Root package is `"type": "module"`.
 - **2026-10-27** — Phase 4 (deploy prep): SQLite → Postgres with Prisma migrations (`directUrl` for Supabase), local `embedded-postgres` for dev (`npm run db`, part of `npm run dev`), API tests and E2E (throwaway clusters on free ports). Seed split into `library`/`demo`. `render.yaml`, `client/vercel.json`, `GET /auth/demo` + demo button gating, CORS only with `CLIENT_ORIGIN`. Fixed E2E races (forgot page, toast text).
+- **2026-10-29** — Phase 5 (features): supersets (logger, routines, workout detail), barcode scanning (camera or typed → own history / Open Food Facts → portion), offline logging (outbox + cached reads), adaptive calorie targets (measured TDEE, optional weekly auto-adjust), Train → Records tab (every exercise by muscle, current + previous best, manual PRs). `docs/CALORIES.md` documents every formula. New: `PersonalRecord` model, migrations `phase5_features` + `personal_records`.

@@ -38,3 +38,49 @@ describe('workout editing', () => {
     expect((await agent.delete(`/api/exercises/${lib.id}`)).status).toBe(404);
   });
 });
+
+describe('supersets', () => {
+  it('stores contiguous groups, drops singletons and returns them on the workout', async () => {
+    const { agent } = await newUser();
+    const [a, b, c] = await Promise.all(['SS Bench', 'SS Row', 'SS Curl'].map((n) => libraryExercise(n)));
+    const sets = [{ weightKg: 50, reps: 10 }];
+    const id = (
+      await agent.post('/api/workouts').send({
+        ...workoutBody(a.id, [[50, 10]]),
+        exercises: [
+          { exerciseId: a.id, supersetGroup: 7, sets },
+          { exerciseId: b.id, supersetGroup: 7, sets },
+          { exerciseId: c.id, supersetGroup: 3, sets }, // alone: not a superset
+        ],
+      })
+    ).body.id;
+    const w = (await agent.get(`/api/workouts/${id}`)).body;
+    expect(w.exercises.map((e: { supersetGroup: number | null }) => e.supersetGroup)).toEqual([0, 0, null]);
+  });
+
+  it('routines keep superset groups', async () => {
+    const { agent } = await newUser();
+    const [a, b] = await Promise.all(['SS Bench', 'SS Row'].map((n) => libraryExercise(n)));
+    const r = await agent.post('/api/routines').send({
+      name: 'Pairs',
+      exercises: [
+        { exerciseId: a.id, targetSets: 3, targetReps: 10, supersetGroup: 1 },
+        { exerciseId: b.id, targetSets: 3, targetReps: 10, supersetGroup: 1 },
+      ],
+    });
+    expect(r.body.exercises.map((e: { supersetGroup: number | null }) => e.supersetGroup)).toEqual([0, 0]);
+  });
+});
+
+describe('offline replay', () => {
+  it('posting the same session twice returns the saved workout instead of a duplicate', async () => {
+    const { agent, id: userId } = await newUser();
+    const ex = await libraryExercise();
+    const first = await agent.post('/api/workouts').send(workoutBody(ex.id, [[60, 8]], '2026-09-01'));
+    const again = await agent.post('/api/workouts').send(workoutBody(ex.id, [[60, 8]], '2026-09-01'));
+    expect(first.status).toBe(201);
+    expect(again.status).toBe(200);
+    expect(again.body.id).toBe(first.body.id);
+    expect(await prisma.workout.count({ where: { userId } })).toBe(1);
+  });
+});
