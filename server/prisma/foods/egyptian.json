@@ -3,7 +3,7 @@
   "key": "eg-koshari",
   "name": "Koshari",
   "nameAr": "كشري",
-  "aliases": "koshary kushari",
+  "aliases": "koshary kushari كشرى",
   "kind": "egyptian",
   "source": "estimate",
   "per100g": {
@@ -31,7 +31,7 @@
   "key": "eg-ful-oil",
   "name": "Ful medames with oil",
   "nameAr": "فول مدمس بالزيت",
-  "aliases": "foul fool beans",
+  "aliases": "foul fool beans فول بالزيت",
   "kind": "egyptian",
   "source": "estimate",
   "per100g": {
@@ -75,7 +75,7 @@
   "key": "eg-taameya",
   "name": "Ta'ameya (Egyptian falafel)",
   "nameAr": "طعمية",
-  "aliases": "taamia falafel tamiya",
+  "aliases": "taamia falafel tamiya فلافل طعميه",
   "kind": "egyptian",
   "source": "estimate",
   "per100g": {
@@ -99,7 +99,7 @@
   "key": "eg-taameya-sandwich",
   "name": "Ta'ameya sandwich",
   "nameAr": "ساندوتش طعمية",
-  "aliases": "taamia falafel sandwich",
+  "aliases": "taamia falafel sandwich فلافل طعميه سندويتش",
   "kind": "egyptian",
   "source": "estimate",
   "per100g": {
@@ -139,7 +139,7 @@
   "key": "eg-liver-sandwich",
   "name": "Alexandrian liver sandwich",
   "nameAr": "ساندوتش كبدة اسكندراني",
-  "aliases": "kebda",
+  "aliases": "kebda كبده",
   "kind": "egyptian",
   "source": "estimate",
   "per100g": {
@@ -159,7 +159,7 @@
   "key": "eg-sausage-sandwich",
   "name": "Sogo' (sausage) sandwich",
   "nameAr": "ساندوتش سجق",
-  "aliases": "sogo sausage",
+  "aliases": "sogo sausage سجق",
   "kind": "egyptian",
   "source": "estimate",
   "per100g": {
@@ -179,7 +179,7 @@
   "key": "eg-shawarma-chicken",
   "name": "Chicken shawarma sandwich",
   "nameAr": "ساندوتش شاورما فراخ",
-  "aliases": "shawerma",
+  "aliases": "shawerma شاورمة شاورمه دجاج سندويتش",
   "kind": "egyptian",
   "source": "estimate",
   "per100g": {
@@ -199,7 +199,7 @@
   "key": "eg-shawarma-beef",
   "name": "Beef shawarma sandwich",
   "nameAr": "ساندوتش شاورما لحمة",
-  "aliases": "shawerma meat",
+  "aliases": "shawerma meat شاورمة شاورمه لحم سندويتش",
   "kind": "egyptian",
   "source": "estimate",
   "per100g": {
@@ -219,7 +219,7 @@
   "key": "eg-shawarma-plate",
   "name": "Chicken shawarma plate",
   "nameAr": "طبق شاورما فراخ",
-  "aliases": "shawerma fatta",
+  "aliases": "shawerma fatta شاورمة شاورمه دجاج",
   "kind": "egyptian",
   "source": "estimate",
   "per100g": {
@@ -263,7 +263,7 @@
   "key": "eg-kofta",
   "name": "Kofta, grilled",
   "nameAr": "كفتة مشوية",
-  "aliases": "kufta",
+  "aliases": "kufta كفته",
   "kind": "egyptian",
   "source": "estimate",
   "per100g": {
@@ -311,7 +311,7 @@
   "key": "eg-grilled-chicken",
   "name": "Grilled chicken (half)",
   "nameAr": "نص فرخة مشوية",
-  "aliases": "farkha mashwiya",
+  "aliases": "farkha mashwiya دجاج مشوي فرخه",
   "kind": "egyptian",
   "source": "estimate",
   "per100g": {
@@ -335,7 +335,7 @@
   "key": "eg-fatta",
   "name": "Fatta with meat",
   "nameAr": "فتة باللحمة",
-  "aliases": "fattah",
+  "aliases": "fattah فته",
   "kind": "egyptian",
   "source": "estimate",
   "per100g": {
@@ -355,7 +355,7 @@
   "key": "eg-macarona-bechamel",
   "name": "Macarona bechamel",
   "nameAr": "مكرونة بشاميل",
-  "aliases": "bechamel pasta",
+  "aliases": "bechamel pasta مكرونه بشاميل",
   "kind": "egyptian",
   "source": "estimate",
   "per100g": {
@@ -627,7 +627,7 @@
   "key": "eg-rice-vermicelli",
   "name": "Egyptian rice with vermicelli",
   "nameAr": "أرز بالشعرية",
-  "aliases": "roz",
+  "aliases": "roz رز بالشعريه",
   "kind": "egyptian",
   "source": "estimate",
   "per100g": {
@@ -671,7 +671,7 @@
   "key": "eg-hamam-mahshi",
   "name": "Stuffed pigeon",
   "nameAr": "حمام محشي",
-  "aliases": "hamam",
+  "aliases": "hamam حمام",
   "kind": "egyptian",
   "source": "estimate",
   "per100g": {
@@ -691,7 +691,7 @@
   "key": "eg-sayadeya",
   "name": "Sayadeya (fish with rice)",
   "nameAr": "صيادية",
-  "aliases": "sayadiyah",
+  "aliases": "sayadiyah سمك",
   "kind": "egyptian",
   "source": "estimate",
   "per100g": {
@@ -711,7 +711,7 @@
   "key": "eg-fried-fish",
   "name": "Fried fish (bolti)",
   "nameAr": "سمك مقلي",
-  "aliases": "tilapia bolti",
+  "aliases": "tilapia bolti سمك بلطي",
   "kind": "egyptian",
   "source": "estimate",
   "per100g": {
@@ -731,7 +731,7 @@
   "key": "eg-shrimp-rice",
   "name": "Shrimp with rice (seafood plate)",
   "nameAr": "جمبري بالأرز",
-  "aliases": "gambari",
+  "aliases": "gambari جمبري سي فود",
   "kind": "egyptian",
   "source": "estimate",
   "per100g": {
@@ -1011,7 +1011,7 @@
   "key": "eg-aish-baladi",
   "name": "Aish baladi (Egyptian bread)",
   "nameAr": "عيش بلدي",
-  "aliases": "eish bread baladi",
+  "aliases": "eish bread baladi عيش رغيف",
   "kind": "egyptian",
   "source": "estimate",
   "per100g": {
@@ -1095,7 +1095,7 @@
   "key": "eg-gebna-domiati",
   "name": "Domiati cheese (white)",
   "nameAr": "جبنة دمياطي",
-  "aliases": "gebna beda white cheese",
+  "aliases": "gebna beda white cheese جبنه بيضاء جبنه بيضا اسطنبولي",
   "kind": "egyptian",
   "source": "estimate",
   "per100g": {
@@ -1259,7 +1259,7 @@
   "key": "eg-rice-pudding-eg",
   "name": "Roz bel laban (rice pudding)",
   "nameAr": "أرز باللبن",
-  "aliases": "rice milk",
+  "aliases": "rice milk رز بلبن",
   "kind": "egyptian",
   "source": "estimate",
   "per100g": {
@@ -1463,7 +1463,7 @@
   "key": "eg-sugarcane",
   "name": "Sugarcane juice",
   "nameAr": "عصير قصب",
-  "aliases": "asab",
+  "aliases": "asab قصب",
   "kind": "egyptian",
   "source": "estimate",
   "per100g": {
@@ -1563,7 +1563,7 @@
   "key": "eg-lemon-juice",
   "name": "Fresh lemon juice, sweetened",
   "nameAr": "عصير ليمون",
-  "aliases": "lemonade lamoon",
+  "aliases": "lemonade lamoon ليمون",
   "kind": "egyptian",
   "source": "estimate",
   "per100g": {
@@ -1636,6 +1636,26 @@
    {
     "label": "1 cup",
     "grams": 60
+   }
+  ]
+ },
+ {
+  "key": "eg-nescafe-milk",
+  "name": "Nescafé with milk & sugar",
+  "nameAr": "نسكافيه باللبن",
+  "aliases": "nescafe instant coffee قهوه نسكافيه",
+  "kind": "egyptian",
+  "source": "estimate",
+  "per100g": {
+   "calories": 40,
+   "protein": 1.4,
+   "carbs": 6,
+   "fat": 1.2
+  },
+  "servings": [
+   {
+    "label": "1 mug",
+    "grams": 250
    }
   ]
  },

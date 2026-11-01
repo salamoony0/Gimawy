@@ -7,6 +7,8 @@ export type Pickable = {
   key: string;
   /** Name as logged, with the brand or chain appended when the name doesn't already say it. */
   name: string;
+  /** Arabic name of a dish or food (shown next to the English one). */
+  nameAr?: string | null;
   brand: string | null;
   /** Shown under the name, e.g. "Estimate" or "Open Food Facts". */
   note: string | null;
@@ -27,6 +29,8 @@ export function fromDbFood(f: DbFood): Pickable {
   return {
     key: f.id,
     name: withBrand(f.name, f.brand),
+    // A restaurant's nameAr is the chain's name, not the item's.
+    nameAr: f.kind === 'restaurant' ? null : f.nameAr,
     brand: f.brand,
     note: NOTE[f.source],
     base: { label: f.serving, grams: f.grams, calories: f.calories, protein: f.protein, carbs: f.carbs, fat: f.fat },

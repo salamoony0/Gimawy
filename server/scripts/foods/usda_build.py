@@ -6,7 +6,7 @@ from pathlib import Path
 DATA = Path(sys.argv[1])
 OUT = Path(sys.argv[2])
 sys.path.insert(0, str(Path(__file__).parent))
-from usda_targets import T
+from usda_targets import ALIASES, T
 
 foods = {r['fdc_id']: r['description'] for r in csv.DictReader(open(DATA / 'food.csv'))}
 want = {'1008': 'calories', '1003': 'protein', '1005': 'carbs', '1004': 'fat'}
@@ -65,7 +65,7 @@ for name, ar, pattern in T:
         elif n['protein'] > 12 or n['calories'] > 450:
             ps.insert(0, {'label': '100 g', 'grams': 100})
     out.append({
-        'key': f'usda-{fid}', 'name': name, 'nameAr': ar, 'kind': 'generic', 'source': 'usda', 'usda': desc,
+        'key': f'usda-{fid}', 'name': name, 'nameAr': ar, 'aliases': ALIASES.get(name, ''), 'kind': 'generic', 'source': 'usda', 'usda': desc,
         'per100g': {k: round(n[k], 1) if k != 'calories' else round(n[k]) for k in ('calories', 'protein', 'carbs', 'fat')},
         'servings': ps,
     })

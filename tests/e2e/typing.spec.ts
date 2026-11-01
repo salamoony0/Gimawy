@@ -15,6 +15,16 @@ test('typing word by word keeps focus in every kind of form', async ({ page }) =
   await add.getByRole('textbox', { name: 'kcal' }).pressSequentially('350');
   await expect(add.getByRole('textbox', { name: 'Food name' })).toHaveValue('Grandma soup');
   await expect(add.getByRole('textbox', { name: 'kcal' })).toHaveValue('350');
+  // An Arabic keyboard types Arabic-Indic digits and ٫ as the decimal point.
+  await add.getByRole('textbox', { name: 'kcal' }).fill('');
+  await add.getByRole('textbox', { name: 'kcal' }).pressSequentially('١٢٥٠٫٥');
+  await expect(add.getByRole('textbox', { name: 'kcal' })).toHaveValue('1250.5');
+  // Long quantities and 4-digit calories fit without scrolling inside the box.
+  await add.getByRole('textbox', { name: 'Quantity' }).pressSequentially('2 plates (450 g)');
+  for (const name of ['Quantity', 'kcal']) {
+    const box = add.getByRole('textbox', { name });
+    expect(await box.evaluate((el) => el.scrollWidth <= el.clientWidth + 1)).toBe(true);
+  }
   await page.keyboard.press('Escape');
 
   await page.getByRole('button', { name: /^Edit / }).first().click();
@@ -38,6 +48,16 @@ test('typing word by word keeps focus in every kind of form', async ({ page }) =
   const weight = page.getByRole('textbox', { name: /Set 3 weight/ }).first();
   await weight.pressSequentially('102.5');
   await expect(weight).toHaveValue('102.5');
+
+  // The weigh-in starts with the last weight; clearing it must really clear it.
+  await page.goto('/body');
+  const weighIn = page.getByRole('textbox', { name: /Weight in/ });
+  await weighIn.click();
+  await weighIn.press('ControlOrMeta+A');
+  await weighIn.press('Backspace');
+  await expect(weighIn).toHaveValue('');
+  await weighIn.pressSequentially('81.45');
+  await expect(weighIn).toHaveValue('81.45');
 
   await page.goto('/settings');
   const calories = page.getByRole('textbox', { name: 'Calories (kcal)' });

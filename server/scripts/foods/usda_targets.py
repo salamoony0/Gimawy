@@ -193,3 +193,23 @@ T = [
 ("Protein powder (whey)", "واي بروتين", r"^Beverages, Protein powder whey based$"),
 ("Coconut water", "ماء جوز الهند", r"^Nuts, coconut water \(liquid from coconuts\)$"),
 ]
+
+# Extra search words (other spellings, Egyptian and Levantine words) by display name.
+ALIASES = {
+    "White rice, cooked": "رز ابيض", "Basmati / long-grain rice, cooked": "رز بسمتي", "Brown rice, cooked": "رز بني",
+    "Mango": "مانجا", "Banana": "موزه", "Guava": "جوافه",
+    "Chicken breast, grilled": "دجاج صدر فراخ مشويه", "Chicken breast, raw": "دجاج صدر",
+    "Chicken thigh, roasted": "دجاج ورك", "Chicken thigh with skin, roasted": "دجاج ورك",
+    "Chicken wings, roasted": "دجاج جناح وينجز", "Whole chicken, roasted (meat + skin)": "دجاج مشوي",
+    "Fried chicken (breast, batter)": "دجاج مقلي بروستد كريسبي", "Chicken liver, cooked": "دجاج",
+    "Egg, whole, boiled": "بيضه مسلوقه", "Egg, fried": "بيضه مقليه اومليت", "Egg, scrambled": "بيضه اومليت",
+    "Milk, full fat": "حليب", "Milk, low fat (2%)": "حليب", "Milk, skim": "حليب",
+    "Yogurt, plain, full fat": "لبن رايب روب", "Yogurt, plain, low fat": "لبن رايب روب",
+    "Feta cheese": "جبنه بيضا", "Cheddar cheese": "شيدر", "Processed cheese slice": "جبنه سلايس",
+    "Beef, minced (80%), cooked": "لحم مفروم", "Beef, lean minced (90%), cooked": "لحم مفروم",
+    "Beef steak (sirloin), grilled": "لحم بقري", "Beef, stewing (chuck), cooked": "لحم بقري",
+    "French fries": "بطاطس فرايز شيبس", "Potato chips": "شيبس", "Tuna, canned in water": "تونه",
+    "Tuna, canned in oil": "تونه", "Pasta, cooked": "مكرونه باستا", "Coffee, black": "قهوه امريكانو",
+    "Espresso": "اسبريسو قهوه", "Cola": "بيبسي كوكاكولا", "Diet cola": "دايت", "Peanut butter": "بينات بتر",
+    "Lupini beans (termis)": "ترمس", "Fava beans, cooked": "فول", "Oats, rolled (dry)": "شوفان اوتس",
+}

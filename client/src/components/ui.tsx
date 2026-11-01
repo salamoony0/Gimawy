@@ -111,7 +111,8 @@ const inputClass =
   'min-h-11 w-full rounded-xl border border-line-strong bg-surface-2 px-3.5 text-[16px] text-fg placeholder:text-subtle transition-colors duration-150 hover:border-line-strong focus:border-brand focus:outline-none focus-visible:outline-none';
 
 export function Input({ className, ...rest }: InputHTMLAttributes<HTMLInputElement>) {
-  return <input {...rest} className={clsx(inputClass, className)} />;
+  // dir="auto": Arabic text is laid out right-to-left as it's typed; numbers and English stay left-to-right.
+  return <input dir="auto" {...rest} className={clsx(inputClass, className)} />;
 }
 
 export function Select({ className, children, ...rest }: SelectHTMLAttributes<HTMLSelectElement>) {

@@ -2,7 +2,8 @@
 // Data © Open Food Facts contributors, ODbL (https://opendatacommons.org/licenses/odbl/1-0/); brands.json is shared
 // under the same licence. Only products with complete per-100 g macros that roughly add up (4/4/9) are kept.
 // Run: node server/scripts/foods/brands.mjs   (about 2 minutes; it waits between requests)
-import { writeFileSync } from 'node:fs';
+//      node server/scripts/foods/brands.mjs --aliases-only   (re-applies BRAND_AR / EXCLUDE to brands.json, no network)
+import { readFileSync, writeFileSync } from 'node:fs';
 
 const BRANDS = [
   // Egyptian
@@ -18,6 +19,33 @@ const BRANDS = [
 // Names other companies also use: only products tagged as sold in Egypt.
 const EGYPT_ONLY = new Set(['Best', 'Corona', 'Tiger', 'Panda', 'Isis', 'Koki', 'Molto', 'Todo', 'Teama', 'Big Chips', 'Fitness']);
 const PER_BRAND = 15;
+// Arabic (and common Latin) spellings people search for, stored as aliases on every product of the brand.
+const BRAND_AR = {
+  Juhayna: 'جهينة', Domty: 'دومتي', Edita: 'إيديتا اديتا', Molto: 'مولتو', Chipsy: 'شيبسي', 'Bisco Misr': 'بسكو مصر',
+  Corona: 'كورونا', Beyti: 'بيتي', Lamar: 'لمار', Labanita: 'لبنيتا', Panda: 'باندا', Almarai: 'المراعي',
+  'El Rashidi El Mizan': 'الرشيدي الميزان', 'Abu Auf': 'أبو عوف', Faragello: 'فرجللو', Halwani: 'حلواني',
+  Americana: 'أمريكانا', Koki: 'كوكي', Regina: 'ريجينا', 'El Maleka': 'الملكة', 'Dina Farms': 'دينا فارمز',
+  'Obour Land': 'عبور لاند', Teama: 'تيما', Isis: 'إيزيس', Vitrac: 'فيتراك', Best: 'بست', Tiger: 'تايجر', Todo: 'تودو',
+  'Big Chips': 'بيج شيبس', Hohos: 'هوهوز', Twinkies: 'توينكيز', "Lay's": 'ليز lays', Doritos: 'دوريتوس',
+  Pringles: 'برينجلز', Pepsi: 'بيبسي', 'Coca-Cola': 'كوكاكولا كوكا كولا coke', Schweppes: 'شويبس', 'Spiro Spathis': 'سبيرو سباتس',
+  'Red Bull': 'ريد بول', Nestlé: 'نستله nestle', Nescafé: 'نسكافيه nescafe', Nesquik: 'نسكويك', 'Kit Kat': 'كيت كات kitkat',
+  Galaxy: 'جالاكسي', Cadbury: 'كادبوري', Snickers: 'سنيكرز', Mars: 'مارس', Twix: 'تويكس', Nutella: 'نوتيلا',
+  Kinder: 'كيندر', Oreo: 'أوريو', Activia: 'أكتيفيا', Danone: 'دانون', Président: 'بريزيدون president',
+  'La Vache qui rit': 'لافاش كيري البقرة الضاحكة laughing cow', Kiri: 'كيري', Heinz: 'هاينز', "Hellmann's": 'هيلمانز',
+  Quaker: 'كويكر', "Kellogg's": 'كيلوجز kelloggs', Indomie: 'اندومي إندومي', Fitness: 'فيتنس',
+};
+// Junk or mis-tagged product names in Open Food Facts.
+const EXCLUDE = new Set(['Coca-Cola|RECYCL', 'Molto|MAGNUM']);
+
+if (process.argv.includes('--aliases-only')) {
+  const dest = new URL('../../prisma/foods/brands.json', import.meta.url);
+  const kept = JSON.parse(readFileSync(dest, 'utf8'))
+    .filter((p) => !EXCLUDE.has(`${p.brand}|${p.name}`))
+    .map((p) => ({ ...p, aliases: BRAND_AR[p.brand] ?? '' }));
+  writeFileSync(dest, JSON.stringify(kept, null, 1));
+  console.log(kept.length, 'products, aliases applied');
+  process.exit(0);
+}
 const UA = 'Gymawy/1.0 (fitness tracker; https://github.com/salamoony0/Gimawy)';
 const FIELDS = 'code,product_name,product_name_en,product_name_ar,brands,serving_size,serving_quantity,nutriments';
 const num = (v) => {
@@ -52,7 +80,7 @@ for (const brand of BRANDS) {
     if (kcal > 950 || p + c + f > 101) continue;
     if (kcal > 40 && Math.abs(kcal - (4 * p + 4 * c + 9 * f)) / kcal > 0.3) continue;
     const dedupe = `${brand.toLowerCase()}|${name.toLowerCase().replace(/\W+/g, ' ').trim()}`;
-    if (seen.has(dedupe)) continue;
+    if (seen.has(dedupe) || EXCLUDE.has(`${brand}|${name}`)) continue;
     seen.add(dedupe);
     const g = num(h.serving_quantity);
     out.push({
@@ -60,6 +88,7 @@ for (const brand of BRANDS) {
       name: name.slice(0, 120),
       nameAr: ar && ar !== name ? ar : null,
       brand,
+      aliases: BRAND_AR[brand] ?? '',
       kind: 'brand',
       source: 'off',
       barcode: code,

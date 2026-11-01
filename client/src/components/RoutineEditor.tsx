@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 import { clsx } from 'clsx';
 import { ArrowDown, ArrowUp, Link2, Plus, Trash, Unlink } from 'lucide-react';
 import { api, type Routine } from '../lib/api';
-import { MUSCLE_LABEL } from '../lib/format';
+import { cleanInteger, MUSCLE_LABEL } from '../lib/format';
 import { linkWithNext, splitAfter, supersetSlots } from '../lib/activeWorkout';
 import { Button, Field, IconButton, Input, Sheet, SupersetBadge, useToast } from './ui';
 import { ExercisePicker } from './ExercisePicker';
@@ -55,7 +55,7 @@ export function RoutineEditor({ open, routine, onClose }: { open: boolean; routi
       [next[i], next[i + d]] = [next[i + d], next[i]];
       return next;
     });
-  const clampInt = (v: string, max: number) => Math.max(1, Math.min(max, Number(v.replace(/\D/g, '')) || 1));
+  const clampInt = (v: string, max: number) => Math.max(1, Math.min(max, Number(cleanInteger(v)) || 1));
 
   return (
     <>

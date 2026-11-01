@@ -23,7 +23,7 @@ import {
   Zap,
 } from 'lucide-react';
 import { api, isQueued, type CardioSession, type CardioType, type Routine, type WorkoutSummary } from '../lib/api';
-import { fmtCompact, fmtDay, fmtDuration, localDay, MUSCLE_LABEL, plural, relativeDay, shiftDay, useMe, useUnits } from '../lib/format';
+import { cleanDecimal, fmtCompact, fmtDay, fmtDuration, localDay, plural, MUSCLE_LABEL, relativeDay, shiftDay, useMe, useUnits } from '../lib/format';
 import { BURN_METHOD_LABEL, estimateCardio, profileFor } from '../lib/energy';
 import { PageHeader } from '../components/Layout';
 import { Badge, Button, buttonClass, EmptyState, Field, IconButton, Input, Segmented, Select, Sheet, Skeleton, useToast } from '../components/ui';
@@ -523,7 +523,7 @@ function CardioSheet({ open, onClose, initial }: { open: boolean; onClose: () =>
     onError: (e) => toast(e.message, 'error'),
   });
   const valid = duration > 0;
-  const num = (v: string) => v.replace(',', '.').replace(/[^\d.]/g, '');
+  const num = cleanDecimal;
   const speedUnit = u.d === 'mi' ? 'mph' : 'km/h';
 
   return (

@@ -1,6 +1,7 @@
 import { Trash } from 'lucide-react';
 import type { FoodItem, Meal } from '../lib/api';
 import { IconButton, Input } from './ui';
+import { cleanDecimal } from '../lib/format';
 
 // Shared pieces of the food logging forms (Food page sheets and the barcode scanner).
 
@@ -48,23 +49,23 @@ export function ItemEditor({ item, onChange, onRemove }: { item: DraftItem; onCh
       <Input
         inputMode="decimal"
         value={item[k]}
-        onChange={(e) => onChange({ ...item, [k]: e.target.value.replace(',', '.').replace(/[^\d.]/g, '') })}
-        className="num min-h-10 px-2 text-center"
+        onChange={(e) => onChange({ ...item, [k]: cleanDecimal(e.target.value) })}
+        className="num min-h-10 px-1 text-center"
       />
     </label>
   );
   return (
     <li className="rounded-2xl border border-line p-3">
       <div className="flex items-start gap-2">
-        <div className="grid flex-1 grid-cols-[1fr_6.5rem] gap-2">
+        <div className="grid flex-1 gap-2">
           <Input aria-label="Food name" value={item.name} onChange={(e) => onChange({ ...item, name: e.target.value })} placeholder="Food name" className="min-h-10 font-semibold" />
-          <Input aria-label="Quantity" value={item.quantity} onChange={(e) => onChange({ ...item, quantity: e.target.value })} placeholder="Qty" className="min-h-10" />
+          <Input aria-label="Quantity" value={item.quantity} onChange={(e) => onChange({ ...item, quantity: e.target.value })} placeholder="Quantity, e.g. 1 plate or 150 g" className="min-h-10" />
         </div>
         <IconButton label={`Remove ${item.name || 'item'}`} onClick={onRemove} className="size-10">
           <Trash className="size-4" />
         </IconButton>
       </div>
-      <div className="mt-2 grid grid-cols-4 gap-2">
+      <div className="mt-2 grid grid-cols-[1.3fr_1fr_1fr_1fr] gap-2">
         {num('calories', 'kcal')}
         {num('protein', 'Protein g', 'var(--color-protein)')}
         {num('carbs', 'Carbs g', 'var(--color-carbs)')}

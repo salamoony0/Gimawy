@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { formatPace, localDay, plural, relativeDay, shiftDay } from './format';
+import { cleanDecimal, cleanInteger, formatPace, localDay, plural, relativeDay, shiftDay } from './format';
 
 describe('shiftDay', () => {
   it('crosses month, year and leap-day boundaries', () => {
@@ -51,5 +51,24 @@ describe('plural', () => {
     expect(plural(1, 'set')).toBe('1 set');
     expect(plural(0, 'set')).toBe('0 sets');
     expect(plural(3, 'workout')).toBe('3 workouts');
+  });
+});
+
+describe('cleanDecimal', () => {
+  it('keeps digits and one decimal point', () => {
+    expect(cleanDecimal('1250.5')).toBe('1250.5');
+    expect(cleanDecimal('12,5')).toBe('12.5');
+    expect(cleanDecimal('1.2.3')).toBe('1.23');
+    expect(cleanDecimal('80 kg')).toBe('80');
+  });
+  it('accepts Arabic-Indic and Persian digits and Arabic separators', () => {
+    expect(cleanDecimal('١٢٥')).toBe('125');
+    expect(cleanDecimal('٨١٫٥')).toBe('81.5');
+    expect(cleanDecimal('۱۲۰')).toBe('120');
+    expect(cleanDecimal('٣،٥')).toBe('3.5');
+  });
+  it('cleanInteger drops the decimal part characters', () => {
+    expect(cleanInteger('٢٤٥٠')).toBe('2450');
+    expect(cleanInteger('12.5')).toBe('125');
   });
 });

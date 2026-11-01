@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { ChevronLeft, Plus, Search, X } from 'lucide-react';
 import { api, type FoodItem, type FoodSearch as FoodSearchResult, type ProductSearch, type SavedMeal } from '../lib/api';
-import { fmtInt, plural } from '../lib/format';
+import { cleanDecimal, fmtInt, plural } from '../lib/format';
 import { fromCustom, fromDbFood, fromMine, fromProduct, portionItem, unitsFor, type Pickable } from '../lib/portion';
 import { Button, Field, IconButton, Input, Select, Spinner } from './ui';
 
@@ -151,7 +151,14 @@ function ResultList({ items, onPick }: { items: Pickable[]; onPick: (f: Pickable
             className="flex min-h-12 w-full cursor-pointer items-center gap-3 rounded-xl bg-surface-2 px-3 py-2 text-left transition-colors hover:bg-surface-3"
           >
             <span className="min-w-0 flex-1">
-              <span className="block truncate text-sm font-semibold">{f.name}</span>
+              <span className="block truncate text-sm font-semibold">
+                {f.name}
+                {f.nameAr && (
+                  <span dir="rtl" className="ml-2 inline-block font-normal text-muted">
+                    {f.nameAr}
+                  </span>
+                )}
+              </span>
               <span className="block truncate text-xs text-muted">
                 {f.note && <span className="text-subtle">{f.note} · </span>}
                 {f.base.label} · P {Math.round(f.base.protein)} · C {Math.round(f.base.carbs)} · F {Math.round(f.base.fat)}
@@ -199,6 +206,11 @@ export function PortionPicker({
         </IconButton>
         <div className="min-w-0 pt-1.5">
           <p className="font-display text-xl font-semibold leading-tight tracking-wide">{food.name}</p>
+          {food.nameAr && (
+            <p dir="rtl" className="text-left text-sm text-muted">
+              {food.nameAr}
+            </p>
+          )}
           {food.note && <p className="text-xs text-muted">{food.note}</p>}
         </div>
       </div>
@@ -217,7 +229,7 @@ export function PortionPicker({
         </Field>
         <Field label={unit.kind === 'grams' ? 'Grams' : 'Amount'}>
           {(id) => (
-            <Input id={id} inputMode="decimal" className="num" value={amount} onChange={(e) => setAmount(e.target.value.replace(',', '.').replace(/[^\d.]/g, ''))} />
+            <Input id={id} inputMode="decimal" className="num" value={amount} onChange={(e) => setAmount(cleanDecimal(e.target.value))} />
           )}
         </Field>
       </div>

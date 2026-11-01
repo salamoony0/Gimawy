@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { Pencil, Plus, Trash, UtensilsCrossed } from 'lucide-react';
 import { api, isQueued, type CustomFood, type FoodItem, type SavedMeal } from '../lib/api';
-import { fmtInt, plural } from '../lib/format';
+import { cleanDecimal, fmtInt, plural } from '../lib/format';
 import { fromCustom, type Pickable } from '../lib/portion';
 import { Button, Field, IconButton, Input, Sheet, useToast } from './ui';
 import { FoodSearchResults, PortionPicker, SearchBox } from './FoodSearch';
@@ -155,7 +155,7 @@ export function CustomFoodSheet({ food, initialName, onClose }: { food: CustomFo
           inputMode={numeric ? 'decimal' : undefined}
           className={numeric ? 'num' : undefined}
           value={form[k]}
-          onChange={(e) => setForm({ ...form, [k]: numeric ? e.target.value.replace(/[^\d.,]/g, '') : e.target.value })}
+          onChange={(e) => setForm({ ...form, [k]: numeric ? cleanDecimal(e.target.value) : e.target.value })}
         />
       )}
     </Field>

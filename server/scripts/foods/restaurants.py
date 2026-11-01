@@ -156,14 +156,36 @@ R = {
     ]),
 }
 
+# Arabic search words for restaurant items, added when the English item name contains the key.
+AR_WORDS = {
+    'big mac': 'بيج ماك', 'quarter pounder': 'كوارتر باوندر', 'mcroyale': 'ماك رويال', 'mcchicken': 'ماك تشيكن',
+    'filet-o-fish': 'فيليه او فيش سمك', 'mcnuggets': 'ناجتس', 'nuggets': 'ناجتس', 'mcmuffin': 'ماك مافن',
+    'hash brown': 'هاش براون', 'mcflurry': 'ماكفلري', 'oreo': 'اوريو', 'apple pie': 'فطيره تفاح', 'cone': 'كون ايس كريم',
+    'coca-cola': 'كوكاكولا', 'zinger': 'زنجر', 'twister': 'تويستر', 'rizo': 'ريزو', 'popcorn': 'بوب كورن',
+    'mighty': 'مايتي', 'original recipe': 'اوريجينال', 'spicy': 'سبايسي حار', 'whopper': 'وابر ووبر',
+    'royale': 'رويال', 'onion rings': 'حلقات بصل اونيون رينجز', 'super star': 'سوبر ستار', 'famous star': 'فيمس ستار',
+    'mushroom': 'مشروم', 'swiss': 'سويس', 'curly': 'كيرلي', 'pepperoni': 'بيبروني', 'supreme': 'سوبريم',
+    'margherita': 'مارجريتا', 'pan pizza': 'بان', 'teriyaki': 'تيرياكي', 'b.m.t': 'بي ام تي', 'steak': 'ستيك',
+    'latte': 'لاتيه', 'cappuccino': 'كابتشينو', 'macchiato': 'ماكياتو', 'mocha': 'موكا', 'frappuccino': 'فرابتشينو',
+    'java chip': 'جافا شيب', 'americano': 'امريكانو', 'flat white': 'فلات وايت', 'croissant': 'كرواسون',
+    'white chocolate': 'وايت شوكليت', 'caramel': 'كراميل', 'iced': 'ايس', 'hot dog': 'هوت دوج',
+    'shawarma': 'شاورما شاورمه', 'ful': 'فول', "ta'ameya": 'طعميه فلافل', 'liver': 'كبده', "sogo'": 'سجق',
+    'luncheon': 'لانشون', 'fino': 'فينو', 'egg': 'بيض', 'koshari': 'كشري', 'hawawshi': 'حواوشي',
+    'burger': 'برجر برغر', 'chicken': 'فراخ دجاج تشيكن', 'beef': 'لحم', 'fries': 'بطاطس فرايز', 'potato': 'بطاطس',
+    'pizza': 'بيتزا', 'sandwich': 'ساندوتش سندويتش', 'sub': 'ساندوتش', 'cheese': 'جبنه تشيز', 'double': 'دبل',
+    'fish': 'سمك', 'tuna': 'تونه', 'turkey': 'تركي ديك رومي', 'coleslaw': 'كول سلو', 'mashed': 'بيوريه',
+    'gravy': 'صوص', 'garlic': 'ثوميه ثوم', 'wrap': 'راب', 'crispy': 'كريسبي', 'classic': 'كلاسيك', 'bowl': 'بول',
+    'drumstick': 'دبوس', 'thigh': 'ورك', 'wing': 'جناح', 'breast': 'صدر', 'vanilla': 'فانيليا',
+}
 slug = lambda s: re.sub(r'[^a-z0-9]+', '-', s.lower()).strip('-')
+ar_words = lambda name: ' '.join(v for k, v in AR_WORDS.items() if k in name.lower())
 out = []
 for chain, (ar, source, items) in R.items():
     brand = chain.replace(' (estimated)', '')
     for name, label, kcal, p, c, f in items:
         assert abs(kcal - (4 * p + 4 * c + 9 * f)) / kcal < 0.2 or kcal < 60, (chain, name, kcal, 4 * p + 4 * c + 9 * f)
         out.append({
-            'key': f'r-{slug(brand)}-{slug(name)}', 'name': name, 'brand': brand, 'nameAr': ar, 'kind': 'restaurant',
+            'key': f'r-{slug(brand)}-{slug(name)}', 'name': name, 'brand': brand, 'nameAr': ar, 'aliases': ar_words(name), 'kind': 'restaurant',
             'source': source, 'serving': {'label': label, 'calories': kcal, 'protein': p, 'carbs': c, 'fat': f},
         })
 
