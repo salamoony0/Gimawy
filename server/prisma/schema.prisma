@@ -51,6 +51,8 @@ model User {
   resetTokens PasswordResetToken[]
   records     PersonalRecord[]
   idempotency IdempotencyKey[]
+  customFoods CustomFood[]
+  savedMeals  SavedMeal[]
 }
 
 model Exercise {
@@ -190,7 +192,7 @@ model FoodEntry {
   protein   Float
   carbs     Float
   fat       Float
-  source    String   @default("manual") // manual | label | screenshot | photo | text | barcode | search
+  source    String   @default("manual") // manual | label | screenshot | photo | text | barcode | search | custom | meal
   barcode   String? // EAN/UPC when logged from a barcode, so the next scan finds the user's own entry first
   createdAt DateTime @default(now())
 
@@ -275,4 +277,33 @@ model Food {
   search   String // normalized name + Arabic name + brand + aliases (see lib/foodSearch.ts)
 
   @@index([barcode])
+}
+
+// A food the user created ("My foods"): nutrition for one `serving`, which weighs `grams` when known.
+model CustomFood {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  serving   String
+  grams     Float?
+  calories  Float
+  protein   Float
+  carbs     Float
+  fat       Float
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+// A named group of foods logged together ("My meals"); `items` = [{ name, quantity, calories, protein, carbs, fat }].
+model SavedMeal {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  items     Json
+  createdAt DateTime @default(now())
+
+  @@index([userId])
 }

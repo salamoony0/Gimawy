@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { fromDbFood, fromMine, fromProduct, portionItem, unitsFor } from './portion';
+import { fromCustom, fromDbFood, fromMine, fromProduct, portionItem, unitsFor } from './portion';
 
 const koshari = fromDbFood({
   id: 'eg-koshari', name: 'Koshari', nameAr: 'كشري', brand: null, kind: 'egyptian', source: 'estimate',
@@ -38,5 +38,16 @@ describe('portions', () => {
     const chips = fromProduct({ code: '6223000000001', name: 'Chipsy', brand: 'Chipsy', per100g: { calories: 530, protein: 6, carbs: 52, fat: 33 }, serving: null });
     expect(unitsFor(chips).map((u) => u.label)).toEqual(['100 g', 'Grams']);
     expect(chips.name).toBe('Chipsy');
+  });
+});
+
+describe('my foods', () => {
+  it('scale by serving, or by grams when the serving weight is known', () => {
+    const oats = fromCustom({ id: 'c1', name: 'Morning oats', serving: '1 bowl', grams: 300, calories: 420, protein: 18, carbs: 60, fat: 11 });
+    expect(oats.note).toBe('My food');
+    expect(unitsFor(oats).map((u) => u.label)).toEqual(['1 bowl (300 g)', 'Grams']);
+    expect(portionItem(oats, unitsFor(oats)[1], 150)).toMatchObject({ quantity: '150 g', calories: 210, protein: 9 });
+    const shake = fromCustom({ id: 'c2', name: 'Shake', serving: '1 glass', grams: null, calories: 300, protein: 40, carbs: 20, fat: 5 });
+    expect(unitsFor(shake).map((u) => u.label)).toEqual(['1 glass']);
   });
 });

@@ -206,3 +206,45 @@ test('food search: find koshari in English or Arabic, pick an amount, log it', a
   await expect(page.getByText('Koshari', { exact: true })).toBeVisible();
   await expect(page.getByText(/150 g/).first()).toBeVisible();
 });
+
+test('my foods and my meals: create a food, log it, save lunch as a meal, log the meal', async ({ page }) => {
+  await page.route('**/api/food/search/products**', (route) => route.fulfill({ json: { products: [] } }));
+  await loginAsDemo(page);
+  await page.goto('/food');
+
+  await page.getByRole('button', { name: 'Add food to Snacks' }).click();
+  await page.getByRole('dialog', { name: 'Add to Snacks' }).getByRole('button', { name: 'Create food' }).click();
+  const create = page.getByRole('dialog', { name: 'Create food' });
+  await create.getByLabel('Name').fill('Protein pancake');
+  await create.getByLabel('Serving').fill('1 pancake');
+  await create.getByLabel('Grams (optional)').fill('80');
+  await create.getByLabel('kcal').fill('220');
+  await create.getByLabel('Protein').fill('20');
+  await create.getByLabel('Carbs').fill('18');
+  await create.getByLabel('Fat').fill('6');
+  await create.getByRole('button', { name: 'Add to My foods' }).click();
+  await expect(create).toBeHidden();
+
+  await page.getByRole('button', { name: 'Add food to Snacks' }).click();
+  const snacks = page.getByRole('dialog', { name: 'Add to Snacks' });
+  await snacks.getByRole('button', { name: 'Add Protein pancake' }).click();
+  await snacks.getByRole('button', { name: '2', exact: true }).click();
+  await snacks.getByRole('button', { name: 'Log 440 kcal' }).click();
+  await expect(page.getByText('2 × 1 pancake')).toBeVisible();
+
+  const lunchItems = await page.locator('section').filter({ has: page.getByRole('heading', { name: 'Lunch' }) }).getByRole('button', { name: /^Edit / }).count();
+  await page.getByRole('button', { name: 'Save Lunch as a meal' }).click();
+  const meal = page.getByRole('dialog', { name: 'Create meal' });
+  await meal.getByLabel('Meal name').fill('Usual lunch');
+  await meal.getByRole('button', { name: 'Add to My meals' }).click();
+  await expect(meal).toBeHidden();
+
+  const dinnerSection = page.locator('section').filter({ has: page.getByRole('heading', { name: 'Dinner' }) });
+  const dinnerBefore = await dinnerSection.getByRole('button', { name: /^Edit / }).count();
+  await page.getByRole('button', { name: 'Add food to Dinner' }).click();
+  const dinner = page.getByRole('dialog', { name: 'Add to Dinner' });
+  await dinner.getByRole('searchbox', { name: 'Search foods' }).fill('usual');
+  await expect(dinner.getByText('My meal ·')).toBeVisible();
+  await dinner.getByRole('button', { name: /^Usual lunch/ }).click();
+  await expect(dinnerSection.getByRole('button', { name: /^Edit / })).toHaveCount(dinnerBefore + lunchItems);
+});

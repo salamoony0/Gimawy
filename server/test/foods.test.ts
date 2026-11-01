@@ -81,3 +81,60 @@ describe('packaged product search (Open Food Facts)', () => {
     expect((await agent.get('/api/food/search/products').query({ q: 'anything unique-2' })).status).toBe(502);
   });
 });
+
+describe('my foods and my meals', () => {
+  const oats = { name: 'Morning oats', serving: '1 bowl', grams: 300, calories: 420, protein: 18, carbs: 60, fat: 11 };
+
+  it('creates, lists, edits and deletes a custom food', async () => {
+    const { agent } = await newUser();
+    const created = await agent.post('/api/food/custom').send(oats);
+    expect(created.status).toBe(201);
+    expect(created.body).toMatchObject(oats);
+    expect((await agent.get('/api/food/custom')).body.map((f: { name: string }) => f.name)).toEqual(['Morning oats']);
+    const edited = await agent.patch(`/api/food/custom/${created.body.id}`).send({ ...oats, calories: 400, grams: null });
+    expect(edited.body).toMatchObject({ calories: 400, grams: null });
+    expect((await agent.delete(`/api/food/custom/${created.body.id}`)).status).toBe(204);
+    expect((await agent.get('/api/food/custom')).body).toEqual([]);
+  });
+
+  it('validates custom foods', async () => {
+    const { agent } = await newUser();
+    expect((await agent.post('/api/food/custom').send({ ...oats, name: ' ' })).status).toBe(400);
+    expect((await agent.post('/api/food/custom').send({ ...oats, calories: -5 })).status).toBe(400);
+    expect((await agent.post('/api/food/custom').send({ ...oats, serving: '' })).status).toBe(400);
+  });
+
+  it('saves a meal of several items, renames it, and deletes it', async () => {
+    const { agent } = await newUser();
+    const items = [
+      { name: 'Ful medames with oil', quantity: '1 plate', calories: 270, protein: 14, carbs: 30, fat: 11 },
+      { name: "Ta'ameya", quantity: '3 × 1 piece', calories: 200, protein: 8, carbs: 19, fat: 10.7 },
+    ];
+    const created = await agent.post('/api/food/meals').send({ name: 'Egyptian breakfast', items });
+    expect(created.status).toBe(201);
+    expect(created.body).toMatchObject({ name: 'Egyptian breakfast', items });
+    const renamed = await agent.patch(`/api/food/meals/${created.body.id}`).send({ name: 'Fetar' });
+    expect(renamed.body).toMatchObject({ name: 'Fetar', items });
+    expect((await agent.get('/api/food/meals')).body).toHaveLength(1);
+    expect((await agent.post('/api/food/meals').send({ name: 'Empty', items: [] })).status).toBe(400);
+    expect((await agent.delete(`/api/food/meals/${created.body.id}`)).status).toBe(204);
+  });
+
+  it('search lists my meals and my foods before everything else', async () => {
+    const { agent } = await newUser();
+    await agent.post('/api/food/custom').send({ ...oats, name: 'Koshari my way' });
+    await agent.post('/api/food/meals').send({ name: 'Koshari Friday', items: [{ name: 'Koshari', quantity: 'Large plate', calories: 990, protein: 33, carbs: 168, fat: 23 }] });
+    const res = await agent.get('/api/food/search').query({ q: 'koshari' });
+    expect(res.body.meals.map((m: { name: string }) => m.name)).toEqual(['Koshari Friday']);
+    expect(res.body.custom.map((f: { name: string }) => f.name)).toEqual(['Koshari my way']);
+    expect(res.body.foods[0].name).toBe('Koshari');
+  });
+
+  it('accepts entries logged from my foods and my meals', async () => {
+    const { agent } = await newUser();
+    for (const source of ['custom', 'meal']) {
+      const res = await agent.post('/api/food').send({ date: '2026-10-01', meal: 'lunch', source, items: [{ name: 'X', calories: 1, protein: 0, carbs: 0, fat: 0 }] });
+      expect(res.status).toBe(201);
+    }
+  });
+});
