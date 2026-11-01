@@ -43,8 +43,16 @@ describe('estimateCardio', () => {
     expect(estimateCardio({ type: 'run', durationMin: 30, weightKg: 85, speedKmh: 10, avgHeartRate: 150 }).method).toBe('speed');
   });
 
-  it('falls back to MET × 3.5 × kg × min / 200', () => {
-    expect(estimateCardio({ type: 'cycle', durationMin: 60, weightKg: 80 })).toEqual({ kcal: Math.round((7.5 * 3.5 * 80 * 60) / 200), method: 'met' });
+  it('falls back to MET × 3.5 × kg × min / 200 with 2024 Compendium METs', () => {
+    expect(estimateCardio({ type: 'cycle', durationMin: 60, weightKg: 80 })).toEqual({ kcal: Math.round((7.0 * 3.5 * 80 * 60) / 200), method: 'met' });
+    expect(estimateCardio({ type: 'run', durationMin: 60, weightKg: 80 }).kcal).toBe(Math.round((9.3 * 3.5 * 80 * 60) / 200));
+    expect(estimateCardio({ type: 'swim', durationMin: 60, weightKg: 80 }).kcal).toBe(Math.round((5.8 * 3.5 * 80 * 60) / 200));
+  });
+
+  it('scales METs to the person’s own resting burn (corrected METs) when sex, age and height are known', () => {
+    const profile = { weightKg: 80, heightCm: 180, age: 30, sex: 'male' as const };
+    const restPerMin = bmr(profile) / 1440; // 1,780 kcal/day → 1.236 kcal/min
+    expect(estimateCardio({ type: 'cycle', durationMin: 60, ...profile })).toEqual({ kcal: Math.round(7.0 * restPerMin * 60), method: 'met' });
   });
 
   it('returns 0 for missing duration or weight', () => {
@@ -54,9 +62,11 @@ describe('estimateCardio', () => {
 });
 
 describe('estimateStrength / ageFrom', () => {
-  it('uses MET 5.0', () => {
-    expect(estimateStrength(60, 80)).toBe(420);
-    expect(estimateStrength(0, 80)).toBe(0);
+  it('uses MET 3.5 (Compendium 02054), corrected to the person’s resting burn when known', () => {
+    expect(estimateStrength(60, { weightKg: 80 })).toBe(294);
+    expect(estimateStrength(0, { weightKg: 80 })).toBe(0);
+    const profile = { weightKg: 80, heightCm: 180, age: 30, sex: 'male' as const };
+    expect(estimateStrength(60, profile)).toBe(Math.round(3.5 * (bmr(profile) / 1440) * 60));
   });
 
   it('counts birthdays correctly', () => {

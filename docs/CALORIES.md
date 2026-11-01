@@ -6,6 +6,10 @@ Units: kg, cm, years, minutes. 7,700 kcal ≈ 1 kg of body weight.
 
 ## 1. Daily target (setup wizard)
 
+Why Mifflin-St Jeor: in the Academy of Nutrition and Dietetics' evidence review (Frankenfield et al. 2005) it predicted
+resting burn within 10% for more people than Harris-Benedict, Owen or WHO/FAO. Katch-McArdle would need body-fat %, which
+Gymawy doesn't ask for.
+
 **BMR — Mifflin-St Jeor**
 
 ```
@@ -64,7 +68,8 @@ Why a fitted line and not "last weigh-in − first weigh-in": a single heavy or 
 
 ## 3. Calories burned
 
-Body weight = your latest weigh-in (75 kg if you have none). The best available method is used:
+Body weight = your latest weigh-in (75 kg if you have none). The best available method is used. Every burned-calorie number
+in the app has an **i** button that shows this (`components/CalorieInfo.tsx`, with the user's own numbers):
 
 **a) Heart rate — Keytel et al. (2005)**, when average HR, age and sex are known:
 
@@ -82,13 +87,26 @@ running  VO2 = 0.2 × speed + 0.9 × speed × grade + 3.5      (≥ 8 km/h, or "
 kcal     = VO2 × kg ÷ 1000 × 5 × minutes                   (≈ 5 kcal per litre of O2)
 ```
 
-**c) MET** otherwise:
+**c) MET** otherwise — values from the **2024 Adult Compendium of Physical Activities** (Herrmann et al., *J Sport Health Sci* 2024), moderate effort:
 
 ```
-kcal = MET × 3.5 × kg × minutes ÷ 200
-run 9.8 · walk 3.5 · incline 6.0 · cycle 7.5 · row 7.0 · swim 7.0 · elliptical 5.0 · stairs 9.0 · HIIT 8.0 · other 6.0
-strength workouts: MET 5.0 × workout duration
+kcal = MET × resting kcal per minute × minutes
+
+resting kcal/min = Mifflin-St Jeor BMR ÷ 1,440            when sex, age and height are known ("corrected METs")
+                 = 3.5 × kg ÷ 200                         otherwise (the standard 1 MET = 3.5 ml O2/kg/min)
+
+run 9.3 (12050, 6 mph) · walk 3.8 (17190) · cycle 7.0 (01014) · row 5.0 (02071) · swim 5.8 (18240)
+elliptical 5.0 (02048) · stairs 9.3 (02065) · HIIT 7.0 (02210) · other 5.0 (02035)
+incline walk without a speed 7.4 (no Compendium code: ACSM walking at 4.8 km/h, 10% grade)
+strength workouts: MET 3.5 (02054, multiple exercises, 8–15 reps) × workout duration
 ```
+
+Why corrected METs: the standard 1 MET (3.5 ml O2/kg/min) overestimates most adults' resting burn, more so with higher body
+mass and age (Kozey et al. 2010; pacompendium.com/corrected-mets). The Compendium page uses Harris-Benedict for the
+personal resting rate; Gymawy uses Mifflin-St Jeor, which is more accurate and is already the app's BMR.
+
+*Example:* 60 min cycling, male, 30 y, 180 cm, 80 kg → BMR 1,780 → 1.236 kcal/min → 7.0 × 1.236 × 60 = **519 kcal**
+(the standard MET would give 588).
 
 *Example:* 30 min incline walk at 5 km/h and 12%, 80 kg → speed 83.3 m/min, VO2 = 8.3 + 18.0 + 3.5 = 29.8 → **358 kcal**.
 

@@ -154,3 +154,18 @@ test('chart tooltips list each series once', async ({ page }) => {
   await expect(tip.first()).toBeVisible();
   await expect(tip).toHaveCount(1);
 });
+
+test('calorie numbers explain their formula with the user’s own numbers', async ({ page }) => {
+  await loginAsDemo(page);
+  await page.getByRole('button', { name: 'How your calorie target is set' }).click();
+  const target = page.getByRole('dialog', { name: 'How your calorie target is set' });
+  await expect(target.getByText('1. Resting burn (BMR): Mifflin-St Jeor')).toBeVisible();
+  await expect(target.getByText(/^Yours: 10 × \d+/)).toBeVisible();
+  await page.keyboard.press('Escape');
+
+  await page.goto('/progress');
+  await page.getByRole('button', { name: 'How calories burned are estimated' }).first().click();
+  const burn = page.getByRole('dialog', { name: 'How calories burned are estimated' });
+  await expect(burn.getByText('3. MET: 2024 Compendium of Physical Activities')).toBeVisible();
+  await expect(burn.getByText(/Resting burn: [\d.]+ kcal\/min \(your BMR/)).toBeVisible();
+});

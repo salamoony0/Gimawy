@@ -13,6 +13,7 @@ import {
 } from '../lib/energy';
 import { fmtInt, localDay, plural, shiftDay, useUnits } from '../lib/format';
 import { Bar, Button, useToast } from './ui';
+import { CalorieInfo } from './CalorieInfo';
 
 /** Automatic adjustments happen at most this often. */
 const AUTO_EVERY_DAYS = 7;
@@ -107,6 +108,7 @@ export function AdaptiveCard({ me }: { me: User }) {
     <section className="card p-5">
       <h2 className="flex items-center gap-2 font-display text-xl font-semibold tracking-wide">
         <Gauge className="size-5 text-brand" aria-hidden /> Adaptive target
+        <CalorieInfo topic="adaptive" />
       </h2>
       {result.status === 'collecting' ? (
         <>

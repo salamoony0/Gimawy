@@ -27,6 +27,7 @@ import { PageHeader } from '../components/Layout';
 import { Badge, Segmented, Skeleton } from '../components/ui';
 import { axisProps, ChartTooltip, GradientDefs, gridProps, Rings } from '../components/viz';
 import { CARDIO_META } from './Train';
+import { CalorieInfo } from '../components/CalorieInfo';
 
 const LIFT_COLORS = ['#4ade80', '#2dd4bf', '#facc15', '#38bdf8'];
 
@@ -80,9 +81,9 @@ export default function Progress() {
               { icon: HeartPulse, label: 'Cardio sessions', value: p.totals.cardioSessions },
               { icon: Flame, label: 'Cardio minutes', value: fmtInt(p.totals.cardioMinutes) },
               { icon: MapPin, label: `Distance (${u.d})`, value: u.dist(p.totals.distanceKm) },
-              { icon: Flame, label: 'Calories burned', value: fmtCompact(p.totals.caloriesBurned) },
-              { icon: Trophy, label: 'Avg burn / workout', value: p.totals.workouts + p.totals.cardioSessions ? fmtInt(p.totals.caloriesBurned / (p.totals.workouts + p.totals.cardioSessions)) : '—' },
-            ].map(({ icon: Icon, label, value }, i) => (
+              { icon: Flame, label: 'Calories burned', value: fmtCompact(p.totals.caloriesBurned), info: true },
+              { icon: Trophy, label: 'Avg burn / workout', value: p.totals.workouts + p.totals.cardioSessions ? fmtInt(p.totals.caloriesBurned / (p.totals.workouts + p.totals.cardioSessions)) : '—', info: true },
+            ].map(({ icon: Icon, label, value, info }, i) => (
               <motion.div
                 key={label}
                 initial={{ opacity: 0, y: 10 }}
@@ -93,6 +94,7 @@ export default function Progress() {
                 <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted">
                   <Icon className="size-3.5 text-brand" aria-hidden />
                   {label}
+                  {info && <CalorieInfo topic="burn" className="ml-auto" />}
                 </p>
                 <p className="num mt-1 font-display text-3xl font-semibold">{value}</p>
               </motion.div>

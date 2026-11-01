@@ -26,6 +26,7 @@ import { axisProps, ChartTooltip, gridProps, Rings } from '../components/viz';
 import { AdaptiveCard } from '../components/AdaptiveTargets';
 import { BarcodeSheet } from '../components/BarcodeSheet';
 import { fromDraft, guessMeal, ItemEditor, MEALS, sum, toDraft, type DraftItem } from '../components/FoodForm';
+import { CalorieInfo } from '../components/CalorieInfo';
 
 const SOURCE_LABEL: Record<FoodSource, string> = {
   manual: 'Manual',
@@ -216,7 +217,9 @@ function DaySummary({ totals, me }: { totals: Record<'calories' | 'protein' | 'c
         </Rings>
         <div className="w-full flex-1">
           <div className="flex items-baseline justify-between">
-            <span className="label">Remaining</span>
+            <span className="label flex items-center gap-2">
+              Remaining <CalorieInfo topic="target" />
+            </span>
             <span className={clsx('num font-display text-3xl font-semibold', left < 0 && 'text-carbs')}>
               {fmtInt(Math.abs(left))} <span className="text-sm text-muted">{left < 0 ? 'kcal over' : 'kcal'}</span>
             </span>

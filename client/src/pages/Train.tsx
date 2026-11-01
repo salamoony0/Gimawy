@@ -31,6 +31,7 @@ import { axisProps, ChartTooltip, gridProps } from '../components/viz';
 import { useExercises } from '../components/ExercisePicker';
 import { RoutineEditor } from '../components/RoutineEditor';
 import { RecordsTab } from '../components/RecordsTab';
+import { CalorieInfo, type CalorieTopic } from '../components/CalorieInfo';
 
 type Tab = 'strength' | 'cardio' | 'records' | 'exercises';
 
@@ -281,7 +282,7 @@ function Cardio() {
         <MiniStat label="Sessions · 30d" value={thirty.length} />
         <MiniStat label="Time · 30d" value={fmtDuration(thirty.reduce((n, s) => n + s.durationMin, 0))} />
         <MiniStat label={`Distance · 30d`} value={u.dist(thirty.reduce((n, s) => n + (s.distanceKm ?? 0), 0))} unit={u.d} />
-        <MiniStat label="Calories · 30d" value={fmtCompact(thirty.reduce((n, s) => n + (s.calories ?? 0), 0))} unit="kcal" />
+        <MiniStat label="Calories · 30d" value={fmtCompact(thirty.reduce((n, s) => n + (s.calories ?? 0), 0))} unit="kcal" info="burn" />
       </div>
 
       <div className="grid gap-5 lg:grid-cols-3">
@@ -436,10 +437,13 @@ function Cardio() {
   );
 }
 
-function MiniStat({ label, value, unit }: { label: string; value: React.ReactNode; unit?: string }) {
+function MiniStat({ label, value, unit, info }: { label: string; value: React.ReactNode; unit?: string; info?: CalorieTopic }) {
   return (
     <div className="card p-4">
-      <p className="label">{label}</p>
+      <p className="label flex items-center">
+        {label}
+        {info && <CalorieInfo topic={info} className="ml-auto" />}
+      </p>
       <p className="num mt-1 font-display text-3xl font-semibold">
         {value}
         {unit && <span className="text-sm font-medium text-muted"> {unit}</span>}
@@ -620,7 +624,10 @@ function CardioSheet({ open, onClose, initial }: { open: boolean; onClose: () =>
               <p className="num font-display text-2xl font-semibold leading-none">
                 ≈ {estimate.kcal} <span className="text-sm text-muted">kcal burned</span>
               </p>
-              <p className="text-xs text-muted">Estimated {BURN_METHOD_LABEL[estimate.method]}</p>
+              <p className="flex items-center gap-2 text-xs text-muted">
+                Estimated {BURN_METHOD_LABEL[estimate.method]}
+                <CalorieInfo topic="burn" />
+              </p>
             </div>
             {effectiveSpeed && distanceKm ? (
               <div className="num text-right text-xs text-muted">
