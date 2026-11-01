@@ -4,7 +4,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { motion } from 'motion/react';
 import { ArrowRight, Camera, ChartLine, Dumbbell, Scale } from 'lucide-react';
 import { api, type User } from '../lib/api';
-import { Logo } from '../components/Layout';
+import { Copyright, Logo } from '../components/Layout';
 import { Button, Field, Input } from '../components/ui';
 import { Rings } from '../components/viz';
 
@@ -173,6 +173,7 @@ export default function Auth({ mode }: { mode: 'login' | 'register' }) {
               {isLogin ? 'Create an account' : 'Log in'}
             </Link>
           </p>
+          <Copyright className="mt-10" />
         </div>
       </section>
     </div>

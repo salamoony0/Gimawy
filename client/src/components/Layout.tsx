@@ -17,6 +17,10 @@ const NAV = [
   { to: '/progress', label: 'Progress', icon: ChartLine },
 ];
 
+export function Copyright({ className }: { className?: string }) {
+  return <p className={clsx('text-center text-xs text-subtle', className)}>© {new Date().getFullYear()} Salamoony</p>;
+}
+
 export function Logo({ className }: { className?: string }) {
   return (
     <span className={clsx('flex items-center gap-2', className)}>
@@ -140,6 +144,7 @@ export function Layout() {
         <OfflineBar />
         {me?.autoAdjustTargets && <AutoAdjustTargets me={me} />}
         <Outlet />
+        <Copyright className="mt-12" />
       </main>
 
       {/* Mobile: active workout pill + bottom nav */}

@@ -3,7 +3,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ArrowRight, MailCheck } from 'lucide-react';
 import { api, type User } from '../lib/api';
-import { Logo } from '../components/Layout';
+import { Copyright, Logo } from '../components/Layout';
 import { Button, Field, Input } from '../components/ui';
 
 /** /forgot asks for an email; /reset?token=… (the emailed link) sets a new password and signs in. */
@@ -18,6 +18,7 @@ export default function Recover({ mode }: { mode: 'forgot' | 'reset' }) {
             Back to log in
           </Link>
         </p>
+        <Copyright className="mt-10" />
       </div>
     </div>
   );

@@ -281,7 +281,7 @@ function TrendCard({ date, me }: { date: string; me?: User }) {
   const avgP = logged.length ? Math.round(logged.reduce((n, r) => n + r.protein, 0) / logged.length) : 0;
 
   return (
-    <section className="card p-5 lg:sticky lg:top-10">
+    <section className="card p-5">
       <h2 className="font-display text-xl font-semibold tracking-wide">Last 14 days</h2>
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="rounded-xl bg-surface-2 p-3">
