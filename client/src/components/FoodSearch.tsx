@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { ChevronLeft, Plus, Search, X } from 'lucide-react';
-import { api, type FoodItem, type FoodSearch as FoodSearchResult, type ProductSearch } from '../lib/api';
-import { fmtInt } from '../lib/format';
-import { fromDbFood, fromMine, fromProduct, portionItem, unitsFor, type Pickable } from '../lib/portion';
+import { api, type FoodItem, type FoodSearch as FoodSearchResult, type ProductSearch, type SavedMeal } from '../lib/api';
+import { fmtInt, plural } from '../lib/format';
+import { fromCustom, fromDbFood, fromMine, fromProduct, portionItem, unitsFor, type Pickable } from '../lib/portion';
 import { Button, Field, IconButton, Input, Select, Spinner } from './ui';
 
 /** Fewer built-in results than this also searches Open Food Facts straight away. */
@@ -16,7 +16,7 @@ export function SearchBox({ value, onChange }: { value: string; onChange: (v: st
       <Input
         type="search"
         aria-label="Search foods"
-        placeholder="Search foods, brands, restaurants · ابحث"
+        placeholder="Search foods · ابحث"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className="pl-9 pr-11"
@@ -41,8 +41,18 @@ function useDebounced<T>(value: T, ms = 250) {
   return v;
 }
 
-/** Results for a query: the user's own foods, the built-in database, then packaged products (Open Food Facts). */
-export function FoodSearchResults({ query, onPick, onNew }: { query: string; onPick: (f: Pickable) => void; onNew: (name: string) => void }) {
+/** Results for a query: my meals, my foods, my past entries, the built-in database, then packaged products (Open Food Facts). */
+export function FoodSearchResults({
+  query,
+  onPick,
+  onPickMeal,
+  onNew,
+}: {
+  query: string;
+  onPick: (f: Pickable) => void;
+  onPickMeal: (m: SavedMeal) => void;
+  onNew: (name: string) => void;
+}) {
   const q = useDebounced(query.trim());
   const [wantProducts, setWantProducts] = useState(false);
   useEffect(() => setWantProducts(false), [q]);
@@ -53,7 +63,10 @@ export function FoodSearchResults({ query, onPick, onNew }: { query: string; onP
     enabled: q.length > 0,
     staleTime: 5 * 60_000,
   });
-  const local = search.data ? [...search.data.mine.map(fromMine), ...search.data.foods.map(fromDbFood)] : [];
+  const meals = search.data?.meals ?? [];
+  const local = search.data
+    ? [...search.data.custom.map(fromCustom), ...search.data.mine.map(fromMine), ...search.data.foods.map(fromDbFood)]
+    : [];
   const autoProducts = search.isSuccess && local.length < AUTO_PRODUCTS_BELOW && q.length >= 2;
   const products = useQuery({
     queryKey: ['food-products', q],
@@ -75,6 +88,28 @@ export function FoodSearchResults({ query, onPick, onNew }: { query: string; onP
 
   return (
     <div className="flex flex-col gap-4">
+      {meals.length > 0 && (
+        <ul className="flex flex-col gap-1.5">
+          {meals.map((m) => (
+            <li key={m.id}>
+              <button
+                type="button"
+                onClick={() => onPickMeal(m)}
+                className="flex min-h-12 w-full cursor-pointer items-center gap-3 rounded-xl bg-surface-2 px-3 py-2 text-left transition-colors hover:bg-surface-3"
+              >
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate text-sm font-semibold">{m.name}</span>
+                  <span className="block truncate text-xs text-muted">
+                    <span className="text-subtle">My meal · </span>
+                    {plural(m.items.length, 'item')}
+                  </span>
+                </span>
+                <span className="num text-sm font-semibold">{fmtInt(m.items.reduce((n, i) => n + i.calories, 0))}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
       {local.length > 0 && <ResultList items={local} onPick={onPick} />}
       {(products.isFetching || packaged.length > 0) && (
         <div>
@@ -89,7 +124,7 @@ export function FoodSearchResults({ query, onPick, onNew }: { query: string; onP
         </div>
       )}
       {products.isError && <p className="text-sm text-muted">{products.error.message}</p>}
-      {!local.length && !packaged.length && !products.isFetching && <p className="py-2 text-center text-sm text-muted">No matches for “{q}”.</p>}
+      {!meals.length && !local.length && !packaged.length && !products.isFetching && <p className="py-2 text-center text-sm text-muted">No matches for “{q}”.</p>}
       <div className="flex flex-col gap-2">
         {!wantProducts && !autoProducts && q.length >= 2 && (
           <Button variant="secondary" onClick={() => setWantProducts(true)}>
@@ -131,7 +166,19 @@ function ResultList({ items, onPick }: { items: Pickable[]; onPick: (f: Pickable
 }
 
 /** Pick how much of a food: a serving count, another serving, or grams. */
-export function PortionPicker({ food, onBack, onLog, saving }: { food: Pickable; onBack: () => void; onLog: (item: FoodItem) => void; saving: boolean }) {
+export function PortionPicker({
+  food,
+  onBack,
+  onLog,
+  saving,
+  actionLabel = (kcal) => `Log ${fmtInt(kcal)} kcal`,
+}: {
+  food: Pickable;
+  onBack: () => void;
+  onLog: (item: FoodItem) => void;
+  saving: boolean;
+  actionLabel?: (kcal: number) => string;
+}) {
   const units = unitsFor(food);
   const [unitIndex, setUnitIndex] = useState(0);
   const unit = units[unitIndex];
@@ -209,7 +256,7 @@ export function PortionPicker({ food, onBack, onLog, saving }: { food: Pickable;
       </div>
 
       <Button size="lg" disabled={n <= 0} loading={saving} onClick={() => onLog(item)}>
-        Log {fmtInt(item.calories)} kcal
+        {actionLabel(item.calories)}
       </Button>
     </div>
   );

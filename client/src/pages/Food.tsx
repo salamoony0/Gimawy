@@ -12,13 +12,14 @@ import {
   Info,
   Pencil,
   Plus,
+  BookmarkPlus,
   ScanBarcode,
   ScanLine,
   Sparkles,
   Trash,
   X,
 } from 'lucide-react';
-import { api, isQueued, type FoodAnalysis, type FoodEntry, type FoodItem, type FoodSource, type Meal, type User } from '../lib/api';
+import { api, isQueued, type CustomFood, type FoodAnalysis, type FoodEntry, type FoodItem, type FoodSource, type Meal, type User } from '../lib/api';
 import { fmtCompact, fmtDay, fmtInt, localDay, relativeDay, shiftDay, useMe } from '../lib/format';
 import { PageHeader } from '../components/Layout';
 import { Badge, Button, Field, IconButton, Input, Segmented, Sheet, Skeleton, useToast } from '../components/ui';
@@ -28,6 +29,7 @@ import { BarcodeSheet } from '../components/BarcodeSheet';
 import { fromDraft, guessMeal, ItemEditor, MEALS, sum, toDraft, type DraftItem } from '../components/FoodForm';
 import { CalorieInfo } from '../components/CalorieInfo';
 import { FoodSearchResults, PortionPicker, SearchBox } from '../components/FoodSearch';
+import { CustomFoodSheet, MealSheet, MyFoodsLists, useLogMeal, type MealDraft } from '../components/MyFoods';
 import type { Pickable } from '../lib/portion';
 
 const SOURCE_LABEL: Record<FoodSource, string> = {
@@ -38,6 +40,8 @@ const SOURCE_LABEL: Record<FoodSource, string> = {
   text: 'AI · text',
   barcode: 'Barcode',
   search: 'Food database',
+  custom: 'My food',
+  meal: 'My meal',
 };
 
 export default function Food() {
@@ -46,6 +50,8 @@ export default function Food() {
   const [scanOpen, setScanOpen] = useState(params.get('scan') === '1');
   const [barcodeOpen, setBarcodeOpen] = useState(false);
   const [manualMeal, setManualMeal] = useState<Meal | null>(null);
+  const [customFood, setCustomFood] = useState<{ food: CustomFood | 'new'; name?: string } | null>(null);
+  const [mealDraft, setMealDraft] = useState<MealDraft | null>(null);
   const [editing, setEditing] = useState<FoodEntry | null>(null);
   const { data: me } = useMe();
   const toast = useToast();
@@ -121,6 +127,14 @@ export default function Food() {
                     <h2 className="font-display text-xl font-semibold tracking-wide">{label}</h2>
                     <div className="flex items-center gap-1">
                       <span className="num text-sm font-semibold text-muted">{fmtInt(sum(items, 'calories'))} kcal</span>
+                      {items.length > 0 && (
+                        <IconButton
+                          label={`Save ${label} as a meal`}
+                          onClick={() => setMealDraft({ name: '', items: items.map(({ name, quantity, calories, protein, carbs, fat }) => ({ name, quantity, calories, protein, carbs, fat })) })}
+                        >
+                          <BookmarkPlus className="size-4" />
+                        </IconButton>
+                      )}
                       <IconButton label={`Add food to ${label}`} onClick={() => setManualMeal(value)} className="text-brand">
                         <Plus className="size-5" />
                       </IconButton>
@@ -191,7 +205,21 @@ export default function Food() {
 
       <BarcodeSheet open={barcodeOpen} onClose={() => setBarcodeOpen(false)} date={date} />
       <ScanSheet open={scanOpen} onClose={() => setScanOpen(false)} date={date} />
-      <ManualSheet meal={manualMeal} onClose={() => setManualMeal(null)} date={date} />
+      <ManualSheet
+        meal={manualMeal}
+        onClose={() => setManualMeal(null)}
+        date={date}
+        onCustomFood={(food, name) => {
+          setManualMeal(null);
+          setCustomFood({ food, name });
+        }}
+        onMealDraft={(draft) => {
+          setManualMeal(null);
+          setMealDraft(draft);
+        }}
+      />
+      <CustomFoodSheet food={customFood?.food ?? null} initialName={customFood?.name} onClose={() => setCustomFood(null)} />
+      <MealSheet meal={mealDraft} onClose={() => setMealDraft(null)} />
       <EditFoodSheet entry={editing} onClose={() => setEditing(null)} />
     </>
   );
@@ -568,7 +596,21 @@ function ScanSheet({ open, onClose, date }: { open: boolean; onClose: () => void
 
 // ---------- Manual add ----------
 
-function ManualSheet({ meal, onClose, date }: { meal: Meal | null; onClose: () => void; date: string }) {
+function ManualSheet({
+  meal,
+  onClose,
+  date,
+  onCustomFood,
+  onMealDraft,
+}: {
+  meal: Meal | null;
+  onClose: () => void;
+  date: string;
+  /** Opens the create/edit food sheet (this sheet closes). */
+  onCustomFood: (food: CustomFood | 'new', name?: string) => void;
+  /** Opens the create/edit meal sheet (this sheet closes). */
+  onMealDraft: (draft: MealDraft) => void;
+}) {
   const toast = useToast();
   const empty: DraftItem = { name: '', quantity: '', calories: '', protein: '', carbs: '', fat: '' };
   const [item, setItem] = useState<DraftItem>(empty);
@@ -594,6 +636,7 @@ function ManualSheet({ meal, onClose, date }: { meal: Meal | null; onClose: () =
     },
     onError: (e) => toast(e.message, 'error'),
   });
+  const logMeal = useLogMeal(date, meal, close);
   const label = MEALS.find((m) => m.value === meal)?.label ?? '';
   const searching = query.trim().length > 0;
 
@@ -622,7 +665,7 @@ function ManualSheet({ meal, onClose, date }: { meal: Meal | null; onClose: () =
           food={picked}
           onBack={() => setPicked(null)}
           saving={save.isPending}
-          onLog={(i) => save.mutate({ items: [i], source: 'search', barcode: picked.barcode })}
+          onLog={(i) => save.mutate({ items: [i], source: picked.key.startsWith('custom-') ? 'custom' : 'search', barcode: picked.barcode })}
         />
       ) : (
         <>
@@ -633,6 +676,7 @@ function ManualSheet({ meal, onClose, date }: { meal: Meal | null; onClose: () =
             <FoodSearchResults
               query={query}
               onPick={setPicked}
+              onPickMeal={(m) => logMeal.mutate(m)}
               onNew={(name) => {
                 setItem({ ...empty, name });
                 setQuery('');
@@ -640,6 +684,14 @@ function ManualSheet({ meal, onClose, date }: { meal: Meal | null; onClose: () =
             />
           ) : (
             <>
+              <MyFoodsLists
+                onLogMeal={(m) => logMeal.mutate(m)}
+                onPickFood={setPicked}
+                onEditMeal={(m) => onMealDraft(m)}
+                onEditFood={(f) => onCustomFood(f)}
+                onCreateMeal={() => onMealDraft({ name: '', items: [] })}
+                onCreateFood={() => onCustomFood('new')}
+              />
               {recent && recent.length > 0 && (
                 <div className="mb-5">
                   <p className="label mb-2">Quick add</p>

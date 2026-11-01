@@ -197,7 +197,7 @@ const foodItem = z.object({
   barcode: z.string().regex(/^\d{8,14}$/).nullable().optional(),
 });
 
-const FOOD_SOURCES = ['manual', 'label', 'screenshot', 'photo', 'text', 'barcode', 'search'] as const;
+const FOOD_SOURCES = ['manual', 'label', 'screenshot', 'photo', 'text', 'barcode', 'search', 'custom', 'meal'] as const;
 
 trackingRouter.get('/food', async (req, res) => {
   const date = zDay.parse(req.query.date);
@@ -265,7 +265,8 @@ const zQuery = z.string().trim().min(1).max(80);
 trackingRouter.get('/food/search', async (req, res) => {
   const q = zQuery.parse(req.query.q);
   const words = normalizeSearch(q).split(' ').filter(Boolean).slice(0, 6);
-  const [entries, rows] = await Promise.all([
+  const mineWhere = { userId: req.userId, name: { contains: q, mode: 'insensitive' as const } };
+  const [entries, rows, custom, meals] = await Promise.all([
     prisma.foodEntry.findMany({
       where: { userId: req.userId, name: { contains: q, mode: 'insensitive' } },
       orderBy: { createdAt: 'desc' },
@@ -273,13 +274,90 @@ trackingRouter.get('/food/search', async (req, res) => {
       select: { name: true, quantity: true, calories: true, protein: true, carbs: true, fat: true },
     }),
     words.length ? prisma.food.findMany({ where: { AND: words.map((w) => ({ search: { contains: w } })) }, take: 300 }) : [],
+    prisma.customFood.findMany({ where: mineWhere, orderBy: { name: 'asc' }, take: 10 }),
+    prisma.savedMeal.findMany({ where: mineWhere, orderBy: { name: 'asc' }, take: 10 }),
   ]);
   const mine = [...new Map(entries.map((e) => [e.name.toLowerCase(), e])).values()].slice(0, 5);
   const foods = rankFoods(rows, q)
     .slice(0, 25)
     .map(({ search: _, barcode: __, ...food }) => food);
-  res.json({ mine, foods });
+  res.json({ meals, custom, mine, foods });
 });
+
+// ---------- my foods & my meals ----------
+
+const customFoodBody = z.object({
+  name: z.string().trim().min(1).max(120),
+  serving: z.string().trim().min(1).max(60),
+  grams: z.number().positive().max(5000).nullable().optional(),
+  calories: z.number().min(0).max(10000),
+  protein: z.number().min(0).max(1000),
+  carbs: z.number().min(0).max(1000),
+  fat: z.number().min(0).max(1000),
+});
+const savedMealBody = z.object({
+  name: z.string().trim().min(1).max(80),
+  items: z.array(foodItem.omit({ barcode: true })).min(1).max(30),
+});
+/** Per-user caps, so one account can't fill the database. */
+const MAX_CUSTOM_FOODS = 1000;
+const MAX_SAVED_MEALS = 300;
+
+trackingRouter.get('/food/custom', async (req, res) => {
+  res.json(await prisma.customFood.findMany({ where: { userId: req.userId }, orderBy: { name: 'asc' } }));
+});
+
+trackingRouter.post('/food/custom', async (req, res) => {
+  const body = customFoodBody.parse(req.body);
+  if ((await prisma.customFood.count({ where: { userId: req.userId } })) >= MAX_CUSTOM_FOODS) {
+    throw new HttpError(409, `You can save up to ${MAX_CUSTOM_FOODS} foods. Delete some first.`);
+  }
+  res.status(201).json(await prisma.customFood.create({ data: { ...body, grams: body.grams ?? null, userId: req.userId } }));
+});
+
+trackingRouter.patch('/food/custom/:id', async (req, res) => {
+  const body = customFoodBody.parse(req.body);
+  const { count } = await prisma.customFood.updateMany({ where: { id: param(req, 'id'), userId: req.userId }, data: { ...body, grams: body.grams ?? null } });
+  if (!count) throw new HttpError(404, 'Food not found');
+  res.json(await prisma.customFood.findUnique({ where: { id: param(req, 'id') } }));
+});
+
+trackingRouter.delete('/food/custom/:id', async (req, res) => {
+  const { count } = await prisma.customFood.deleteMany({ where: { id: param(req, 'id'), userId: req.userId } });
+  if (!count) throw new HttpError(404, 'Food not found');
+  res.status(204).end();
+});
+
+trackingRouter.get('/food/meals', async (req, res) => {
+  res.json(await prisma.savedMeal.findMany({ where: { userId: req.userId }, orderBy: { name: 'asc' } }));
+});
+
+trackingRouter.post('/food/meals', async (req, res) => {
+  const body = savedMealBody.parse(req.body);
+  if ((await prisma.savedMeal.count({ where: { userId: req.userId } })) >= MAX_SAVED_MEALS) {
+    throw new HttpError(409, `You can save up to ${MAX_SAVED_MEALS} meals. Delete some first.`);
+  }
+  res.status(201).json(await prisma.savedMeal.create({ data: { ...body, items: normalizeItems(body.items), userId: req.userId } }));
+});
+
+trackingRouter.patch('/food/meals/:id', async (req, res) => {
+  const body = savedMealBody.partial().parse(req.body);
+  const data = { ...body, ...(body.items && { items: normalizeItems(body.items) }) };
+  const { count } = await prisma.savedMeal.updateMany({ where: { id: param(req, 'id'), userId: req.userId }, data });
+  if (!count) throw new HttpError(404, 'Meal not found');
+  res.json(await prisma.savedMeal.findUnique({ where: { id: param(req, 'id') } }));
+});
+
+trackingRouter.delete('/food/meals/:id', async (req, res) => {
+  const { count } = await prisma.savedMeal.deleteMany({ where: { id: param(req, 'id'), userId: req.userId } });
+  if (!count) throw new HttpError(404, 'Meal not found');
+  res.status(204).end();
+});
+
+/** Stored meal items always have the same keys (quantity null when missing). */
+function normalizeItems(items: z.infer<typeof savedMealBody>['items']) {
+  return items.map(({ name, quantity, calories, protein, carbs, fat }) => ({ name, quantity: quantity ?? null, calories, protein, carbs, fat }));
+}
 
 /** Packaged products from Open Food Facts by name, for what the built-in database doesn't have. */
 trackingRouter.get('/food/search/products', async (req, res) => {

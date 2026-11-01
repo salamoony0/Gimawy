@@ -1,4 +1,4 @@
-import type { BarcodeProduct, DbFood, FoodItem } from './api';
+import type { BarcodeProduct, CustomFood, DbFood, FoodItem } from './api';
 
 type Macros = { calories: number; protein: number; carbs: number; fat: number };
 
@@ -31,6 +31,18 @@ export function fromDbFood(f: DbFood): Pickable {
     note: NOTE[f.source],
     base: { label: f.serving, grams: f.grams, calories: f.calories, protein: f.protein, carbs: f.carbs, fat: f.fat },
     servings: f.servings ?? [],
+    barcode: null,
+  };
+}
+
+export function fromCustom(f: CustomFood): Pickable {
+  return {
+    key: `custom-${f.id}`,
+    name: f.name,
+    brand: null,
+    note: 'My food',
+    base: { label: f.serving, grams: f.grams, calories: f.calories, protein: f.protein, carbs: f.carbs, fat: f.fat },
+    servings: [],
     barcode: null,
   };
 }

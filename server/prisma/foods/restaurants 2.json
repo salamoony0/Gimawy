@@ -1,0 +1,1607 @@
+[
+ {
+  "key": "r-mcdonald-s-big-mac",
+  "name": "Big Mac",
+  "brand": "McDonald's",
+  "nameAr": "ماكدونالدز",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 burger",
+   "calories": 590,
+   "protein": 25,
+   "carbs": 46,
+   "fat": 34
+  }
+ },
+ {
+  "key": "r-mcdonald-s-quarter-pounder-with-cheese-mcroyale",
+  "name": "Quarter Pounder with Cheese (McRoyale)",
+  "brand": "McDonald's",
+  "nameAr": "ماكدونالدز",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 burger",
+   "calories": 520,
+   "protein": 30,
+   "carbs": 42,
+   "fat": 26
+  }
+ },
+ {
+  "key": "r-mcdonald-s-double-quarter-pounder-with-cheese",
+  "name": "Double Quarter Pounder with Cheese",
+  "brand": "McDonald's",
+  "nameAr": "ماكدونالدز",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 burger",
+   "calories": 740,
+   "protein": 48,
+   "carbs": 43,
+   "fat": 42
+  }
+ },
+ {
+  "key": "r-mcdonald-s-cheeseburger",
+  "name": "Cheeseburger",
+  "brand": "McDonald's",
+  "nameAr": "ماكدونالدز",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 burger",
+   "calories": 300,
+   "protein": 15,
+   "carbs": 32,
+   "fat": 13
+  }
+ },
+ {
+  "key": "r-mcdonald-s-double-cheeseburger",
+  "name": "Double Cheeseburger",
+  "brand": "McDonald's",
+  "nameAr": "ماكدونالدز",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 burger",
+   "calories": 450,
+   "protein": 25,
+   "carbs": 34,
+   "fat": 24
+  }
+ },
+ {
+  "key": "r-mcdonald-s-hamburger",
+  "name": "Hamburger",
+  "brand": "McDonald's",
+  "nameAr": "ماكدونالدز",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 burger",
+   "calories": 250,
+   "protein": 12,
+   "carbs": 31,
+   "fat": 9
+  }
+ },
+ {
+  "key": "r-mcdonald-s-mcchicken",
+  "name": "McChicken",
+  "brand": "McDonald's",
+  "nameAr": "ماكدونالدز",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 sandwich",
+   "calories": 400,
+   "protein": 14,
+   "carbs": 39,
+   "fat": 21
+  }
+ },
+ {
+  "key": "r-mcdonald-s-filet-o-fish",
+  "name": "Filet-O-Fish",
+  "brand": "McDonald's",
+  "nameAr": "ماكدونالدز",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 sandwich",
+   "calories": 390,
+   "protein": 16,
+   "carbs": 39,
+   "fat": 19
+  }
+ },
+ {
+  "key": "r-mcdonald-s-chicken-mcnuggets-6-pieces",
+  "name": "Chicken McNuggets, 6 pieces",
+  "brand": "McDonald's",
+  "nameAr": "ماكدونالدز",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "6 pieces",
+   "calories": 250,
+   "protein": 14,
+   "carbs": 15,
+   "fat": 15
+  }
+ },
+ {
+  "key": "r-mcdonald-s-chicken-mcnuggets-9-pieces",
+  "name": "Chicken McNuggets, 9 pieces",
+  "brand": "McDonald's",
+  "nameAr": "ماكدونالدز",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "9 pieces",
+   "calories": 380,
+   "protein": 21,
+   "carbs": 22,
+   "fat": 23
+  }
+ },
+ {
+  "key": "r-mcdonald-s-chicken-mcnuggets-20-pieces",
+  "name": "Chicken McNuggets, 20 pieces",
+  "brand": "McDonald's",
+  "nameAr": "ماكدونالدز",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "20 pieces",
+   "calories": 830,
+   "protein": 46,
+   "carbs": 49,
+   "fat": 49
+  }
+ },
+ {
+  "key": "r-mcdonald-s-french-fries-small",
+  "name": "French fries, small",
+  "brand": "McDonald's",
+  "nameAr": "ماكدونالدز",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 small",
+   "calories": 230,
+   "protein": 3,
+   "carbs": 31,
+   "fat": 11
+  }
+ },
+ {
+  "key": "r-mcdonald-s-french-fries-medium",
+  "name": "French fries, medium",
+  "brand": "McDonald's",
+  "nameAr": "ماكدونالدز",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 medium",
+   "calories": 320,
+   "protein": 5,
+   "carbs": 43,
+   "fat": 15
+  }
+ },
+ {
+  "key": "r-mcdonald-s-french-fries-large",
+  "name": "French fries, large",
+  "brand": "McDonald's",
+  "nameAr": "ماكدونالدز",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 large",
+   "calories": 480,
+   "protein": 7,
+   "carbs": 65,
+   "fat": 23
+  }
+ },
+ {
+  "key": "r-mcdonald-s-egg-mcmuffin",
+  "name": "Egg McMuffin",
+  "brand": "McDonald's",
+  "nameAr": "ماكدونالدز",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 sandwich",
+   "calories": 310,
+   "protein": 17,
+   "carbs": 30,
+   "fat": 13
+  }
+ },
+ {
+  "key": "r-mcdonald-s-hash-brown",
+  "name": "Hash brown",
+  "brand": "McDonald's",
+  "nameAr": "ماكدونالدز",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 piece",
+   "calories": 140,
+   "protein": 1,
+   "carbs": 16,
+   "fat": 8
+  }
+ },
+ {
+  "key": "r-mcdonald-s-mcflurry-with-oreo-regular",
+  "name": "McFlurry with Oreo, regular",
+  "brand": "McDonald's",
+  "nameAr": "ماكدونالدز",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 regular",
+   "calories": 510,
+   "protein": 12,
+   "carbs": 80,
+   "fat": 16
+  }
+ },
+ {
+  "key": "r-mcdonald-s-apple-pie",
+  "name": "Apple pie",
+  "brand": "McDonald's",
+  "nameAr": "ماكدونالدز",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 pie",
+   "calories": 230,
+   "protein": 2,
+   "carbs": 33,
+   "fat": 11
+  }
+ },
+ {
+  "key": "r-mcdonald-s-vanilla-cone",
+  "name": "Vanilla cone",
+  "brand": "McDonald's",
+  "nameAr": "ماكدونالدز",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 cone",
+   "calories": 200,
+   "protein": 5,
+   "carbs": 32,
+   "fat": 5
+  }
+ },
+ {
+  "key": "r-mcdonald-s-coca-cola-medium",
+  "name": "Coca-Cola, medium",
+  "brand": "McDonald's",
+  "nameAr": "ماكدونالدز",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 medium",
+   "calories": 200,
+   "protein": 0,
+   "carbs": 55,
+   "fat": 0
+  }
+ },
+ {
+  "key": "r-kfc-original-recipe-chicken-breast",
+  "name": "Original Recipe chicken breast",
+  "brand": "KFC",
+  "nameAr": "كنتاكي",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 piece",
+   "calories": 390,
+   "protein": 39,
+   "carbs": 11,
+   "fat": 21
+  }
+ },
+ {
+  "key": "r-kfc-original-recipe-thigh",
+  "name": "Original Recipe thigh",
+  "brand": "KFC",
+  "nameAr": "كنتاكي",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 piece",
+   "calories": 280,
+   "protein": 19,
+   "carbs": 8,
+   "fat": 19
+  }
+ },
+ {
+  "key": "r-kfc-original-recipe-drumstick",
+  "name": "Original Recipe drumstick",
+  "brand": "KFC",
+  "nameAr": "كنتاكي",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 piece",
+   "calories": 130,
+   "protein": 12,
+   "carbs": 4,
+   "fat": 8
+  }
+ },
+ {
+  "key": "r-kfc-original-recipe-wing",
+  "name": "Original Recipe wing",
+  "brand": "KFC",
+  "nameAr": "كنتاكي",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 piece",
+   "calories": 130,
+   "protein": 10,
+   "carbs": 3,
+   "fat": 8
+  }
+ },
+ {
+  "key": "r-kfc-spicy-crispy-chicken-breast",
+  "name": "Spicy crispy chicken breast",
+  "brand": "KFC",
+  "nameAr": "كنتاكي",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 piece",
+   "calories": 530,
+   "protein": 35,
+   "carbs": 18,
+   "fat": 35
+  }
+ },
+ {
+  "key": "r-kfc-zinger-sandwich",
+  "name": "Zinger sandwich",
+  "brand": "KFC",
+  "nameAr": "كنتاكي",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 sandwich",
+   "calories": 450,
+   "protein": 28,
+   "carbs": 44,
+   "fat": 18
+  }
+ },
+ {
+  "key": "r-kfc-coleslaw",
+  "name": "Coleslaw",
+  "brand": "KFC",
+  "nameAr": "كنتاكي",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 regular",
+   "calories": 170,
+   "protein": 1,
+   "carbs": 14,
+   "fat": 12
+  }
+ },
+ {
+  "key": "r-kfc-mashed-potato-with-gravy",
+  "name": "Mashed potato with gravy",
+  "brand": "KFC",
+  "nameAr": "كنتاكي",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 regular",
+   "calories": 130,
+   "protein": 2,
+   "carbs": 18,
+   "fat": 5
+  }
+ },
+ {
+  "key": "r-kfc-fries-regular",
+  "name": "Fries, regular",
+  "brand": "KFC",
+  "nameAr": "كنتاكي",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 regular",
+   "calories": 250,
+   "protein": 3,
+   "carbs": 33,
+   "fat": 12
+  }
+ },
+ {
+  "key": "r-kfc-egypt-mighty-zinger",
+  "name": "Mighty Zinger",
+  "brand": "KFC Egypt",
+  "nameAr": "كنتاكي مصر",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 sandwich",
+   "calories": 720,
+   "protein": 42,
+   "carbs": 56,
+   "fat": 36
+  }
+ },
+ {
+  "key": "r-kfc-egypt-twister",
+  "name": "Twister",
+  "brand": "KFC Egypt",
+  "nameAr": "كنتاكي مصر",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 wrap",
+   "calories": 500,
+   "protein": 22,
+   "carbs": 50,
+   "fat": 23
+  }
+ },
+ {
+  "key": "r-kfc-egypt-rizo",
+  "name": "Rizo",
+  "brand": "KFC Egypt",
+  "nameAr": "كنتاكي مصر",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 regular",
+   "calories": 450,
+   "protein": 18,
+   "carbs": 60,
+   "fat": 15
+  }
+ },
+ {
+  "key": "r-kfc-egypt-popcorn-chicken-regular",
+  "name": "Popcorn chicken, regular",
+  "brand": "KFC Egypt",
+  "nameAr": "كنتاكي مصر",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 regular",
+   "calories": 290,
+   "protein": 17,
+   "carbs": 16,
+   "fat": 18
+  }
+ },
+ {
+  "key": "r-burger-king-whopper",
+  "name": "Whopper",
+  "brand": "Burger King",
+  "nameAr": "برجر كينج",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 burger",
+   "calories": 660,
+   "protein": 28,
+   "carbs": 49,
+   "fat": 40
+  }
+ },
+ {
+  "key": "r-burger-king-whopper-with-cheese",
+  "name": "Whopper with cheese",
+  "brand": "Burger King",
+  "nameAr": "برجر كينج",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 burger",
+   "calories": 740,
+   "protein": 32,
+   "carbs": 50,
+   "fat": 46
+  }
+ },
+ {
+  "key": "r-burger-king-double-whopper",
+  "name": "Double Whopper",
+  "brand": "Burger King",
+  "nameAr": "برجر كينج",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 burger",
+   "calories": 900,
+   "protein": 48,
+   "carbs": 49,
+   "fat": 58
+  }
+ },
+ {
+  "key": "r-burger-king-whopper-jr",
+  "name": "Whopper Jr.",
+  "brand": "Burger King",
+  "nameAr": "برجر كينج",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 burger",
+   "calories": 330,
+   "protein": 14,
+   "carbs": 27,
+   "fat": 19
+  }
+ },
+ {
+  "key": "r-burger-king-chicken-royale",
+  "name": "Chicken Royale",
+  "brand": "Burger King",
+  "nameAr": "برجر كينج",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 sandwich",
+   "calories": 610,
+   "protein": 25,
+   "carbs": 52,
+   "fat": 33
+  }
+ },
+ {
+  "key": "r-burger-king-chicken-nuggets-8-pieces",
+  "name": "Chicken nuggets, 8 pieces",
+  "brand": "Burger King",
+  "nameAr": "برجر كينج",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "8 pieces",
+   "calories": 380,
+   "protein": 18,
+   "carbs": 22,
+   "fat": 24
+  }
+ },
+ {
+  "key": "r-burger-king-french-fries-medium",
+  "name": "French fries, medium",
+  "brand": "Burger King",
+  "nameAr": "برجر كينج",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 medium",
+   "calories": 370,
+   "protein": 4,
+   "carbs": 53,
+   "fat": 15
+  }
+ },
+ {
+  "key": "r-burger-king-onion-rings-medium",
+  "name": "Onion rings, medium",
+  "brand": "Burger King",
+  "nameAr": "برجر كينج",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 medium",
+   "calories": 410,
+   "protein": 6,
+   "carbs": 50,
+   "fat": 21
+  }
+ },
+ {
+  "key": "r-hardee-s-super-star-burger",
+  "name": "Super Star burger",
+  "brand": "Hardee's",
+  "nameAr": "هارديز",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 burger",
+   "calories": 790,
+   "protein": 37,
+   "carbs": 49,
+   "fat": 49
+  }
+ },
+ {
+  "key": "r-hardee-s-famous-star-burger",
+  "name": "Famous Star burger",
+  "brand": "Hardee's",
+  "nameAr": "هارديز",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 burger",
+   "calories": 580,
+   "protein": 24,
+   "carbs": 48,
+   "fat": 32
+  }
+ },
+ {
+  "key": "r-hardee-s-mushroom-swiss-burger",
+  "name": "Mushroom & Swiss burger",
+  "brand": "Hardee's",
+  "nameAr": "هارديز",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 burger",
+   "calories": 670,
+   "protein": 37,
+   "carbs": 46,
+   "fat": 38
+  }
+ },
+ {
+  "key": "r-hardee-s-chicken-fillet-sandwich",
+  "name": "Chicken fillet sandwich",
+  "brand": "Hardee's",
+  "nameAr": "هارديز",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 sandwich",
+   "calories": 520,
+   "protein": 28,
+   "carbs": 53,
+   "fat": 22
+  }
+ },
+ {
+  "key": "r-hardee-s-curly-fries-medium",
+  "name": "Curly fries, medium",
+  "brand": "Hardee's",
+  "nameAr": "هارديز",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 medium",
+   "calories": 410,
+   "protein": 5,
+   "carbs": 46,
+   "fat": 23
+  }
+ },
+ {
+  "key": "r-pizza-hut-pepperoni-pan-pizza-medium",
+  "name": "Pepperoni pan pizza, medium",
+  "brand": "Pizza Hut",
+  "nameAr": "بيتزا هت",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 slice",
+   "calories": 250,
+   "protein": 10,
+   "carbs": 26,
+   "fat": 12
+  }
+ },
+ {
+  "key": "r-pizza-hut-cheese-pan-pizza-medium",
+  "name": "Cheese pan pizza, medium",
+  "brand": "Pizza Hut",
+  "nameAr": "بيتزا هت",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 slice",
+   "calories": 240,
+   "protein": 10,
+   "carbs": 27,
+   "fat": 10
+  }
+ },
+ {
+  "key": "r-pizza-hut-supreme-pan-pizza-medium",
+  "name": "Supreme pan pizza, medium",
+  "brand": "Pizza Hut",
+  "nameAr": "بيتزا هت",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 slice",
+   "calories": 280,
+   "protein": 11,
+   "carbs": 27,
+   "fat": 14
+  }
+ },
+ {
+  "key": "r-pizza-hut-margherita-thin-crust-medium",
+  "name": "Margherita thin crust, medium",
+  "brand": "Pizza Hut",
+  "nameAr": "بيتزا هت",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 slice",
+   "calories": 190,
+   "protein": 8,
+   "carbs": 22,
+   "fat": 8
+  }
+ },
+ {
+  "key": "r-domino-s-cheese-pizza-hand-tossed-medium",
+  "name": "Cheese pizza, hand tossed, medium",
+  "brand": "Domino's",
+  "nameAr": "دومينوز",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 slice",
+   "calories": 210,
+   "protein": 8,
+   "carbs": 26,
+   "fat": 8
+  }
+ },
+ {
+  "key": "r-domino-s-pepperoni-pizza-hand-tossed-medium",
+  "name": "Pepperoni pizza, hand tossed, medium",
+  "brand": "Domino's",
+  "nameAr": "دومينوز",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 slice",
+   "calories": 240,
+   "protein": 9,
+   "carbs": 26,
+   "fat": 11
+  }
+ },
+ {
+  "key": "r-papa-john-s-cheese-pizza-original-crust-large",
+  "name": "Cheese pizza, original crust, large",
+  "brand": "Papa John's",
+  "nameAr": "بابا جونز",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 slice",
+   "calories": 280,
+   "protein": 11,
+   "carbs": 35,
+   "fat": 10
+  }
+ },
+ {
+  "key": "r-papa-john-s-pepperoni-pizza-original-crust-large",
+  "name": "Pepperoni pizza, original crust, large",
+  "brand": "Papa John's",
+  "nameAr": "بابا جونز",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 slice",
+   "calories": 310,
+   "protein": 12,
+   "carbs": 35,
+   "fat": 13
+  }
+ },
+ {
+  "key": "r-papa-john-s-garlic-sauce",
+  "name": "Garlic sauce",
+  "brand": "Papa John's",
+  "nameAr": "بابا جونز",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 cup",
+   "calories": 150,
+   "protein": 0,
+   "carbs": 0,
+   "fat": 17
+  }
+ },
+ {
+  "key": "r-subway-sweet-onion-chicken-teriyaki-6-inch",
+  "name": "Sweet onion chicken teriyaki, 6-inch",
+  "brand": "Subway",
+  "nameAr": "صب واي",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 sub",
+   "calories": 330,
+   "protein": 25,
+   "carbs": 49,
+   "fat": 5
+  }
+ },
+ {
+  "key": "r-subway-turkey-breast-6-inch",
+  "name": "Turkey breast, 6-inch",
+  "brand": "Subway",
+  "nameAr": "صب واي",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 sub",
+   "calories": 270,
+   "protein": 18,
+   "carbs": 40,
+   "fat": 4
+  }
+ },
+ {
+  "key": "r-subway-oven-roasted-chicken-6-inch",
+  "name": "Oven roasted chicken, 6-inch",
+  "brand": "Subway",
+  "nameAr": "صب واي",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 sub",
+   "calories": 310,
+   "protein": 23,
+   "carbs": 40,
+   "fat": 6
+  }
+ },
+ {
+  "key": "r-subway-tuna-6-inch",
+  "name": "Tuna, 6-inch",
+  "brand": "Subway",
+  "nameAr": "صب واي",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 sub",
+   "calories": 470,
+   "protein": 20,
+   "carbs": 39,
+   "fat": 25
+  }
+ },
+ {
+  "key": "r-subway-italian-b-m-t-6-inch",
+  "name": "Italian B.M.T., 6-inch",
+  "brand": "Subway",
+  "nameAr": "صب واي",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 sub",
+   "calories": 390,
+   "protein": 19,
+   "carbs": 41,
+   "fat": 16
+  }
+ },
+ {
+  "key": "r-subway-steak-cheese-6-inch",
+  "name": "Steak & cheese, 6-inch",
+  "brand": "Subway",
+  "nameAr": "صب واي",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 sub",
+   "calories": 340,
+   "protein": 23,
+   "carbs": 40,
+   "fat": 10
+  }
+ },
+ {
+  "key": "r-starbucks-caff-latte-grande",
+  "name": "Caffè latte, grande",
+  "brand": "Starbucks",
+  "nameAr": "ستاربكس",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 grande",
+   "calories": 190,
+   "protein": 13,
+   "carbs": 19,
+   "fat": 7
+  }
+ },
+ {
+  "key": "r-starbucks-cappuccino-grande",
+  "name": "Cappuccino, grande",
+  "brand": "Starbucks",
+  "nameAr": "ستاربكس",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 grande",
+   "calories": 140,
+   "protein": 9,
+   "carbs": 14,
+   "fat": 5
+  }
+ },
+ {
+  "key": "r-starbucks-caramel-macchiato-grande",
+  "name": "Caramel macchiato, grande",
+  "brand": "Starbucks",
+  "nameAr": "ستاربكس",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 grande",
+   "calories": 250,
+   "protein": 10,
+   "carbs": 35,
+   "fat": 7
+  }
+ },
+ {
+  "key": "r-starbucks-caff-mocha-with-whip-grande",
+  "name": "Caffè mocha with whip, grande",
+  "brand": "Starbucks",
+  "nameAr": "ستاربكس",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 grande",
+   "calories": 370,
+   "protein": 14,
+   "carbs": 43,
+   "fat": 16
+  }
+ },
+ {
+  "key": "r-starbucks-white-chocolate-mocha-with-whip-grande",
+  "name": "White chocolate mocha with whip, grande",
+  "brand": "Starbucks",
+  "nameAr": "ستاربكس",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 grande",
+   "calories": 430,
+   "protein": 15,
+   "carbs": 53,
+   "fat": 18
+  }
+ },
+ {
+  "key": "r-starbucks-caramel-frappuccino-grande",
+  "name": "Caramel Frappuccino, grande",
+  "brand": "Starbucks",
+  "nameAr": "ستاربكس",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 grande",
+   "calories": 380,
+   "protein": 4,
+   "carbs": 57,
+   "fat": 16
+  }
+ },
+ {
+  "key": "r-starbucks-java-chip-frappuccino-grande",
+  "name": "Java Chip Frappuccino, grande",
+  "brand": "Starbucks",
+  "nameAr": "ستاربكس",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 grande",
+   "calories": 440,
+   "protein": 6,
+   "carbs": 66,
+   "fat": 18
+  }
+ },
+ {
+  "key": "r-starbucks-caff-americano-grande",
+  "name": "Caffè Americano, grande",
+  "brand": "Starbucks",
+  "nameAr": "ستاربكس",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 grande",
+   "calories": 15,
+   "protein": 1,
+   "carbs": 2,
+   "fat": 0
+  }
+ },
+ {
+  "key": "r-starbucks-butter-croissant",
+  "name": "Butter croissant",
+  "brand": "Starbucks",
+  "nameAr": "ستاربكس",
+  "kind": "restaurant",
+  "source": "published",
+  "serving": {
+   "label": "1 croissant",
+   "calories": 260,
+   "protein": 5,
+   "carbs": 28,
+   "fat": 14
+  }
+ },
+ {
+  "key": "r-costa-coffee-latte-medium",
+  "name": "Latte, medium",
+  "brand": "Costa Coffee",
+  "nameAr": "كوستا",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 medium",
+   "calories": 170,
+   "protein": 11,
+   "carbs": 17,
+   "fat": 6
+  }
+ },
+ {
+  "key": "r-costa-coffee-cappuccino-medium",
+  "name": "Cappuccino, medium",
+  "brand": "Costa Coffee",
+  "nameAr": "كوستا",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 medium",
+   "calories": 120,
+   "protein": 8,
+   "carbs": 12,
+   "fat": 4.5
+  }
+ },
+ {
+  "key": "r-costa-coffee-flat-white",
+  "name": "Flat white",
+  "brand": "Costa Coffee",
+  "nameAr": "كوستا",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 cup",
+   "calories": 110,
+   "protein": 7,
+   "carbs": 10,
+   "fat": 4.5
+  }
+ },
+ {
+  "key": "r-costa-coffee-iced-latte-medium",
+  "name": "Iced latte, medium",
+  "brand": "Costa Coffee",
+  "nameAr": "كوستا",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 medium",
+   "calories": 130,
+   "protein": 8,
+   "carbs": 13,
+   "fat": 5
+  }
+ },
+ {
+  "key": "r-cook-door-beef-burger",
+  "name": "Beef burger",
+  "brand": "Cook Door",
+  "nameAr": "كوك دور",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 sandwich",
+   "calories": 520,
+   "protein": 26,
+   "carbs": 45,
+   "fat": 26
+  }
+ },
+ {
+  "key": "r-cook-door-crispy-chicken-sandwich",
+  "name": "Crispy chicken sandwich",
+  "brand": "Cook Door",
+  "nameAr": "كوك دور",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 sandwich",
+   "calories": 560,
+   "protein": 24,
+   "carbs": 55,
+   "fat": 27
+  }
+ },
+ {
+  "key": "r-cook-door-chicken-shawarma-sandwich",
+  "name": "Chicken shawarma sandwich",
+  "brand": "Cook Door",
+  "nameAr": "كوك دور",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 sandwich",
+   "calories": 450,
+   "protein": 26,
+   "carbs": 45,
+   "fat": 18
+  }
+ },
+ {
+  "key": "r-cook-door-hot-dog",
+  "name": "Hot dog",
+  "brand": "Cook Door",
+  "nameAr": "كوك دور",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 sandwich",
+   "calories": 380,
+   "protein": 12,
+   "carbs": 38,
+   "fat": 20
+  }
+ },
+ {
+  "key": "r-cook-door-fries-regular",
+  "name": "Fries, regular",
+  "brand": "Cook Door",
+  "nameAr": "كوك دور",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 regular",
+   "calories": 330,
+   "protein": 4,
+   "carbs": 42,
+   "fat": 16
+  }
+ },
+ {
+  "key": "r-mo-men-mo-men-beef-burger",
+  "name": "Mo'men beef burger",
+  "brand": "Mo'men",
+  "nameAr": "مؤمن",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 sandwich",
+   "calories": 540,
+   "protein": 27,
+   "carbs": 45,
+   "fat": 28
+  }
+ },
+ {
+  "key": "r-mo-men-double-beef-burger",
+  "name": "Double beef burger",
+  "brand": "Mo'men",
+  "nameAr": "مؤمن",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 sandwich",
+   "calories": 780,
+   "protein": 40,
+   "carbs": 48,
+   "fat": 46
+  }
+ },
+ {
+  "key": "r-mo-men-crispy-chicken-sandwich",
+  "name": "Crispy chicken sandwich",
+  "brand": "Mo'men",
+  "nameAr": "مؤمن",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 sandwich",
+   "calories": 560,
+   "protein": 24,
+   "carbs": 55,
+   "fat": 27
+  }
+ },
+ {
+  "key": "r-mo-men-fries-regular",
+  "name": "Fries, regular",
+  "brand": "Mo'men",
+  "nameAr": "مؤمن",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 regular",
+   "calories": 330,
+   "protein": 4,
+   "carbs": 42,
+   "fat": 16
+  }
+ },
+ {
+  "key": "r-gad-ful-sandwich",
+  "name": "Ful sandwich",
+  "brand": "Gad",
+  "nameAr": "جاد",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 sandwich",
+   "calories": 300,
+   "protein": 11,
+   "carbs": 45,
+   "fat": 8
+  }
+ },
+ {
+  "key": "r-gad-ta-ameya-sandwich",
+  "name": "Ta'ameya sandwich",
+  "brand": "Gad",
+  "nameAr": "جاد",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 sandwich",
+   "calories": 380,
+   "protein": 10,
+   "carbs": 48,
+   "fat": 16
+  }
+ },
+ {
+  "key": "r-gad-alexandrian-liver-sandwich",
+  "name": "Alexandrian liver sandwich",
+  "brand": "Gad",
+  "nameAr": "جاد",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 sandwich",
+   "calories": 420,
+   "protein": 20,
+   "carbs": 45,
+   "fat": 17
+  }
+ },
+ {
+  "key": "r-gad-sogo-sandwich",
+  "name": "Sogo' sandwich",
+  "brand": "Gad",
+  "nameAr": "جاد",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 sandwich",
+   "calories": 480,
+   "protein": 18,
+   "carbs": 45,
+   "fat": 25
+  }
+ },
+ {
+  "key": "r-gad-chicken-shawarma-sandwich",
+  "name": "Chicken shawarma sandwich",
+  "brand": "Gad",
+  "nameAr": "جاد",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 sandwich",
+   "calories": 430,
+   "protein": 24,
+   "carbs": 45,
+   "fat": 17
+  }
+ },
+ {
+  "key": "r-gad-fried-potato-sandwich",
+  "name": "Fried potato sandwich",
+  "brand": "Gad",
+  "nameAr": "جاد",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 sandwich",
+   "calories": 450,
+   "protein": 7,
+   "carbs": 60,
+   "fat": 20
+  }
+ },
+ {
+  "key": "r-gad-egg-sandwich",
+  "name": "Egg sandwich",
+  "brand": "Gad",
+  "nameAr": "جاد",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 sandwich",
+   "calories": 380,
+   "protein": 14,
+   "carbs": 45,
+   "fat": 16
+  }
+ },
+ {
+  "key": "r-gad-luncheon-fino-sandwich",
+  "name": "Luncheon fino sandwich",
+  "brand": "Gad",
+  "nameAr": "جاد",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 sandwich",
+   "calories": 380,
+   "protein": 13,
+   "carbs": 45,
+   "fat": 16
+  }
+ },
+ {
+  "key": "r-abou-tarek-koshari-small",
+  "name": "Koshari, small",
+  "brand": "Abou Tarek",
+  "nameAr": "أبو طارق",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 small",
+   "calories": 495,
+   "protein": 17,
+   "carbs": 84,
+   "fat": 11
+  }
+ },
+ {
+  "key": "r-abou-tarek-koshari-medium",
+  "name": "Koshari, medium",
+  "brand": "Abou Tarek",
+  "nameAr": "أبو طارق",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 medium",
+   "calories": 740,
+   "protein": 25,
+   "carbs": 126,
+   "fat": 17
+  }
+ },
+ {
+  "key": "r-abou-tarek-koshari-large",
+  "name": "Koshari, large",
+  "brand": "Abou Tarek",
+  "nameAr": "أبو طارق",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 large",
+   "calories": 990,
+   "protein": 33,
+   "carbs": 168,
+   "fat": 23
+  }
+ },
+ {
+  "key": "r-koshary-el-tahrir-koshari-small",
+  "name": "Koshari, small",
+  "brand": "Koshary El Tahrir",
+  "nameAr": "كشري التحرير",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 small",
+   "calories": 495,
+   "protein": 17,
+   "carbs": 84,
+   "fat": 11
+  }
+ },
+ {
+  "key": "r-koshary-el-tahrir-koshari-medium",
+  "name": "Koshari, medium",
+  "brand": "Koshary El Tahrir",
+  "nameAr": "كشري التحرير",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 medium",
+   "calories": 740,
+   "protein": 25,
+   "carbs": 126,
+   "fat": 17
+  }
+ },
+ {
+  "key": "r-koshary-el-tahrir-koshari-large",
+  "name": "Koshari, large",
+  "brand": "Koshary El Tahrir",
+  "nameAr": "كشري التحرير",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 large",
+   "calories": 990,
+   "protein": 33,
+   "carbs": 168,
+   "fat": 23
+  }
+ },
+ {
+  "key": "r-zooba-ta-ameya-sandwich",
+  "name": "Ta'ameya sandwich",
+  "brand": "Zooba",
+  "nameAr": "زووبا",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 sandwich",
+   "calories": 350,
+   "protein": 10,
+   "carbs": 45,
+   "fat": 14
+  }
+ },
+ {
+  "key": "r-zooba-ful-sandwich",
+  "name": "Ful sandwich",
+  "brand": "Zooba",
+  "nameAr": "زووبا",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 sandwich",
+   "calories": 330,
+   "protein": 12,
+   "carbs": 45,
+   "fat": 11
+  }
+ },
+ {
+  "key": "r-zooba-koshari-bowl",
+  "name": "Koshari bowl",
+  "brand": "Zooba",
+  "nameAr": "زووبا",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 bowl",
+   "calories": 700,
+   "protein": 22,
+   "carbs": 120,
+   "fat": 16
+  }
+ },
+ {
+  "key": "r-zooba-hawawshi",
+  "name": "Hawawshi",
+  "brand": "Zooba",
+  "nameAr": "زووبا",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 sandwich",
+   "calories": 650,
+   "protein": 28,
+   "carbs": 50,
+   "fat": 36
+  }
+ },
+ {
+  "key": "r-buffalo-burger-classic-beef-burger",
+  "name": "Classic beef burger",
+  "brand": "Buffalo Burger",
+  "nameAr": "بافلو برجر",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 burger",
+   "calories": 650,
+   "protein": 33,
+   "carbs": 45,
+   "fat": 38
+  }
+ },
+ {
+  "key": "r-buffalo-burger-double-beef-burger",
+  "name": "Double beef burger",
+  "brand": "Buffalo Burger",
+  "nameAr": "بافلو برجر",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 burger",
+   "calories": 900,
+   "protein": 52,
+   "carbs": 46,
+   "fat": 56
+  }
+ },
+ {
+  "key": "r-buffalo-burger-crispy-chicken-burger",
+  "name": "Crispy chicken burger",
+  "brand": "Buffalo Burger",
+  "nameAr": "بافلو برجر",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 burger",
+   "calories": 640,
+   "protein": 28,
+   "carbs": 56,
+   "fat": 33
+  }
+ },
+ {
+  "key": "r-buffalo-burger-fries-regular",
+  "name": "Fries, regular",
+  "brand": "Buffalo Burger",
+  "nameAr": "بافلو برجر",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 regular",
+   "calories": 340,
+   "protein": 4,
+   "carbs": 44,
+   "fat": 16
+  }
+ },
+ {
+  "key": "r-bremer-classic-beef-burger",
+  "name": "Classic beef burger",
+  "brand": "Bremer",
+  "nameAr": "بريمر",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 burger",
+   "calories": 580,
+   "protein": 30,
+   "carbs": 42,
+   "fat": 32
+  }
+ },
+ {
+  "key": "r-bremer-chicken-burger",
+  "name": "Chicken burger",
+  "brand": "Bremer",
+  "nameAr": "بريمر",
+  "kind": "restaurant",
+  "source": "estimate",
+  "serving": {
+   "label": "1 burger",
+   "calories": 560,
+   "protein": 27,
+   "carbs": 52,
+   "fat": 27
+  }
+ }
+]

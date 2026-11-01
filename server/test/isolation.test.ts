@@ -5,7 +5,7 @@ import { libraryExercise, newUser, prisma, workoutBody } from './helpers.js';
 // and must not see it in their own lists or stats.
 let a: Awaited<ReturnType<typeof newUser>>;
 let b: Awaited<ReturnType<typeof newUser>>;
-const ids = {} as Record<'workout' | 'routine' | 'cardio' | 'food' | 'goal' | 'liftGoal' | 'exercise' | 'record', string>;
+const ids = {} as Record<'workout' | 'routine' | 'cardio' | 'food' | 'goal' | 'liftGoal' | 'exercise' | 'record' | 'customFood' | 'savedMeal', string>;
 const date = '2026-10-05';
 
 beforeAll(async () => {
@@ -24,6 +24,8 @@ beforeAll(async () => {
   ids.goal = (await a.agent.post('/api/goals').send({ type: 'weight', title: 'Cut', targetValue: 80 })).body.id;
   ids.liftGoal = (await a.agent.post('/api/goals').send({ type: 'lift', title: 'Press', exerciseId: ids.exercise, targetValue: 120 })).body.id;
   ids.record = (await a.agent.post('/api/records').send({ exerciseId: lib.id, date, weightKg: 222, reps: 2 })).body.id;
+  ids.customFood = (await a.agent.post('/api/food/custom').send({ name: 'Secret shake', serving: '1 glass', calories: 300, protein: 40, carbs: 20, fat: 5 })).body.id;
+  ids.savedMeal = (await a.agent.post('/api/food/meals').send({ name: 'Secret meal', items: [{ name: 'Secret salad', calories: 300, protein: 10, carbs: 20, fat: 15 }] })).body.id;
   expect(Object.values(ids).every(Boolean)).toBe(true);
 });
 
@@ -116,6 +118,20 @@ describe('cross-user isolation', () => {
     expect(res.status).toBe(200);
     expect(res.body.mine).toEqual([]);
     expect((await a.agent.get('/api/food/search').query({ q: 'secret' })).body.mine.map((m: { name: string }) => m.name).sort()).toEqual(['Secret bar', 'Secret salad']);
+  });
+
+  it('B can’t see, change, delete or search A’s custom foods and saved meals', async () => {
+    expect((await b.agent.get('/api/food/custom')).body).toEqual([]);
+    expect((await b.agent.get('/api/food/meals')).body).toEqual([]);
+    expect((await b.agent.patch(`/api/food/custom/${ids.customFood}`).send({ name: 'Hacked', serving: '1', calories: 1, protein: 0, carbs: 0, fat: 0 })).status).toBe(404);
+    expect((await b.agent.patch(`/api/food/meals/${ids.savedMeal}`).send({ name: 'Hacked' })).status).toBe(404);
+    expect((await b.agent.delete(`/api/food/custom/${ids.customFood}`)).status).toBe(404);
+    expect((await b.agent.delete(`/api/food/meals/${ids.savedMeal}`)).status).toBe(404);
+    const search = await b.agent.get('/api/food/search').query({ q: 'secret' });
+    expect(search.body.custom).toEqual([]);
+    expect(search.body.meals).toEqual([]);
+    expect((await a.agent.get('/api/food/custom')).body[0].name).toBe('Secret shake');
+    expect((await a.agent.get('/api/food/meals')).body[0].name).toBe('Secret meal');
   });
 
   it('B reusing A’s Idempotency-Key gets a fresh request, not A’s stored answer', async () => {

@@ -149,7 +149,7 @@ authRouter.post('/logout-all', requireAuth, apiLimiter, async (req, res) => {
 
 authRouter.get('/export', requireAuth, apiLimiter, async (req, res) => {
   const userId = req.userId;
-  const [user, exercises, workouts, routines, cardio, bodyWeights, goals, foods, personalRecords] = await Promise.all([
+  const [user, exercises, workouts, routines, cardio, bodyWeights, goals, foods, personalRecords, customFoods, savedMeals] = await Promise.all([
     prisma.user.findUnique({ where: { id: userId }, select: publicUser }),
     prisma.exercise.findMany({ where: { userId } }),
     prisma.workout.findMany({
@@ -171,6 +171,8 @@ authRouter.get('/export', requireAuth, apiLimiter, async (req, res) => {
     prisma.goal.findMany({ where: { userId } }),
     prisma.foodEntry.findMany({ where: { userId }, orderBy: { date: 'asc' } }),
     prisma.personalRecord.findMany({ where: { userId }, orderBy: { date: 'asc' }, include: { exercise: { select: { name: true } } } }),
+    prisma.customFood.findMany({ where: { userId }, orderBy: { name: 'asc' } }),
+    prisma.savedMeal.findMany({ where: { userId }, orderBy: { name: 'asc' } }),
   ]);
   res.setHeader('Content-Disposition', `attachment; filename="gymawy-export-${new Date().toISOString().slice(0, 10)}.json"`);
   res.json({
@@ -185,6 +187,8 @@ authRouter.get('/export', requireAuth, apiLimiter, async (req, res) => {
     goals,
     foods,
     personalRecords,
+    customFoods,
+    savedMeals,
   });
 });
 

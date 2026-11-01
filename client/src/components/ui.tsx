@@ -183,11 +183,15 @@ export function Sheet({
 }) {
   const panelRef = useRef<HTMLDivElement>(null);
   const titleId = useId();
+  // Parents often pass a new onClose on every render; reading it through a ref keeps the effect below tied to
+  // open/close only. Re-running it on each render moved focus to the panel after every keystroke.
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
 
   useEffect(() => {
     if (!open) return;
     const prevFocus = document.activeElement as HTMLElement | null;
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onCloseRef.current();
     document.addEventListener('keydown', onKey);
     document.body.style.overflow = 'hidden';
     requestAnimationFrame(() => panelRef.current?.focus());
@@ -196,7 +200,7 @@ export function Sheet({
       document.body.style.overflow = '';
       prevFocus?.focus?.();
     };
-  }, [open, onClose]);
+  }, [open]);
 
   return createPortal(
     <AnimatePresence>

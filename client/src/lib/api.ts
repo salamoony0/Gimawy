@@ -265,7 +265,7 @@ export type Goal = {
 };
 
 export type Meal = 'breakfast' | 'lunch' | 'dinner' | 'snack';
-export type FoodSource = 'manual' | 'label' | 'screenshot' | 'photo' | 'text' | 'barcode' | 'search';
+export type FoodSource = 'manual' | 'label' | 'screenshot' | 'photo' | 'text' | 'barcode' | 'search' | 'custom' | 'meal';
 
 export type FoodItem = {
   name: string;
@@ -279,7 +279,7 @@ export type FoodItem = {
 export type FoodEntry = FoodItem & { id: string; date: string; meal: Meal; source: FoodSource };
 
 export type FoodAnalysis = {
-  source: Exclude<FoodSource, 'manual' | 'barcode' | 'search'>;
+  source: Exclude<FoodSource, 'manual' | 'barcode' | 'search' | 'custom' | 'meal'>;
   confidence: 'high' | 'medium' | 'low';
   mealName: string;
   notes: string;
@@ -311,8 +311,23 @@ export type DbFood = {
   servings: { label: string; grams: number }[] | null;
 };
 
-/** GET /food/search — the user's own matching past foods, then the built-in database. */
-export type FoodSearch = { mine: FoodItem[]; foods: DbFood[] };
+/** A food the user created (My foods): nutrition for one `serving`, weighing `grams` when known. */
+export type CustomFood = {
+  id: string;
+  name: string;
+  serving: string;
+  grams: number | null;
+  calories: number;
+  protein: number;
+  carbs: number;
+  fat: number;
+};
+
+/** A named group of foods logged together (My meals). */
+export type SavedMeal = { id: string; name: string; items: FoodItem[] };
+
+/** GET /food/search — my meals, my foods, my past entries, then the built-in database. */
+export type FoodSearch = { meals: SavedMeal[]; custom: CustomFood[]; mine: FoodItem[]; foods: DbFood[] };
 
 /** GET /food/search/products — packaged products from Open Food Facts. */
 export type ProductSearch = { products: BarcodeProduct[] };
