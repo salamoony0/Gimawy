@@ -83,4 +83,53 @@ describe('offline replay', () => {
     expect(again.body.id).toBe(first.body.id);
     expect(await prisma.workout.count({ where: { userId } })).toBe(1);
   });
+
+  it('two saves of the same session at the same moment still make one workout', async () => {
+    const { agent, id: userId } = await newUser();
+    const ex = await libraryExercise();
+    const body = workoutBody(ex.id, [[60, 8]], '2026-09-02');
+    const [a, b] = await Promise.all([agent.post('/api/workouts').send(body), agent.post('/api/workouts').send(body)]);
+    expect([a.status, b.status].sort()).toEqual([200, 201]);
+    expect(a.body.id).toBe(b.body.id);
+    expect(await prisma.workout.count({ where: { userId } })).toBe(1);
+  });
+
+  it('a replayed food or cardio POST with the same Idempotency-Key is answered once', async () => {
+    const { agent, id: userId } = await newUser();
+    const food = { date: '2026-09-03', meal: 'lunch', items: [{ name: 'Rice', calories: 200, protein: 4, carbs: 44, fat: 0.5 }] };
+    const first = await agent.post('/api/food').set('Idempotency-Key', 'food-1').send(food);
+    const again = await agent.post('/api/food').set('Idempotency-Key', 'food-1').send(food);
+    expect(first.status).toBe(201);
+    expect(again.status).toBe(201);
+    expect(again.body).toEqual(first.body);
+    expect(await prisma.foodEntry.count({ where: { userId } })).toBe(1);
+
+    const cardio = { type: 'run', date: '2026-09-03', durationMin: 30 };
+    const c1 = await agent.post('/api/cardio').set('Idempotency-Key', 'cardio-1').send(cardio);
+    const c2 = await agent.post('/api/cardio').set('Idempotency-Key', 'cardio-1').send(cardio);
+    expect(c2.body.id).toBe(c1.body.id);
+    expect(await prisma.cardioSession.count({ where: { userId } })).toBe(1);
+
+    // A new key is a new entry; no key keeps the old behaviour.
+    await agent.post('/api/food').set('Idempotency-Key', 'food-2').send(food);
+    await agent.post('/api/food').send(food);
+    expect(await prisma.foodEntry.count({ where: { userId } })).toBe(3);
+  });
+
+  it('a failed request with a key can be retried', async () => {
+    const { agent, id: userId } = await newUser();
+    const bad = await agent.post('/api/food').set('Idempotency-Key', 'retry-1').send({ date: '2026-09-04', meal: 'lunch', items: [] });
+    expect(bad.status).toBe(400);
+    const food = { date: '2026-09-04', meal: 'lunch', items: [{ name: 'Oats', calories: 150, protein: 5, carbs: 27, fat: 3 }] };
+    expect((await agent.post('/api/food').set('Idempotency-Key', 'retry-1').send(food)).status).toBe(201);
+    expect(await prisma.foodEntry.count({ where: { userId } })).toBe(1);
+  });
+});
+
+describe('stored weights', () => {
+  it('weigh-ins are kept to 2 decimals like sets and records', async () => {
+    const { agent } = await newUser();
+    await agent.put('/api/body/2026-09-05').send({ weightKg: 81.4372 });
+    expect((await agent.get('/api/body')).body.at(-1).weightKg).toBe(81.44);
+  });
 });

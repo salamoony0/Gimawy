@@ -157,7 +157,7 @@ export default function Food() {
                               </span>
                             </button>
                             <span className="num font-semibold">{fmtInt(it.calories)}</span>
-                            <IconButton label={`Remove ${it.name}`} onClick={() => del.mutate(it.id)} className="-mr-2 size-9 opacity-50 group-hover:opacity-100">
+                            <IconButton label={`Remove ${it.name}`} onClick={() => del.mutate(it.id)} className="-mr-2 opacity-50 group-hover:opacity-100">
                               <Trash className="size-4" />
                             </IconButton>
                           </motion.li>

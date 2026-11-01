@@ -25,6 +25,22 @@ describe('rate limits', () => {
     expect((await request(app).post('/api/auth/login').send({ email, password: PASSWORD })).status).toBe(429);
   });
 
+  it('a signed-in session gets 10 wrong current passwords, shared by password change and account deletion', async () => {
+    const { agent } = await newUser();
+    const statuses: number[] = [];
+    for (let i = 0; i < 5; i++) statuses.push((await agent.patch('/api/auth/password').send({ current: 'wrong-password', next: 'new-password1' })).status);
+    for (let i = 0; i < 5; i++) statuses.push((await agent.delete('/api/auth/me').send({ password: 'wrong-password' })).status);
+    expect(statuses.every((s) => s === 403)).toBe(true);
+    expect((await agent.patch('/api/auth/password').send({ current: 'wrong-password', next: 'new-password1' })).status).toBe(429);
+    expect((await agent.delete('/api/auth/me').send({ password: PASSWORD })).status).toBe(429);
+  });
+
+  it('signed-in auth routes count toward the per-user API limit', async () => {
+    const { agent } = await newUser();
+    const res = await agent.get('/api/auth/me');
+    expect(res.headers['ratelimit-policy'] ?? res.headers['ratelimit']).toBeDefined();
+  });
+
   it('limits reset emails to 5 per hour per address', async () => {
     const statuses: number[] = [];
     for (let i = 0; i < 6; i++) statuses.push((await request(app).post('/api/auth/forgot').send({ email: 'spam@test.io' })).status);

@@ -36,3 +36,36 @@ test('register → setup plan → dashboard goal → incline walk estimate', asy
   await expect(page.getByText('Cardio logged')).toBeVisible();
   await expect(page.getByText(/12% @/).first()).toBeVisible();
 });
+
+test('recalculating targets moves the weight goal instead of adding another', async ({ page }) => {
+  const runSetup = async (target: string) => {
+    await page.getByRole('radio', { name: 'Male', exact: true }).click();
+    await page.getByLabel('Date of birth').fill(`${new Date().getFullYear() - 30}-01-01`);
+    await page.getByLabel('Height', { exact: true }).fill('180');
+    await page.getByLabel('Current weight').fill('90');
+    await page.getByRole('button', { name: 'Continue' }).click();
+    await page.getByRole('radio', { name: /Moderately active/ }).click();
+    await page.getByRole('button', { name: 'Continue' }).click();
+    await page.getByRole('radio', { name: /Lose fat/ }).click();
+    await page.getByRole('radio', { name: /Steady/ }).click();
+    await page.getByLabel('Target weight (optional)').fill(target);
+    await page.getByRole('button', { name: 'Continue' }).click();
+    await page.getByRole('button', { name: /Start tracking|Save new targets/ }).click();
+    await page.waitForURL('/');
+  };
+  await page.goto('/register');
+  await page.getByLabel('Name').fill('Recalc User');
+  await page.getByLabel('Email').fill(`e2e-recalc-${Date.now()}@example.com`);
+  await page.getByLabel('Password').fill('password123');
+  await page.getByRole('button', { name: 'Create account' }).click();
+  await page.waitForURL('**/setup');
+  await runSetup('80');
+
+  await page.goto('/settings');
+  await page.getByRole('link', { name: 'Recalculate targets' }).click();
+  await page.waitForURL('**/setup');
+  await runSetup('82');
+
+  const goals = (await (await page.request.get('/api/goals')).json()) as { type: string; targetValue: number }[];
+  expect(goals.filter((g) => g.type === 'weight').map((g) => g.targetValue)).toEqual([82]);
+});

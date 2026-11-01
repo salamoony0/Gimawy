@@ -50,6 +50,7 @@ model User {
   aiUsage     AiUsage[]
   resetTokens PasswordResetToken[]
   records     PersonalRecord[]
+  idempotency IdempotencyKey[]
 }
 
 model Exercise {
@@ -214,6 +215,21 @@ model PersonalRecord {
 }
 
 // AI scans per user per calendar day (UTC), so the daily cap survives restarts.
+// The first answer to a POST sent with an Idempotency-Key header (offline outbox replays). A repeat with the same key
+// gets the stored answer instead of writing again. status is null while the first request is still running.
+model IdempotencyKey {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  key       String
+  status    Int?
+  body      Json?
+  createdAt DateTime @default(now())
+
+  @@unique([userId, key])
+  @@index([createdAt])
+}
+
 model AiUsage {
   id     String @id @default(cuid())
   userId String

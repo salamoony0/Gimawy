@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AnimatePresence, motion } from 'motion/react';
 import { clsx } from 'clsx';
 import { ArrowLeft, ArrowRight, Armchair, Bike, Dumbbell, Flame, Footprints, Minus, Scale, Target, TrendingDown, TrendingUp, Trophy } from 'lucide-react';
-import { api, type User } from '../lib/api';
+import { api, type Goal as SavedGoal, type User } from '../lib/api';
 import { fmtDay, fmtInt, localDay, shiftDay, useMe } from '../lib/format';
 import { ACTIVITY, ageFrom, KCAL_PER_KG, planTargets, type ActivityLevel, type Goal, type Sex } from '../lib/energy';
 import { Logo } from '../components/Layout';
@@ -103,12 +103,10 @@ function Wizard({ me }: { me: User }) {
       if (!plan) throw new Error('Missing details');
       await api.put(`/body/${localDay()}`, { weightKg });
       if (goalDate && targetKg) {
-        await api.post('/goals', {
-          type: 'weight',
-          title: `${goal === 'lose' ? 'Cut' : 'Bulk'} to ${fromKg(targetKg)} ${wUnit}`,
-          targetValue: targetKg,
-          deadline: goalDate,
-        });
+        const weightGoal = { title: `${goal === 'lose' ? 'Cut' : 'Bulk'} to ${fromKg(targetKg)} ${wUnit}`, targetValue: targetKg, deadline: goalDate };
+        // "Recalculate targets" reruns this wizard: move the existing body-weight goal instead of adding another.
+        const existing = (await api.get<SavedGoal[]>('/goals')).find((g) => g.type === 'weight');
+        await (existing ? api.patch(`/goals/${existing.id}`, weightGoal) : api.post('/goals', { type: 'weight', ...weightGoal }));
       }
       return api.patch<User>('/auth/me', {
         sex,

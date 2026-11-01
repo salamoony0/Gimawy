@@ -65,7 +65,7 @@ export function Layout() {
     <div className="min-h-dvh lg:pl-64">
       {/* Desktop sidebar */}
       <aside className="fixed inset-y-0 left-0 hidden w-64 flex-col border-r border-line bg-surface/60 px-4 py-6 lg:flex">
-        <Link to="/" className="px-2">
+        <Link to="/" className="flex min-h-11 items-center px-2">
           <Logo />
         </Link>
         <nav className="mt-10 flex flex-col gap-1" aria-label="Main">
@@ -122,7 +122,7 @@ export function Layout() {
 
       {/* Mobile header */}
       <header className="sticky top-0 z-30 flex items-center justify-between border-b border-line/60 bg-bg/80 px-4 py-2.5 backdrop-blur-xl lg:hidden">
-        <Link to="/" aria-label="Gymawy home">
+        <Link to="/" aria-label="Gymawy home" className="flex min-h-11 items-center">
           <Logo />
         </Link>
         <Link

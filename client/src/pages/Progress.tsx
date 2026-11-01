@@ -22,7 +22,7 @@ import {
 } from 'recharts';
 import { Clock, Dumbbell, Flame, HeartPulse, Layers, MapPin, Trophy, Weight } from 'lucide-react';
 import { api, type Progress as ProgressData } from '../lib/api';
-import { fmtCompact, fmtDay, fmtInt, localDay, MUSCLE_LABEL, relativeDay, useUnits } from '../lib/format';
+import { fmtCompact, fmtDay, fmtInt, localDay, MUSCLE_LABEL, plural, relativeDay, useUnits } from '../lib/format';
 import { PageHeader } from '../components/Layout';
 import { Badge, Segmented, Skeleton } from '../components/ui';
 import { axisProps, ChartTooltip, GradientDefs, gridProps, Rings } from '../components/viz';
@@ -117,7 +117,7 @@ export default function Progress() {
                         {u.weight(l.change)} {u.w}
                       </Badge>
                     </div>
-                    <p className="text-xs text-muted">Best e1RM · {l.sessions} sessions</p>
+                    <p className="text-xs text-muted">Best e1RM · {plural(l.sessions, 'session')}</p>
                     <div className="mt-2 h-20">
                       <ResponsiveContainer width="100%" height="100%">
                         <AreaChart data={l.points.map((pt) => ({ ...pt, v: u.weight(pt.e1rm) }))}>
@@ -169,7 +169,7 @@ export default function Progress() {
                   <RadarChart data={p.muscleSplit.map((m) => ({ ...m, label: MUSCLE_LABEL[m.muscle] }))} outerRadius="72%">
                     <PolarGrid stroke="var(--color-line-strong)" />
                     <PolarAngleAxis dataKey="label" tick={{ fill: 'var(--color-muted)', fontSize: 11 }} />
-                    <Tooltip content={<ChartTooltip format={(v) => `${v} sets`} />} />
+                    <Tooltip content={<ChartTooltip format={(v) => plural(v, 'set')} />} />
                     <Radar dataKey="sets" name="Sets" stroke="var(--color-brand)" strokeWidth={2} fill="var(--color-brand)" fillOpacity={0.25} />
                   </RadarChart>
                 </ResponsiveContainer>
@@ -249,7 +249,7 @@ export default function Progress() {
             {/* Nutrition adherence */}
             <section className="card p-5">
               <h2 className="font-display text-xl font-semibold tracking-wide">Nutrition</h2>
-              <p className="text-sm text-muted">{p.nutrition.daysLogged} days logged</p>
+              <p className="text-sm text-muted">{plural(p.nutrition.daysLogged, 'day')} logged</p>
               <div className="mt-4 flex items-center gap-5">
                 <Rings
                   size={120}

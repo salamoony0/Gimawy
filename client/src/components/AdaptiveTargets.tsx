@@ -11,7 +11,7 @@ import {
   adaptiveTargets,
   type AdaptiveResult,
 } from '../lib/energy';
-import { fmtInt, localDay, shiftDay, useUnits } from '../lib/format';
+import { fmtInt, localDay, plural, shiftDay, useUnits } from '../lib/format';
 import { Bar, Button, useToast } from './ui';
 
 /** Automatic adjustments happen at most this often. */
@@ -133,7 +133,7 @@ export function AdaptiveCard({ me }: { me: User }) {
             </div>
           </div>
           <p className="num mt-3 text-xs text-muted">
-            Last {ADAPTIVE_WINDOW_DAYS} days: {result.loggedDays} logged days averaging {fmtInt(result.avgIntake)} kcal, weight{' '}
+            Last {ADAPTIVE_WINDOW_DAYS} days: {plural(result.loggedDays, 'logged day')} averaging {fmtInt(result.avgIntake)} kcal, weight{' '}
             {result.weightChangePerWeek === 0
               ? 'steady'
               : `${result.weightChangePerWeek > 0 ? '+' : '−'}${u.weight(Math.abs(result.weightChangePerWeek), 2)} ${u.w}/week`}

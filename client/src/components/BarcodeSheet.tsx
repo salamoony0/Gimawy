@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 import { motion } from 'motion/react';
 import { CameraOff, Keyboard, ScanBarcode } from 'lucide-react';
 import { api, ApiError, isQueued, type BarcodeLookup, type Meal } from '../lib/api';
-import { createDetector, isValidGtin, scaleMacros } from '../lib/barcode';
+import { createDetector, isValidGtin, lookupCode, scaleMacros, scaleQuantity } from '../lib/barcode';
 import { fmtInt } from '../lib/format';
 import { Badge, Button, Field, Input, Segmented, Sheet, useToast } from './ui';
 import { fromDraft, guessMeal, ItemEditor, MEALS, type DraftItem } from './FoodForm';
@@ -30,8 +30,9 @@ export function BarcodeSheet({ open, onClose, date }: { open: boolean; onClose: 
     reset();
     onClose();
   };
-  const found = (c: string) => {
+  const found = (scanned: string, format?: string) => {
     navigator.vibrate?.(30);
+    const c = lookupCode(scanned, format);
     setCode(c);
     lookup.mutate(c);
   };
@@ -111,7 +112,7 @@ export function BarcodeSheet({ open, onClose, date }: { open: boolean; onClose: 
   );
 }
 
-function CameraScanner({ onCode }: { onCode: (code: string) => void }) {
+function CameraScanner({ onCode }: { onCode: (code: string, format?: string) => void }) {
   const video = useRef<HTMLVideoElement>(null);
   const [error, setError] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
@@ -145,9 +146,9 @@ function CameraScanner({ onCode }: { onCode: (code: string) => void }) {
         if (stopped || !video.current) return;
         if (video.current.readyState >= 2) {
           const codes = await detector.detect(video.current).catch(() => []);
-          const hit = codes.map((c) => c.rawValue).find(isValidGtin);
-          if (hit && hit === last) return onCodeRef.current(hit);
-          last = hit ?? '';
+          const hit = codes.find((c) => isValidGtin(c.rawValue));
+          if (hit && hit.rawValue === last) return onCodeRef.current(hit.rawValue, hit.format);
+          last = hit?.rawValue ?? '';
         }
         timer = setTimeout(tick, 150);
       };
@@ -219,7 +220,7 @@ function ProductPortion({
       ? {
           ...mine,
           ...scaleMacros(mine, n),
-          quantity: n === 1 ? mine.quantity : `${n} × ${mine.quantity ?? 'serving'}`,
+          quantity: n === 1 ? mine.quantity : scaleQuantity(mine.quantity, n),
         }
       : {
           name: product!.brand ? `${product!.name} (${product!.brand})` : product!.name,

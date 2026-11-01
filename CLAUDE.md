@@ -78,14 +78,16 @@ playwright.config.ts, tests/e2e/   E2E specs, fixtures.ts, start-api.mjs
 client/vercel.json         /api rewrite to Render + SPA fallback + headers
 server/
   prisma/schema.prisma     data model (see below); provider postgresql, url + directUrl
-  prisma/migrations/       committed SQL migrations (20261027000000_init)
+  prisma/migrations/       committed SQL migrations (init, phase5_features, personal_records, idempotency_keys)
   prisma/seed.ts           `library` (69 exercises, idempotent) or `demo` (+ demo account, deterministic PRNG)
   test/                    Vitest: unit.test.ts, auth/isolation/workouts/ai/reset/ratelimit API suites (supertest),
                            helpers.ts (newUser agent, libraryExercise, workoutBody), env.ts, global-setup.ts, setup-env.ts
   src/app.ts               Express app (exported for tests): helmet, CORS, limiters, /api/auth, /api/stats, /api/ai, /api
   src/index.ts             only calls app.listen
-  src/lib/core.ts          prisma client, HttpError, errorHandler, auth cookie + requireAuth (checks tokenVersion), DEMO_EMAIL, zDay, date math, e1rm
-  src/lib/limits.ts        express-rate-limit limiters (account/IP/forgot/register/api/ai)
+  src/lib/core.ts          prisma client, HttpError, errorHandler (MulterError → 413/400), auth cookie + requireAuth (checks tokenVersion),
+                           DEMO_EMAIL, zDay, date math, e1rm, roundKg (stored weights keep 2 decimals)
+  src/lib/limits.ts        express-rate-limit limiters (account/IP/forgot/register/api/ai/passwordCheck)
+  src/lib/idempotency.ts   Idempotency-Key middleware for POSTs (offline outbox replays get the stored first answer)
   src/lib/mailer.ts        sendMail() via Resend REST (logs to console without a key), appUrl()
   src/lib/training.ts      loadTraining() → annotateWorkouts(rows, manualRecords) (pure: e1RM, PR flags, volume),
                            recordProgressions(), normalizeSupersets(), loadManualRecords(), assertExercisesVisible()
@@ -103,13 +105,14 @@ client/src/
   main.tsx                 router, QueryClient (every mutation invalidates all queries; a delete
                            whose page stays mounted sets `meta: { removes: queryKey }` to skip refetching it), auth gates
   lib/api.ts               fetch wrapper + all response types (mirror server shapes here)
-  lib/format.ts            local-day helpers, number formatting, useMe(), useUnits()
+  lib/format.ts            local-day helpers, number formatting, plural(), useMe(), useUnits()
   lib/energy.ts            BMR/TDEE/targets/macros (macrosFor, goalAdjustment, calorieFloor), adaptiveTargets(), cardio &
                            strength burn estimates (single source of truth; explained in docs/CALORIES.md)
   lib/activeWorkout.ts     in-progress workout store (localStorage + useSyncExternalStore); superset helpers
                            (supersetSlots, linkWithNext, unlink, splitAfter)
   lib/offline.ts           offline outbox (localStorage, per account), useOnline/useOutbox, API cache owner + clearing
-  lib/barcode.ts           createDetector() (native BarcodeDetector or zxing-wasm ponyfill), isValidGtin, scaleMacros
+  lib/barcode.ts           createDetector() (native BarcodeDetector or zxing-wasm ponyfill), isValidGtin, lookupCode (UPC-E → UPC-A),
+                           scaleMacros, scaleQuantity
   components/ui.tsx        Button/buttonClass, IconButton, Field, Input, Select, Segmented, Sheet, Toast, Stat, Bar, Badge…
   components/viz.tsx       Rings, MacroLegend, Heatmap, ChartTooltip, axis/grid props, GradientDefs
   components/Layout.tsx    sidebar (lg) / header + bottom nav (mobile), active-workout pill, PageHeader, Logo
@@ -132,12 +135,14 @@ client/src/
 - **PersonalRecord** (userId, exerciseId, date, weightKg, reps): a best set entered by hand on Train → Records.
 - **User.autoAdjustTargets** / **targetsAdjustedAt** (YYYY-MM-DD of the last adaptive adjustment). **FoodEntry.barcode** (+ index [userId, barcode]); `source` also `barcode`.
 - **CardioSession**: `type` run|walk|incline|cycle|row|swim|elliptical|stairs|hiit|other, `durationMin`, `distanceKm`, `calories`, `avgHeartRate`, `inclinePct`, `speedKmh`.
+- **IdempotencyKey** (userId, key, status, body JSON, createdAt; unique [userId,key]): the first answer to a POST sent with an
+  `Idempotency-Key` header; pruned after 30 days.
 - **User.tokenVersion**: in every JWT; bumping it signs out all sessions. **AiUsage** (userId, UTC day, count; unique [userId,day]). **PasswordResetToken** (SHA-256 `tokenHash`, `expiresAt` 1 h, `usedAt`).
 - **BodyWeight** (one per user per day, unique [userId,date]), **Goal** (`type` weight|lift|cardio, `targetValue` kg or min/week, `startValue` snapshot), **FoodEntry** (one row per item; `meal`, `source` manual|label|screenshot|photo|text).
 
 ## Conventions & rules
 
-- **Units**: store metric only (kg, km, km/h). Convert at the edges with `useUnits()` (`weight/toKg`, `dist/toKm`, `pace`). Weights saved with 2 decimals so lb round-trips.
+- **Units**: store metric only (kg, km, km/h). Convert at the edges with `useUnits()` (`weight/toKg`, `dist/toKm`, `pace`). Weights saved with 2 decimals so lb round-trips (`roundKg` on the server for sets, records and weigh-ins). Anything copied back into an input (editing a workout, "copy previous set") uses `u.weight(kg, 2)`; display may round to 1.
 - **Days** are `YYYY-MM-DD` strings in the user's local calendar (`localDay()` on the client; server receives `?today=`). Never derive calendar days from server time.
 - **PR** = best e1RM (Epley) set of a session that beats every earlier set of that exercise; first-ever session only sets the baseline.
 - **Weight trend** = trailing 7-calendar-day mean of weigh-ins.
@@ -148,18 +153,22 @@ client/src/
 - **Security**:
   - Sessions: JWT `{ sub, v: tokenVersion }` in an httpOnly `SameSite=Lax` cookie (`Secure` in prod); `requireAuth` looks up the user on each request and rejects stale versions. Password change/reset and "log out everywhere" bump the version (change/reset re-issue the current cookie).
   - Cookie is `SameSite=Lax` because production is same-site: the browser only talks to Vercel, which rewrites `/api/*` to Render (third-party cookies would break login on Safari/iOS). CORS is only mounted when `CLIENT_ORIGIN` is set (cross-origin `VITE_API_URL` setups).
-  - Rate limits (`lib/limits.ts`, in memory, single instance): login 10 failed/15 min per email + 100 failed/15 min per IP; forgot 5/h per email; register 20/h per IP; signed-in API 300/min per user; AI 10/min per user (plus the daily cap). `RATE_LIMIT=off` disables them (tests). `TRUST_PROXY` sets proxy hops for `req.ip` (default 1 in prod; `render.yaml` sets 2 for Vercel → Render). Requests sent straight to the Render URL can spoof `X-Forwarded-For` and dodge the per-IP limiter; the per-email account limiter still applies.
+  - Rate limits (`lib/limits.ts`, in memory, single instance): login 10 failed/15 min per email + 100 failed/15 min per IP; forgot 5/h per email; register 20/h per IP; signed-in API 300/min per user (signed-in `/auth/*` routes included); wrong current password on `PATCH /auth/password` + `DELETE /auth/me` 10/15 min per user (shared); AI 10/min per user (plus the daily cap). `RATE_LIMIT=off` disables them (tests). `TRUST_PROXY` sets proxy hops for `req.ip` (default 1 in prod; `render.yaml` sets 2 for Vercel → Render). Requests sent straight to the Render URL can spoof `X-Forwarded-For` and dodge the per-IP limiter; the per-email account limiter still applies.
   - `/auth/forgot` always returns 200 (no account enumeration); login compares against a dummy hash when the email is unknown. Passwords are 8–72 chars (bcrypt limit).
   - The demo account (`DEMO_EMAIL`) can't change its password, get reset emails or be deleted (403). The login page only shows "Explore the demo account" when `GET /auth/demo` says it exists (production: `SEED_DEMO=1`, rebuilt on every deploy).
+  - Client headers (`client/vercel.json`): CSP (`script-src 'self' 'wasm-unsafe-eval'` for the zxing scanner, Google Fonts for styles/fonts, `img-src data: blob:` for photo previews, `connect-src 'self'`, `frame-ancestors 'none'`) and Permissions-Policy (camera self only). Adding a third-party script, font or API means updating the CSP.
+  - Signing out (`useSignedOut` in Settings) drops cached reads; the unfinished workout and queued writes stay with the account and are discarded when a *different* account signs in on the device (`setOutboxOwner`). Deleting the account discards the workout too.
   - The auth guards in `main.tsx` (`useSession`) only show a spinner before the first `/me` response; otherwise a refetch would unmount guest pages.
 - **Supersets**: consecutive exercises with the same `supersetGroup` (2+, renumbered 0,1,2… by `normalizeSupersets` on save, the client mirrors it in `supersetSlots`), lettered A1/A2. In the logger the rest timer only starts after the last exercise of the round. Client drafts use string keys (`superset`), converted to numbers on save.
-- **Barcodes**: `GET /food/barcode/:code` answers the user's own last entry with that code (`mine`) and/or the Open Food Facts product (`product`, per 100 g + serving); 404 unknown, 502 when OFF is down and there's no own entry. Codes are GTIN check-digit validated on the client and read twice in a row before accepting. Entries logged this way keep `barcode`, so editing one corrects the next scan. The zxing wasm (~460 KB gz) is bundled and loaded only when the scanner opens.
-- **Offline**: logging writes go through `api.offline(method, path, body, label)` (workouts POST/PUT, routines from "save as routine", food POST/PATCH, cardio POST/PATCH, body PUT). A network error (TypeError) queues it in the outbox and returns `{ queued: true }` (`isQueued`); HTTP errors still throw. `OfflineBar` replays in order on mount, on `online` and every 30 s; a 4xx (not 401/408/429) drops and reports the entry. Queued results skip the global invalidate (it would wait for the network). Reads: the service worker caches signed-in GETs NetworkFirst (`gymawy-api`, no timeout; never auth except /me, AI, barcode, health); cleared on log out and when another account signs in. Queries use `networkMode: 'offlineFirst'`, mutations `'always'`.
+- **Barcodes**: UPC-E (8 digits, small US packs) is accepted and looked up/stored as its UPC-A expansion (`lookupCode`); an 8-digit code that is valid both ways is EAN-8 unless the scanner reported `upc_e`. "My last entry" servings multiply the existing count (`scaleQuantity`, ≤ 60 chars). `GET /food/barcode/:code` answers the user's own last entry with that code (`mine`) and/or the Open Food Facts product (`product`, per 100 g + serving); 404 unknown, 502 when OFF is down and there's no own entry. Codes are GTIN check-digit validated on the client and read twice in a row before accepting. Entries logged this way keep `barcode`, so editing one corrects the next scan. The zxing wasm (~460 KB gz) is bundled and loaded only when the scanner opens.
+- **Offline**: logging writes go through `api.offline(method, path, body, label)` (workouts POST/PUT, routines from "save as routine", food POST/PATCH, cardio POST/PATCH, body PUT). A network error (TypeError) queues it in the outbox and returns `{ queued: true }` (`isQueued`); HTTP errors still throw. Every POST carries a random `Idempotency-Key`, stored with the queued entry and resent on replay, so a write whose answer was lost isn't logged twice (`lib/idempotency.ts`: stored answer replayed; a failed first attempt frees the key; 409 while the first is still running). `POST /workouts` also dedupes on `startedAt` inside a per-user advisory-lock transaction (double taps), and the logger blocks a second Save while one is running. `OfflineBar` replays in order on mount, on `online` and every 30 s; a 4xx (not 401/408/409/429) drops and reports the entry. Queued results skip the global invalidate (it would wait for the network). Reads: the service worker caches signed-in GETs NetworkFirst (`gymawy-api`, no timeout; never auth except /me, AI, barcode, health); cleared on log out and when another account signs in. Queries use `networkMode: 'offlineFirst'`, mutations `'always'`.
 - **Adaptive targets** (`adaptiveTargets` in energy.ts, client-side): 28 days before today, days < 40% of target skipped, ≥14 logged days + ≥4 weigh-ins over ≥14 days; TDEE = avg intake − weigh-in regression slope × 7700; ideal = TDEE + goal adjustment (floored); a step is capped at ±250 kcal; macros via `macrosFor`. Auto mode applies it at most every 7 days when |change| ≥ 50.
 - **Records**: current/previous = the last two entries of `recordProgressions` (each set that beat the running best e1RM; workout sets + manual records merged by date, manual after same-day workouts). Manual records count as PR history from their date (`annotateWorkouts`) and for lift goals. 0 kg displays as "BW".
 - New accounts are forced through `/setup` until `onboarded` is true; Settings → "Recalculate targets" reopens it.
 - Empty states and a "Get set up" checklist exist so new accounts never look blank; demo data comes from the seed.
-- Chart margins: don't use negative `left` margins (they clip y-axis labels).
+- Chart margins: don't use negative `left` margins (they clip y-axis labels). Recharts 3 ignores `tooltipType="none"`; `ChartTooltip` lists each `dataKey` once (Area + Line over the same series).
+- Counts in text go through `plural(n, noun)` ("1 set", "3 sets").
+- AI: an empty Gemini answer (blocked/no text) tries the fallback model, then 502 "couldn't read that" (not the timeout message); uploads over 8 MB get 413.
 
 ## Environment (server/.env, see .env.example)
 
@@ -176,7 +185,7 @@ Live: client https://gimawy.vercel.app, API https://gymawy-api.onrender.com, DB 
 
 ## Ideas / backlog
 
-Progress photos, body measurements, plate calculator, data export (CSV), idempotency keys for queued food/cardio (only workouts dedupe today), offline barcode cache.
+Progress photos, body measurements, plate calculator, data export (CSV), offline barcode cache.
 
 ## Changelog
 
@@ -189,3 +198,4 @@ Progress photos, body measurements, plate calculator, data export (CSV), idempot
 - **2026-10-27** — Phase 3 (automated tests): Vitest (client + server), supertest API suites incl. cross-user isolation, Playwright E2E in system Chrome. Refactors: `annotateWorkouts`, `lib/trend.ts`, `formatPace` (fixed 4:60 rounding), `assertExercisesVisible` in lib (now also guards lift goals). Root package is `"type": "module"`.
 - **2026-10-27** — Phase 4 (deploy prep): SQLite → Postgres with Prisma migrations (`directUrl` for Supabase), local `embedded-postgres` for dev (`npm run db`, part of `npm run dev`), API tests and E2E (throwaway clusters on free ports). Seed split into `library`/`demo`. `render.yaml`, `client/vercel.json`, `GET /auth/demo` + demo button gating, CORS only with `CLIENT_ORIGIN`. Fixed E2E races (forgot page, toast text).
 - **2026-10-29** — Phase 5 (features): supersets (logger, routines, workout detail), barcode scanning (camera or typed → own history / Open Food Facts → portion), offline logging (outbox + cached reads), adaptive calorie targets (measured TDEE, optional weekly auto-adjust), Train → Records tab (every exercise by muscle, current + previous best, manual PRs). `docs/CALORIES.md` documents every formula. New: `PersonalRecord` model, migrations `phase5_features` + `personal_records`.
+- **2026-11-01** — Full browser test (Playwright: every page at phone + desktop size, extra flows, live smoke test with a throwaway account) and line-by-line review; fixes (branch `fix-review-issues`): double-tap/concurrent workout saves made one workout (advisory lock + client guard); Idempotency-Key replays for every offline POST (new `IdempotencyKey` model, migration `idempotency_keys`); editing a workout no longer rounds weights to 1 decimal; unfinished workout no longer leaks to the next account on a device; exercise chart tooltip listed e1RM twice; per-user limits on signed-in auth routes + wrong-password limiter; "Recalculate targets" updates the weight goal instead of adding one; barcode quantity no longer nests "2 × 2 × …"; UPC-E barcodes accepted; empty Gemini answers fall back; 413 for big uploads; 44px tap targets (sm buttons, segmented, icon buttons, logo); CSP + Permissions-Policy on Vercel; weigh-ins stored to 2 decimals; `withTrend` O(n); `plural()` ("1 set"); one sign-out helper in Settings.

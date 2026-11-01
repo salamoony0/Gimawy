@@ -1,4 +1,5 @@
 import { useSyncExternalStore } from 'react';
+import { workoutStore } from './activeWorkout';
 
 /**
  * Offline outbox. Logging calls made through `api.offline()` that fail because there's no connection are kept
@@ -8,7 +9,8 @@ import { useSyncExternalStore } from 'react';
  *
  * Each entry remembers which account queued it and is only sent while that account is signed in.
  */
-export type Outgoing = { id: string; owner: string; method: 'POST' | 'PUT' | 'PATCH'; path: string; body: unknown; label: string; at: number };
+/** `key`: the Idempotency-Key a queued POST was first sent with (entries queued before keys existed have none). */
+export type Outgoing = { id: string; owner: string; method: 'POST' | 'PUT' | 'PATCH'; path: string; body: unknown; label: string; at: number; key?: string };
 
 const KEY = 'gymawy.outbox';
 const OWNER_KEY = 'gymawy.cacheOwner';
@@ -53,21 +55,30 @@ export const outbox = {
 };
 
 /**
- * Sets the signed-in account (null when signed out). Cached API responses belong to one account, so they're
- * dropped when a different account signs in on this device.
+ * Sets the signed-in account (null when signed out). Cached API responses and the unfinished workout belong to
+ * one account, so they're dropped when a different account signs in on this device (signing back in keeps them).
  */
 export function setOutboxOwner(id: string | null) {
   owner = id;
   recompute();
   listeners.forEach((l) => l());
-  if (!id) return;
+  if (!id || readOwner() === id) return;
+  void clearApiCache();
+  workoutStore.discard();
+  lastOwner = id;
   try {
-    if (localStorage.getItem(OWNER_KEY) !== id) {
-      void clearApiCache();
-      localStorage.setItem(OWNER_KEY, id);
-    }
+    localStorage.setItem(OWNER_KEY, id);
   } catch {
-    // ignore
+    // storage unavailable: lastOwner covers this session
+  }
+}
+
+let lastOwner: string | null = null;
+function readOwner() {
+  try {
+    return localStorage.getItem(OWNER_KEY) ?? lastOwner;
+  } catch {
+    return lastOwner;
   }
 }
 

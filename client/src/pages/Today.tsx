@@ -5,7 +5,7 @@ import { clsx } from 'clsx';
 import { Area, AreaChart, Bar, BarChart, Cell, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { Camera, ChevronRight, Dumbbell, Flame, Play, Scale, Target, Trophy, Utensils, Zap } from 'lucide-react';
 import { api, type Dashboard, type Goal } from '../lib/api';
-import { fmtCompact, fmtDay, fmtDuration, fmtInt, greeting, localDay, MUSCLE_LABEL, relativeDay, useUnits } from '../lib/format';
+import { fmtCompact, fmtDay, fmtDuration, fmtInt, greeting, localDay, MUSCLE_LABEL, plural, relativeDay, useUnits } from '../lib/format';
 import { useActiveWorkout } from '../lib/activeWorkout';
 import { Badge, Bar as ProgressBar, buttonClass, SectionTitle, Skeleton } from '../components/ui';
 import { axisProps, ChartTooltip, GradientDefs, Heatmap, MacroLegend, Rings } from '../components/viz';
@@ -392,7 +392,7 @@ function ConsistencyStats({ days, streak }: { days: Dashboard['heatmap']; streak
   const minutes = past.reduce((n, d) => n + d.minutes, 0);
   const stats = [
     { label: 'Active days', value: active, sub: `${Math.round((active / past.length) * 100)}% of days` },
-    { label: 'Sessions / week', value: (sessions / weeks).toFixed(1), sub: `${sessions} sessions total` },
+    { label: 'Sessions / week', value: (sessions / weeks).toFixed(1), sub: `${plural(sessions, 'session')} total` },
     { label: 'Time trained', value: `${Math.round(minutes / 60)}h`, sub: `${fmtDuration(Math.round(minutes / weeks))} per week` },
     { label: 'Week streak', value: streak, sub: streak ? 'Keep it alive' : 'Start one this week' },
   ];

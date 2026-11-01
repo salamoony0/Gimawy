@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { formatPace, localDay, relativeDay, shiftDay } from './format';
+import { formatPace, localDay, plural, relativeDay, shiftDay } from './format';
 
 describe('shiftDay', () => {
   it('crosses month, year and leap-day boundaries', () => {
@@ -43,5 +43,13 @@ describe('formatPace', () => {
 
   it('carries 60 seconds into the next minute', () => {
     expect(formatPace(4.999, 1)).toBe('5:00');
+  });
+});
+
+describe('plural', () => {
+  it('uses the singular only for exactly one', () => {
+    expect(plural(1, 'set')).toBe('1 set');
+    expect(plural(0, 'set')).toBe('0 sets');
+    expect(plural(3, 'workout')).toBe('3 workouts');
   });
 });

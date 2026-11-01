@@ -4,6 +4,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import { errorHandler, requireAuth, isProd } from './lib/core.js';
 import { aiLimiter, apiLimiter } from './lib/limits.js';
+import { idempotency } from './lib/idempotency.js';
 import { authRouter } from './routes/auth.js';
 import { trainingRouter } from './routes/training.js';
 import { trackingRouter } from './routes/tracking.js';
@@ -30,7 +31,7 @@ app.get('/api/health', (_req, res) => {
 app.use('/api/auth', authRouter);
 app.use('/api/stats', requireAuth, apiLimiter, statsRouter);
 app.use('/api/ai', requireAuth, apiLimiter, aiRouter);
-app.use('/api', requireAuth, apiLimiter, trainingRouter, trackingRouter);
+app.use('/api', requireAuth, apiLimiter, idempotency, trainingRouter, trackingRouter);
 
 app.use((_req, res) => {
   res.status(404).json({ error: 'Not found' });
