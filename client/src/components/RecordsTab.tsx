@@ -4,7 +4,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { clsx } from 'clsx';
 import { ChevronRight, PenLine, Search, Trash, Trophy } from 'lucide-react';
 import { api, type RecordRow, type RecordSet } from '../lib/api';
-import { fmtDay, localDay, MUSCLE_LABEL, useUnits } from '../lib/format';
+import { cleanDecimal, cleanInteger, fmtDay, localDay, MUSCLE_LABEL, useUnits } from '../lib/format';
 import { Badge, Button, EmptyState, Field, IconButton, Input, Segmented, Sheet, Skeleton, useToast } from './ui';
 import { MUSCLES } from './ExercisePicker';
 
@@ -206,10 +206,10 @@ function RecordSheet({ row, onClose }: { row: RecordRow | null; onClose: () => v
           <p className="label -mb-2">New record</p>
           <div className="grid grid-cols-2 gap-3">
             <Field label={`Weight (${u.w})`}>
-              {(id) => <Input id={id} inputMode="decimal" value={weight} onChange={(e) => setWeight(e.target.value.replace(',', '.').replace(/[^\d.]/g, ''))} className="num" />}
+              {(id) => <Input id={id} inputMode="decimal" value={weight} onChange={(e) => setWeight(cleanDecimal(e.target.value))} className="num" />}
             </Field>
             <Field label="Reps">
-              {(id) => <Input id={id} inputMode="numeric" value={reps} onChange={(e) => setReps(e.target.value.replace(/\D/g, '').slice(0, 4))} className="num" />}
+              {(id) => <Input id={id} inputMode="numeric" value={reps} onChange={(e) => setReps(cleanInteger(e.target.value).slice(0, 4))} className="num" />}
             </Field>
           </div>
           <Field label="Date" hint="Logged workouts update records automatically; use this for lifts you didn’t log.">

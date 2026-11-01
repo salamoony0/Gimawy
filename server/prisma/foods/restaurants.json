@@ -4,6 +4,7 @@
   "name": "Big Mac",
   "brand": "McDonald's",
   "nameAr": "ماكدونالدز",
+  "aliases": "بيج ماك",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -19,6 +20,7 @@
   "name": "Quarter Pounder with Cheese (McRoyale)",
   "brand": "McDonald's",
   "nameAr": "ماكدونالدز",
+  "aliases": "كوارتر باوندر ماك رويال رويال جبنه تشيز",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -34,6 +36,7 @@
   "name": "Double Quarter Pounder with Cheese",
   "brand": "McDonald's",
   "nameAr": "ماكدونالدز",
+  "aliases": "كوارتر باوندر جبنه تشيز دبل",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -49,6 +52,7 @@
   "name": "Cheeseburger",
   "brand": "McDonald's",
   "nameAr": "ماكدونالدز",
+  "aliases": "برجر برغر جبنه تشيز",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -64,6 +68,7 @@
   "name": "Double Cheeseburger",
   "brand": "McDonald's",
   "nameAr": "ماكدونالدز",
+  "aliases": "برجر برغر جبنه تشيز دبل",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -79,6 +84,7 @@
   "name": "Hamburger",
   "brand": "McDonald's",
   "nameAr": "ماكدونالدز",
+  "aliases": "برجر برغر",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -94,6 +100,7 @@
   "name": "McChicken",
   "brand": "McDonald's",
   "nameAr": "ماكدونالدز",
+  "aliases": "ماك تشيكن فراخ دجاج تشيكن",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -109,6 +116,7 @@
   "name": "Filet-O-Fish",
   "brand": "McDonald's",
   "nameAr": "ماكدونالدز",
+  "aliases": "فيليه او فيش سمك سمك",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -124,6 +132,7 @@
   "name": "Chicken McNuggets, 6 pieces",
   "brand": "McDonald's",
   "nameAr": "ماكدونالدز",
+  "aliases": "ناجتس ناجتس فراخ دجاج تشيكن",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -139,6 +148,7 @@
   "name": "Chicken McNuggets, 9 pieces",
   "brand": "McDonald's",
   "nameAr": "ماكدونالدز",
+  "aliases": "ناجتس ناجتس فراخ دجاج تشيكن",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -154,6 +164,7 @@
   "name": "Chicken McNuggets, 20 pieces",
   "brand": "McDonald's",
   "nameAr": "ماكدونالدز",
+  "aliases": "ناجتس ناجتس فراخ دجاج تشيكن",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -169,6 +180,7 @@
   "name": "French fries, small",
   "brand": "McDonald's",
   "nameAr": "ماكدونالدز",
+  "aliases": "بطاطس فرايز",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -184,6 +196,7 @@
   "name": "French fries, medium",
   "brand": "McDonald's",
   "nameAr": "ماكدونالدز",
+  "aliases": "بطاطس فرايز",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -199,6 +212,7 @@
   "name": "French fries, large",
   "brand": "McDonald's",
   "nameAr": "ماكدونالدز",
+  "aliases": "بطاطس فرايز",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -214,6 +228,7 @@
   "name": "Egg McMuffin",
   "brand": "McDonald's",
   "nameAr": "ماكدونالدز",
+  "aliases": "ماك مافن بيض",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -229,6 +244,7 @@
   "name": "Hash brown",
   "brand": "McDonald's",
   "nameAr": "ماكدونالدز",
+  "aliases": "هاش براون",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -244,6 +260,7 @@
   "name": "McFlurry with Oreo, regular",
   "brand": "McDonald's",
   "nameAr": "ماكدونالدز",
+  "aliases": "ماكفلري اوريو",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -259,6 +276,7 @@
   "name": "Apple pie",
   "brand": "McDonald's",
   "nameAr": "ماكدونالدز",
+  "aliases": "فطيره تفاح",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -274,6 +292,7 @@
   "name": "Vanilla cone",
   "brand": "McDonald's",
   "nameAr": "ماكدونالدز",
+  "aliases": "كون ايس كريم فانيليا",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -289,6 +308,7 @@
   "name": "Coca-Cola, medium",
   "brand": "McDonald's",
   "nameAr": "ماكدونالدز",
+  "aliases": "كوكاكولا",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -304,6 +324,7 @@
   "name": "Original Recipe chicken breast",
   "brand": "KFC",
   "nameAr": "كنتاكي",
+  "aliases": "اوريجينال فراخ دجاج تشيكن صدر",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -319,6 +340,7 @@
   "name": "Original Recipe thigh",
   "brand": "KFC",
   "nameAr": "كنتاكي",
+  "aliases": "اوريجينال ورك",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -334,6 +356,7 @@
   "name": "Original Recipe drumstick",
   "brand": "KFC",
   "nameAr": "كنتاكي",
+  "aliases": "اوريجينال دبوس",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -349,6 +372,7 @@
   "name": "Original Recipe wing",
   "brand": "KFC",
   "nameAr": "كنتاكي",
+  "aliases": "اوريجينال جناح",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -364,6 +388,7 @@
   "name": "Spicy crispy chicken breast",
   "brand": "KFC",
   "nameAr": "كنتاكي",
+  "aliases": "سبايسي حار فراخ دجاج تشيكن كريسبي صدر",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -379,6 +404,7 @@
   "name": "Zinger sandwich",
   "brand": "KFC",
   "nameAr": "كنتاكي",
+  "aliases": "زنجر ساندوتش سندويتش",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -394,6 +420,7 @@
   "name": "Coleslaw",
   "brand": "KFC",
   "nameAr": "كنتاكي",
+  "aliases": "كول سلو",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -409,6 +436,7 @@
   "name": "Mashed potato with gravy",
   "brand": "KFC",
   "nameAr": "كنتاكي",
+  "aliases": "بطاطس بيوريه صوص",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -424,6 +452,7 @@
   "name": "Fries, regular",
   "brand": "KFC",
   "nameAr": "كنتاكي",
+  "aliases": "بطاطس فرايز",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -439,6 +468,7 @@
   "name": "Mighty Zinger",
   "brand": "KFC Egypt",
   "nameAr": "كنتاكي مصر",
+  "aliases": "زنجر مايتي",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -454,6 +484,7 @@
   "name": "Twister",
   "brand": "KFC Egypt",
   "nameAr": "كنتاكي مصر",
+  "aliases": "تويستر",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -469,6 +500,7 @@
   "name": "Rizo",
   "brand": "KFC Egypt",
   "nameAr": "كنتاكي مصر",
+  "aliases": "ريزو",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -484,6 +516,7 @@
   "name": "Popcorn chicken, regular",
   "brand": "KFC Egypt",
   "nameAr": "كنتاكي مصر",
+  "aliases": "بوب كورن فراخ دجاج تشيكن",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -499,6 +532,7 @@
   "name": "Whopper",
   "brand": "Burger King",
   "nameAr": "برجر كينج",
+  "aliases": "وابر ووبر",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -514,6 +548,7 @@
   "name": "Whopper with cheese",
   "brand": "Burger King",
   "nameAr": "برجر كينج",
+  "aliases": "وابر ووبر جبنه تشيز",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -529,6 +564,7 @@
   "name": "Double Whopper",
   "brand": "Burger King",
   "nameAr": "برجر كينج",
+  "aliases": "وابر ووبر دبل",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -544,6 +580,7 @@
   "name": "Whopper Jr.",
   "brand": "Burger King",
   "nameAr": "برجر كينج",
+  "aliases": "وابر ووبر",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -559,6 +596,7 @@
   "name": "Chicken Royale",
   "brand": "Burger King",
   "nameAr": "برجر كينج",
+  "aliases": "رويال فراخ دجاج تشيكن",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -574,6 +612,7 @@
   "name": "Chicken nuggets, 8 pieces",
   "brand": "Burger King",
   "nameAr": "برجر كينج",
+  "aliases": "ناجتس فراخ دجاج تشيكن",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -589,6 +628,7 @@
   "name": "French fries, medium",
   "brand": "Burger King",
   "nameAr": "برجر كينج",
+  "aliases": "بطاطس فرايز",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -604,6 +644,7 @@
   "name": "Onion rings, medium",
   "brand": "Burger King",
   "nameAr": "برجر كينج",
+  "aliases": "حلقات بصل اونيون رينجز",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -619,6 +660,7 @@
   "name": "Super Star burger",
   "brand": "Hardee's",
   "nameAr": "هارديز",
+  "aliases": "سوبر ستار برجر برغر",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -634,6 +676,7 @@
   "name": "Famous Star burger",
   "brand": "Hardee's",
   "nameAr": "هارديز",
+  "aliases": "فيمس ستار برجر برغر",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -649,6 +692,7 @@
   "name": "Mushroom & Swiss burger",
   "brand": "Hardee's",
   "nameAr": "هارديز",
+  "aliases": "مشروم سويس برجر برغر",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -664,6 +708,7 @@
   "name": "Chicken fillet sandwich",
   "brand": "Hardee's",
   "nameAr": "هارديز",
+  "aliases": "فراخ دجاج تشيكن ساندوتش سندويتش",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -679,6 +724,7 @@
   "name": "Curly fries, medium",
   "brand": "Hardee's",
   "nameAr": "هارديز",
+  "aliases": "كيرلي بطاطس فرايز",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -694,6 +740,7 @@
   "name": "Pepperoni pan pizza, medium",
   "brand": "Pizza Hut",
   "nameAr": "بيتزا هت",
+  "aliases": "بيبروني بان بيتزا",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -709,6 +756,7 @@
   "name": "Cheese pan pizza, medium",
   "brand": "Pizza Hut",
   "nameAr": "بيتزا هت",
+  "aliases": "بان بيتزا جبنه تشيز",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -724,6 +772,7 @@
   "name": "Supreme pan pizza, medium",
   "brand": "Pizza Hut",
   "nameAr": "بيتزا هت",
+  "aliases": "سوبريم بان بيتزا",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -739,6 +788,7 @@
   "name": "Margherita thin crust, medium",
   "brand": "Pizza Hut",
   "nameAr": "بيتزا هت",
+  "aliases": "مارجريتا",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -754,6 +804,7 @@
   "name": "Cheese pizza, hand tossed, medium",
   "brand": "Domino's",
   "nameAr": "دومينوز",
+  "aliases": "بيتزا جبنه تشيز",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -769,6 +820,7 @@
   "name": "Pepperoni pizza, hand tossed, medium",
   "brand": "Domino's",
   "nameAr": "دومينوز",
+  "aliases": "بيبروني بيتزا",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -784,6 +836,7 @@
   "name": "Cheese pizza, original crust, large",
   "brand": "Papa John's",
   "nameAr": "بابا جونز",
+  "aliases": "بيتزا جبنه تشيز",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -799,6 +852,7 @@
   "name": "Pepperoni pizza, original crust, large",
   "brand": "Papa John's",
   "nameAr": "بابا جونز",
+  "aliases": "بيبروني بيتزا",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -814,6 +868,7 @@
   "name": "Garlic sauce",
   "brand": "Papa John's",
   "nameAr": "بابا جونز",
+  "aliases": "ثوميه ثوم",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -829,6 +884,7 @@
   "name": "Sweet onion chicken teriyaki, 6-inch",
   "brand": "Subway",
   "nameAr": "صب واي",
+  "aliases": "تيرياكي فراخ دجاج تشيكن",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -844,6 +900,7 @@
   "name": "Turkey breast, 6-inch",
   "brand": "Subway",
   "nameAr": "صب واي",
+  "aliases": "تركي ديك رومي صدر",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -859,6 +916,7 @@
   "name": "Oven roasted chicken, 6-inch",
   "brand": "Subway",
   "nameAr": "صب واي",
+  "aliases": "فراخ دجاج تشيكن",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -874,6 +932,7 @@
   "name": "Tuna, 6-inch",
   "brand": "Subway",
   "nameAr": "صب واي",
+  "aliases": "تونه",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -889,6 +948,7 @@
   "name": "Italian B.M.T., 6-inch",
   "brand": "Subway",
   "nameAr": "صب واي",
+  "aliases": "بي ام تي",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -904,6 +964,7 @@
   "name": "Steak & cheese, 6-inch",
   "brand": "Subway",
   "nameAr": "صب واي",
+  "aliases": "ستيك جبنه تشيز",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -919,6 +980,7 @@
   "name": "Caffè latte, grande",
   "brand": "Starbucks",
   "nameAr": "ستاربكس",
+  "aliases": "لاتيه",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -934,6 +996,7 @@
   "name": "Cappuccino, grande",
   "brand": "Starbucks",
   "nameAr": "ستاربكس",
+  "aliases": "كابتشينو",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -949,6 +1012,7 @@
   "name": "Caramel macchiato, grande",
   "brand": "Starbucks",
   "nameAr": "ستاربكس",
+  "aliases": "ماكياتو كراميل",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -964,6 +1028,7 @@
   "name": "Caffè mocha with whip, grande",
   "brand": "Starbucks",
   "nameAr": "ستاربكس",
+  "aliases": "موكا",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -979,6 +1044,7 @@
   "name": "White chocolate mocha with whip, grande",
   "brand": "Starbucks",
   "nameAr": "ستاربكس",
+  "aliases": "موكا وايت شوكليت",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -994,6 +1060,7 @@
   "name": "Caramel Frappuccino, grande",
   "brand": "Starbucks",
   "nameAr": "ستاربكس",
+  "aliases": "فرابتشينو كراميل",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -1009,6 +1076,7 @@
   "name": "Java Chip Frappuccino, grande",
   "brand": "Starbucks",
   "nameAr": "ستاربكس",
+  "aliases": "فرابتشينو جافا شيب",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -1024,6 +1092,7 @@
   "name": "Caffè Americano, grande",
   "brand": "Starbucks",
   "nameAr": "ستاربكس",
+  "aliases": "امريكانو",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -1039,6 +1108,7 @@
   "name": "Butter croissant",
   "brand": "Starbucks",
   "nameAr": "ستاربكس",
+  "aliases": "كرواسون",
   "kind": "restaurant",
   "source": "published",
   "serving": {
@@ -1054,6 +1124,7 @@
   "name": "Latte, medium",
   "brand": "Costa Coffee",
   "nameAr": "كوستا",
+  "aliases": "لاتيه",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -1069,6 +1140,7 @@
   "name": "Cappuccino, medium",
   "brand": "Costa Coffee",
   "nameAr": "كوستا",
+  "aliases": "كابتشينو",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -1084,6 +1156,7 @@
   "name": "Flat white",
   "brand": "Costa Coffee",
   "nameAr": "كوستا",
+  "aliases": "فلات وايت",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -1099,6 +1172,7 @@
   "name": "Iced latte, medium",
   "brand": "Costa Coffee",
   "nameAr": "كوستا",
+  "aliases": "لاتيه ايس",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -1114,6 +1188,7 @@
   "name": "Beef burger",
   "brand": "Cook Door",
   "nameAr": "كوك دور",
+  "aliases": "برجر برغر لحم",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -1129,6 +1204,7 @@
   "name": "Crispy chicken sandwich",
   "brand": "Cook Door",
   "nameAr": "كوك دور",
+  "aliases": "فراخ دجاج تشيكن ساندوتش سندويتش كريسبي",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -1144,6 +1220,7 @@
   "name": "Chicken shawarma sandwich",
   "brand": "Cook Door",
   "nameAr": "كوك دور",
+  "aliases": "شاورما شاورمه فراخ دجاج تشيكن ساندوتش سندويتش",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -1159,6 +1236,7 @@
   "name": "Hot dog",
   "brand": "Cook Door",
   "nameAr": "كوك دور",
+  "aliases": "هوت دوج",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -1174,6 +1252,7 @@
   "name": "Fries, regular",
   "brand": "Cook Door",
   "nameAr": "كوك دور",
+  "aliases": "بطاطس فرايز",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -1189,6 +1268,7 @@
   "name": "Mo'men beef burger",
   "brand": "Mo'men",
   "nameAr": "مؤمن",
+  "aliases": "برجر برغر لحم",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -1204,6 +1284,7 @@
   "name": "Double beef burger",
   "brand": "Mo'men",
   "nameAr": "مؤمن",
+  "aliases": "برجر برغر لحم دبل",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -1219,6 +1300,7 @@
   "name": "Crispy chicken sandwich",
   "brand": "Mo'men",
   "nameAr": "مؤمن",
+  "aliases": "فراخ دجاج تشيكن ساندوتش سندويتش كريسبي",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -1234,6 +1316,7 @@
   "name": "Fries, regular",
   "brand": "Mo'men",
   "nameAr": "مؤمن",
+  "aliases": "بطاطس فرايز",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -1249,6 +1332,7 @@
   "name": "Ful sandwich",
   "brand": "Gad",
   "nameAr": "جاد",
+  "aliases": "فول ساندوتش سندويتش",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -1264,6 +1348,7 @@
   "name": "Ta'ameya sandwich",
   "brand": "Gad",
   "nameAr": "جاد",
+  "aliases": "طعميه فلافل ساندوتش سندويتش",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -1279,6 +1364,7 @@
   "name": "Alexandrian liver sandwich",
   "brand": "Gad",
   "nameAr": "جاد",
+  "aliases": "كبده ساندوتش سندويتش",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -1294,6 +1380,7 @@
   "name": "Sogo' sandwich",
   "brand": "Gad",
   "nameAr": "جاد",
+  "aliases": "سجق ساندوتش سندويتش",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -1309,6 +1396,7 @@
   "name": "Chicken shawarma sandwich",
   "brand": "Gad",
   "nameAr": "جاد",
+  "aliases": "شاورما شاورمه فراخ دجاج تشيكن ساندوتش سندويتش",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -1324,6 +1412,7 @@
   "name": "Fried potato sandwich",
   "brand": "Gad",
   "nameAr": "جاد",
+  "aliases": "بطاطس ساندوتش سندويتش",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -1339,6 +1428,7 @@
   "name": "Egg sandwich",
   "brand": "Gad",
   "nameAr": "جاد",
+  "aliases": "بيض ساندوتش سندويتش",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -1354,6 +1444,7 @@
   "name": "Luncheon fino sandwich",
   "brand": "Gad",
   "nameAr": "جاد",
+  "aliases": "لانشون فينو ساندوتش سندويتش",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -1369,6 +1460,7 @@
   "name": "Koshari, small",
   "brand": "Abou Tarek",
   "nameAr": "أبو طارق",
+  "aliases": "كشري",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -1384,6 +1476,7 @@
   "name": "Koshari, medium",
   "brand": "Abou Tarek",
   "nameAr": "أبو طارق",
+  "aliases": "كشري",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -1399,6 +1492,7 @@
   "name": "Koshari, large",
   "brand": "Abou Tarek",
   "nameAr": "أبو طارق",
+  "aliases": "كشري",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -1414,6 +1508,7 @@
   "name": "Koshari, small",
   "brand": "Koshary El Tahrir",
   "nameAr": "كشري التحرير",
+  "aliases": "كشري",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -1429,6 +1524,7 @@
   "name": "Koshari, medium",
   "brand": "Koshary El Tahrir",
   "nameAr": "كشري التحرير",
+  "aliases": "كشري",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -1444,6 +1540,7 @@
   "name": "Koshari, large",
   "brand": "Koshary El Tahrir",
   "nameAr": "كشري التحرير",
+  "aliases": "كشري",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -1459,6 +1556,7 @@
   "name": "Ta'ameya sandwich",
   "brand": "Zooba",
   "nameAr": "زووبا",
+  "aliases": "طعميه فلافل ساندوتش سندويتش",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -1474,6 +1572,7 @@
   "name": "Ful sandwich",
   "brand": "Zooba",
   "nameAr": "زووبا",
+  "aliases": "فول ساندوتش سندويتش",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -1489,6 +1588,7 @@
   "name": "Koshari bowl",
   "brand": "Zooba",
   "nameAr": "زووبا",
+  "aliases": "كشري بول",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -1504,6 +1604,7 @@
   "name": "Hawawshi",
   "brand": "Zooba",
   "nameAr": "زووبا",
+  "aliases": "حواوشي",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -1519,6 +1620,7 @@
   "name": "Classic beef burger",
   "brand": "Buffalo Burger",
   "nameAr": "بافلو برجر",
+  "aliases": "برجر برغر لحم كلاسيك",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -1534,6 +1636,7 @@
   "name": "Double beef burger",
   "brand": "Buffalo Burger",
   "nameAr": "بافلو برجر",
+  "aliases": "برجر برغر لحم دبل",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -1549,6 +1652,7 @@
   "name": "Crispy chicken burger",
   "brand": "Buffalo Burger",
   "nameAr": "بافلو برجر",
+  "aliases": "برجر برغر فراخ دجاج تشيكن كريسبي",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -1564,6 +1668,7 @@
   "name": "Fries, regular",
   "brand": "Buffalo Burger",
   "nameAr": "بافلو برجر",
+  "aliases": "بطاطس فرايز",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -1579,6 +1684,7 @@
   "name": "Classic beef burger",
   "brand": "Bremer",
   "nameAr": "بريمر",
+  "aliases": "برجر برغر لحم كلاسيك",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {
@@ -1594,6 +1700,7 @@
   "name": "Chicken burger",
   "brand": "Bremer",
   "nameAr": "بريمر",
+  "aliases": "برجر برغر فراخ دجاج تشيكن",
   "kind": "restaurant",
   "source": "estimate",
   "serving": {

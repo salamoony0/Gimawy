@@ -69,14 +69,18 @@ export function toFoodRow(f: FoodJson) {
 }
 
 const KIND_ORDER: Record<string, number> = { generic: 0, egyptian: 0, restaurant: 1, brand: 2 };
+/** Someone searching in Arabic most likely means the Egyptian dish (جبنة → Domiati before Parmesan). */
+const KIND_ORDER_ARABIC: Record<string, number> = { egyptian: 0, generic: 1, restaurant: 2, brand: 3 };
 
 /**
  * Name (English, Arabic, or "brand name") starts with the query as a word, then as a prefix ("eggplant"), then a
- * later word starts with it; home foods before restaurants before packaged brands; then shorter names.
+ * later word starts with it; home foods before restaurants before packaged brands (Egyptian dishes first for an Arabic
+ * query); then shorter names.
  */
 export function rankFoods<T extends { name: string; nameAr?: string | null; brand?: string | null; kind: string }>(rows: T[], query: string) {
   const q = normalizeSearch(query);
   const first = q.split(' ')[0];
+  const kindOrder = /[\u0600-\u06FF]/.test(q) ? KIND_ORDER_ARABIC : KIND_ORDER;
   const tier = (text: string) => {
     const n = normalizeSearch(text);
     if (n === q || n.startsWith(`${q} `)) return 0;
@@ -86,7 +90,7 @@ export function rankFoods<T extends { name: string; nameAr?: string | null; bran
   };
   const best = (r: T) => Math.min(...[r.name, r.nameAr, r.brand && `${r.brand} ${r.name}`].filter((t): t is string => !!t).map(tier));
   return rows
-    .map((r) => ({ r, t: best(r), k: KIND_ORDER[r.kind] ?? 3, l: r.name.length }))
+    .map((r) => ({ r, t: best(r), k: kindOrder[r.kind] ?? 4, l: r.name.length }))
     .sort((a, b) => a.t - b.t || a.k - b.k || a.l - b.l)
     .map((x) => x.r);
 }

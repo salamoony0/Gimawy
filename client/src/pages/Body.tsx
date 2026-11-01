@@ -5,7 +5,7 @@ import { clsx } from 'clsx';
 import { CartesianGrid, ComposedChart, Area, Line, ReferenceLine, ResponsiveContainer, Scatter, Tooltip, XAxis, YAxis } from 'recharts';
 import { CalendarClock, Dumbbell, HeartPulse, Minus, Pencil, Plus, Scale, Target, Trash } from 'lucide-react';
 import { api, isQueued, type BodyWeight, type Goal } from '../lib/api';
-import { fmtDay, localDay, parseDay, plural, relativeDay, shiftDay, useMe, useUnits } from '../lib/format';
+import { parseDay, cleanDecimal, fmtDay, localDay, plural, relativeDay, shiftDay, useMe, useUnits } from '../lib/format';
 import { PageHeader } from '../components/Layout';
 import { Bar, Button, EmptyState, Field, IconButton, Input, Segmented, Select, Sheet, Skeleton, useToast } from '../components/ui';
 import { axisProps, ChartTooltip, GradientDefs, gridProps } from '../components/viz';
@@ -209,13 +209,14 @@ function WeighIn({ latestKg }: { latestKg?: number }) {
   const u = useUnits();
   const toast = useToast();
   const [date, setDate] = useState(localDay());
-  const [value, setValue] = useState('');
-  const shown = value || (latestKg ? String(u.weight(latestKg)) : '');
+  // null = untouched (shows the latest weigh-in); '' = the user cleared the field to type a new number.
+  const [value, setValue] = useState<string | null>(null);
+  const shown = value ?? (latestKg ? String(u.weight(latestKg)) : '');
   const save = useMutation({
     mutationFn: () => api.offline('PUT', `/body/${date}`, { weightKg: u.toKg(Number(shown)) }, `Weigh-in ${shown} ${u.w}`),
     onSuccess: (res) => {
       toast(isQueued(res) ? `${shown} ${u.w} saved on this device, it will sync automatically.` : `Logged ${shown} ${u.w}`);
-      setValue('');
+      setValue(null);
     },
     onError: (e) => toast(e.message, 'error'),
   });
@@ -234,7 +235,7 @@ function WeighIn({ latestKg }: { latestKg?: number }) {
           <input
             inputMode="decimal"
             value={shown}
-            onChange={(e) => setValue(e.target.value.replace(',', '.').replace(/[^\d.]/g, ''))}
+            onChange={(e) => setValue(cleanDecimal(e.target.value))}
             placeholder="0.0"
             className="num h-16 w-full rounded-2xl border border-line-strong bg-bg/60 text-center font-display text-4xl font-bold outline-none focus:border-brand"
           />

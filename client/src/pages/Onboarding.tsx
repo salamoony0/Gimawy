@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import { clsx } from 'clsx';
 import { ArrowLeft, ArrowRight, Armchair, Bike, Dumbbell, Flame, Footprints, Minus, Scale, Target, TrendingDown, TrendingUp, Trophy } from 'lucide-react';
 import { api, type Goal as SavedGoal, type User } from '../lib/api';
-import { fmtDay, fmtInt, localDay, shiftDay, useMe } from '../lib/format';
+import { cleanDecimal, cleanInteger, fmtDay, fmtInt, localDay, shiftDay, useMe } from '../lib/format';
 import { ACTIVITY, ageFrom, KCAL_PER_KG, planTargets, type ActivityLevel, type Goal, type Sex } from '../lib/energy';
 import { Logo } from '../components/Layout';
 import { Button, Field, Input, Segmented, useToast } from '../components/ui';
@@ -225,12 +225,12 @@ function Wizard({ me }: { me: User }) {
                           <div className="grid grid-cols-2 gap-2">
                             <label className="relative">
                               <span className="sr-only">Feet</span>
-                              <Input inputMode="numeric" value={feet} onChange={(e) => setFeet(e.target.value.replace(/\D/g, ''))} placeholder="5" className="num pr-8" />
+                              <Input inputMode="numeric" value={feet} onChange={(e) => setFeet(cleanInteger(e.target.value))} placeholder="5" className="num pr-8" />
                               <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted">ft</span>
                             </label>
                             <label className="relative">
                               <span className="sr-only">Inches</span>
-                              <Input inputMode="numeric" value={inches} onChange={(e) => setInches(e.target.value.replace(/\D/g, ''))} placeholder="10" className="num pr-8" />
+                              <Input inputMode="numeric" value={inches} onChange={(e) => setInches(cleanInteger(e.target.value))} placeholder="10" className="num pr-8" />
                               <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted">in</span>
                             </label>
                           </div>
@@ -398,7 +398,7 @@ function UnitInput({
             id={id}
             inputMode="decimal"
             value={value}
-            onChange={(e) => onChange(e.target.value.replace(',', '.').replace(/[^\d.]/g, ''))}
+            onChange={(e) => onChange(cleanDecimal(e.target.value))}
             placeholder={placeholder}
             className="num pr-10"
           />

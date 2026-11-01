@@ -4,7 +4,7 @@ import { motion } from 'motion/react';
 import { CameraOff, Keyboard, ScanBarcode } from 'lucide-react';
 import { api, ApiError, isQueued, type BarcodeLookup, type Meal } from '../lib/api';
 import { createDetector, isValidGtin, lookupCode, scaleMacros, scaleQuantity } from '../lib/barcode';
-import { fmtInt } from '../lib/format';
+import { cleanDecimal, cleanInteger, fmtInt } from '../lib/format';
 import { Badge, Button, Field, Input, Segmented, Sheet, useToast } from './ui';
 import { fromDraft, guessMeal, ItemEditor, MEALS, type DraftItem } from './FoodForm';
 
@@ -65,7 +65,7 @@ export function BarcodeSheet({ open, onClose, date }: { open: boolean; onClose: 
           >
             <Field label="Or type the number under the barcode" className="flex-1" error={typed.length >= 8 && !isValidGtin(typed) ? 'That number doesn’t look like a valid barcode' : null}>
               {(id) => (
-                <Input id={id} inputMode="numeric" autoComplete="off" value={typed} onChange={(e) => setTyped(e.target.value.replace(/\D/g, '').slice(0, 14))} placeholder="e.g. 5000159484695" className="num" />
+                <Input id={id} inputMode="numeric" autoComplete="off" value={typed} onChange={(e) => setTyped(cleanInteger(e.target.value).slice(0, 14))} placeholder="e.g. 5000159484695" className="num" />
               )}
             </Field>
             <Button type="submit" variant="secondary" disabled={!isValidGtin(typed)} icon={<Keyboard className="size-4" aria-hidden />}>
@@ -264,12 +264,12 @@ function ProductPortion({
 
       {mode === 'mine' && mine ? (
         <Field label={`Servings of ${mine.quantity ?? 'your last entry'}`} hint={`Last time: ${fmtInt(mine.calories)} kcal`}>
-          {(id) => <Input id={id} inputMode="decimal" value={servings} onChange={(e) => setServings(e.target.value.replace(',', '.').replace(/[^\d.]/g, ''))} className="num" />}
+          {(id) => <Input id={id} inputMode="decimal" value={servings} onChange={(e) => setServings(cleanDecimal(e.target.value))} className="num" />}
         </Field>
       ) : (
         <div className="flex flex-col gap-2">
           <Field label="Amount (g or ml)" hint={per100g ? `${per100g.calories} kcal per 100 g` : undefined}>
-            {(id) => <Input id={id} inputMode="decimal" value={grams} onChange={(e) => setGrams(e.target.value.replace(',', '.').replace(/[^\d.]/g, ''))} className="num" />}
+            {(id) => <Input id={id} inputMode="decimal" value={grams} onChange={(e) => setGrams(cleanDecimal(e.target.value))} className="num" />}
           </Field>
           <div className="flex flex-wrap gap-2">
             {chips.map((c) => (

@@ -55,6 +55,23 @@ export function fmtDuration(min: number | null | undefined) {
 export const fmtInt = (n: number) => Math.round(n).toLocaleString();
 
 /** "1 set", "3 sets" (regular nouns only). */
+/**
+ * What a number field keeps from typed text: digits and one decimal point. Arabic-Indic (٠-٩) and Persian (۰-۹)
+ * digits become 0-9 and the Arabic decimal separator, Arabic comma and comma become a point, so phones with an
+ * Arabic keyboard can type numbers.
+ */
+export function cleanDecimal(text: string) {
+  const s = text
+    .replace(/[\u0660-\u0669]/g, (d) => String(d.charCodeAt(0) - 0x660))
+    .replace(/[\u06F0-\u06F9]/g, (d) => String(d.charCodeAt(0) - 0x6f0))
+    .replace(/[٫،,]/g, '.')
+    .replace(/[^\d.]/g, '');
+  const dot = s.indexOf('.');
+  return dot < 0 ? s : s.slice(0, dot + 1) + s.slice(dot + 1).replace(/\./g, '');
+}
+
+export const cleanInteger = (text: string) => cleanDecimal(text).replace('.', '');
+
 export const plural = (n: number, noun: string) => `${n} ${n === 1 ? noun : `${noun}s`}`;
 
 export function fmtCompact(n: number) {

@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import { clsx } from 'clsx';
 import { Check, ChevronRight, Clock, Dumbbell, Link2, Minus, MoreHorizontal, Plus, Timer, Trash, Unlink, X } from 'lucide-react';
 import { api, isQueued, type Routine } from '../lib/api';
-import { localDay, MUSCLE_LABEL, parseDay, plural, useMe, useUnits } from '../lib/format';
+import { parseDay, cleanDecimal, cleanInteger, localDay, plural, MUSCLE_LABEL, useMe, useUnits } from '../lib/format';
 import { estimateStrength, profileFor } from '../lib/energy';
 import {
   linkWithNext,
@@ -566,7 +566,7 @@ function ExerciseBlock({
                   aria-label={`Set ${i + 1} weight in ${u.w}`}
                   value={s.weight}
                   placeholder={prevWeight || '0'}
-                  onChange={(e) => updateSet(s.key, { weight: e.target.value.replace(',', '.').replace(/[^\d.]/g, '') })}
+                  onChange={(e) => updateSet(s.key, { weight: cleanDecimal(e.target.value) })}
                   className="num min-h-10 px-1 text-center font-semibold"
                 />
                 <Input
@@ -574,7 +574,7 @@ function ExerciseBlock({
                   aria-label={`Set ${i + 1} reps`}
                   value={s.reps}
                   placeholder={prevReps || '0'}
-                  onChange={(e) => updateSet(s.key, { reps: e.target.value.replace(/\D/g, '') })}
+                  onChange={(e) => updateSet(s.key, { reps: cleanInteger(e.target.value) })}
                   className="num min-h-10 px-1 text-center font-semibold"
                 />
                 <button

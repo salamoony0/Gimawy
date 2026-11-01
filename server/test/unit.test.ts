@@ -224,4 +224,14 @@ describe('food search', () => {
     ];
     expect(rankFoods(burgers, 'mcdonalds big')[0].name).toBe('Big Mac');
   });
+
+  it('puts Egyptian dishes first for an Arabic query', () => {
+    const cheeses = [
+      { name: 'Parmesan', nameAr: 'جبنة بارميزان', kind: 'generic' },
+      { name: 'Domiati cheese (white)', nameAr: 'جبنة دمياطي', kind: 'egyptian' },
+    ];
+    expect(rankFoods(cheeses, 'جبنة')[0].name).toBe('Domiati cheese (white)');
+    expect(rankFoods(cheeses, 'cheese')[0].name).toBe('Domiati cheese (white)'); // only its name has the word
+    expect(rankFoods(cheeses, 'parm')[0].name).toBe('Parmesan');
+  });
 });

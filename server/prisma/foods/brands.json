@@ -13,7 +13,8 @@
    "carbs": 4.5,
    "fat": 3
   },
-  "servings": []
+  "servings": [],
+  "aliases": "جهينة"
  },
  {
   "key": "off-6222014335532",
@@ -29,7 +30,8 @@
    "carbs": 13,
    "fat": 0.1
   },
-  "servings": []
+  "servings": [],
+  "aliases": "جهينة"
  },
  {
   "key": "off-6222014336171",
@@ -45,7 +47,8 @@
    "carbs": 12,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "جهينة"
  },
  {
   "key": "off-6223000350089",
@@ -61,7 +64,8 @@
    "carbs": 4.5,
    "fat": 0.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "جهينة"
  },
  {
   "key": "off-6222014330674",
@@ -77,7 +81,8 @@
    "carbs": 12,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "جهينة"
  },
  {
   "key": "off-6223000350454",
@@ -93,7 +98,8 @@
    "carbs": 11.5,
    "fat": 1.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "جهينة"
  },
  {
   "key": "off-6222014351396",
@@ -109,7 +115,8 @@
    "carbs": 12.5,
    "fat": 1.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "جهينة"
  },
  {
   "key": "off-6222014353116",
@@ -125,7 +132,8 @@
    "carbs": 12.8,
    "fat": 1.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "جهينة"
  },
  {
   "key": "off-6222014301063",
@@ -141,7 +149,8 @@
    "carbs": 8,
    "fat": 1.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "جهينة"
  },
  {
   "key": "off-6222014301322",
@@ -157,7 +166,8 @@
    "carbs": 12.7,
    "fat": 1.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "جهينة"
  },
  {
   "key": "off-6222014301193",
@@ -173,7 +183,8 @@
    "carbs": 12.4,
    "fat": 0.1
   },
-  "servings": []
+  "servings": [],
+  "aliases": "جهينة"
  },
  {
   "key": "off-0200414301315",
@@ -189,7 +200,8 @@
    "carbs": 13.6,
    "fat": 1.7
   },
-  "servings": []
+  "servings": [],
+  "aliases": "جهينة"
  },
  {
   "key": "off-6222014353109",
@@ -205,7 +217,8 @@
    "carbs": 12.8,
    "fat": 1.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "جهينة"
  },
  {
   "key": "off-6222014352065",
@@ -221,7 +234,8 @@
    "carbs": 6.5,
    "fat": 0.4
   },
-  "servings": []
+  "servings": [],
+  "aliases": "جهينة"
  },
  {
   "key": "off-6222014335594",
@@ -237,7 +251,8 @@
    "carbs": 12,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "جهينة"
  },
  {
   "key": "off-6223000753101",
@@ -253,7 +268,8 @@
    "carbs": 6,
    "fat": 22
   },
-  "servings": []
+  "servings": [],
+  "aliases": "دومتي"
  },
  {
   "key": "off-6223000753088",
@@ -269,7 +285,8 @@
    "carbs": 6.5,
    "fat": 9
   },
-  "servings": []
+  "servings": [],
+  "aliases": "دومتي"
  },
  {
   "key": "off-6223000750797",
@@ -285,7 +302,8 @@
    "carbs": 6,
    "fat": 24
   },
-  "servings": []
+  "servings": [],
+  "aliases": "دومتي"
  },
  {
   "key": "off-6223000551790",
@@ -301,7 +319,8 @@
    "carbs": 60,
    "fat": 14
   },
-  "servings": []
+  "servings": [],
+  "aliases": "إيديتا اديتا"
  },
  {
   "key": "off-6223000551530",
@@ -317,7 +336,8 @@
    "carbs": 71.2,
    "fat": 11
   },
-  "servings": []
+  "servings": [],
+  "aliases": "إيديتا اديتا"
  },
  {
   "key": "off-0205400182626",
@@ -333,23 +353,8 @@
    "carbs": 67.7,
    "fat": 16.8
   },
-  "servings": []
- },
- {
-  "key": "off-6223000495124",
-  "name": "MAGNUM",
-  "nameAr": null,
-  "brand": "Molto",
-  "kind": "brand",
-  "source": "off",
-  "barcode": "6223000495124",
-  "per100g": {
-   "calories": 463,
-   "protein": 7.4,
-   "carbs": 48,
-   "fat": 27
-  },
-  "servings": []
+  "servings": [],
+  "aliases": "إيديتا اديتا"
  },
  {
   "key": "off-6223000494264",
@@ -365,7 +370,8 @@
    "carbs": 50,
    "fat": 27
   },
-  "servings": []
+  "servings": [],
+  "aliases": "مولتو"
  },
  {
   "key": "off-6221031490453",
@@ -381,7 +387,8 @@
    "carbs": 52,
    "fat": 29
   },
-  "servings": []
+  "servings": [],
+  "aliases": "شيبسي"
  },
  {
   "key": "off-6111214003702",
@@ -397,7 +404,8 @@
    "carbs": 56.1,
    "fat": 26
   },
-  "servings": []
+  "servings": [],
+  "aliases": "شيبسي"
  },
  {
   "key": "off-8606017377597",
@@ -413,7 +421,8 @@
    "carbs": 52,
    "fat": 32
   },
-  "servings": []
+  "servings": [],
+  "aliases": "شيبسي"
  },
  {
   "key": "off-8606017372370",
@@ -429,7 +438,8 @@
    "carbs": 51.6,
    "fat": 32.4
   },
-  "servings": []
+  "servings": [],
+  "aliases": "شيبسي"
  },
  {
   "key": "off-8606017375319",
@@ -445,7 +455,8 @@
    "carbs": 47.7,
    "fat": 34.6
   },
-  "servings": []
+  "servings": [],
+  "aliases": "شيبسي"
  },
  {
   "key": "off-8606017370154",
@@ -461,7 +472,8 @@
    "carbs": 57,
    "fat": 34
   },
-  "servings": []
+  "servings": [],
+  "aliases": "شيبسي"
  },
  {
   "key": "off-8606014406467",
@@ -477,7 +489,8 @@
    "carbs": 57.1,
    "fat": 26.4
   },
-  "servings": []
+  "servings": [],
+  "aliases": "شيبسي"
  },
  {
   "key": "off-8606017376323",
@@ -493,7 +506,8 @@
    "carbs": 71,
    "fat": 14
   },
-  "servings": []
+  "servings": [],
+  "aliases": "شيبسي"
  },
  {
   "key": "off-6111214005966",
@@ -509,7 +523,8 @@
    "carbs": 74.7,
    "fat": 10.1
   },
-  "servings": []
+  "servings": [],
+  "aliases": "شيبسي"
  },
  {
   "key": "off-8606017375357",
@@ -525,7 +540,8 @@
    "carbs": 57.1,
    "fat": 26.4
   },
-  "servings": []
+  "servings": [],
+  "aliases": "شيبسي"
  },
  {
   "key": "off-4810279004908",
@@ -541,7 +557,8 @@
    "carbs": 51,
    "fat": 30
   },
-  "servings": []
+  "servings": [],
+  "aliases": "شيبسي"
  },
  {
   "key": "off-6111214006895",
@@ -557,7 +574,8 @@
    "carbs": 71.7,
    "fat": 12.2
   },
-  "servings": []
+  "servings": [],
+  "aliases": "شيبسي"
  },
  {
   "key": "off-8606014409048",
@@ -573,7 +591,8 @@
    "carbs": 51.6,
    "fat": 33.7
   },
-  "servings": []
+  "servings": [],
+  "aliases": "شيبسي"
  },
  {
   "key": "off-8606017379331",
@@ -589,7 +608,8 @@
    "carbs": 52,
    "fat": 30
   },
-  "servings": []
+  "servings": [],
+  "aliases": "شيبسي"
  },
  {
   "key": "off-8606017376309",
@@ -605,7 +625,8 @@
    "carbs": 71,
    "fat": 14
   },
-  "servings": []
+  "servings": [],
+  "aliases": "شيبسي"
  },
  {
   "key": "off-6222001100341",
@@ -621,7 +642,8 @@
    "carbs": 71,
    "fat": 17
   },
-  "servings": []
+  "servings": [],
+  "aliases": "بسكو مصر"
  },
  {
   "key": "off-6221073002669",
@@ -637,7 +659,8 @@
    "carbs": 31,
    "fat": 45
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كورونا"
  },
  {
   "key": "off-6221073001877",
@@ -653,7 +676,8 @@
    "carbs": 22.2,
    "fat": 8.3
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كورونا"
  },
  {
   "key": "off-6221073011210",
@@ -669,7 +693,8 @@
    "carbs": 47,
    "fat": 35
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كورونا"
  },
  {
   "key": "off-6221073002607",
@@ -685,7 +710,8 @@
    "carbs": 45,
    "fat": 36
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كورونا"
  },
  {
   "key": "off-6221073012101",
@@ -701,7 +727,8 @@
    "carbs": 63,
    "fat": 32
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كورونا"
  },
  {
   "key": "off-6221073011760",
@@ -717,7 +744,8 @@
    "carbs": 52,
    "fat": 32
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كورونا"
  },
  {
   "key": "off-6221073008012",
@@ -733,7 +761,8 @@
    "carbs": 61,
    "fat": 21
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كورونا"
  },
  {
   "key": "off-6221073011180",
@@ -749,7 +778,8 @@
    "carbs": 48,
    "fat": 34
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كورونا"
  },
  {
   "key": "off-6221073002638",
@@ -765,7 +795,8 @@
    "carbs": 45,
    "fat": 36
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كورونا"
  },
  {
   "key": "off-6223001876854",
@@ -781,7 +812,8 @@
    "carbs": 12.5,
    "fat": 1.4
   },
-  "servings": []
+  "servings": [],
+  "aliases": "بيتي"
  },
  {
   "key": "off-6223001876908",
@@ -797,7 +829,8 @@
    "carbs": 11.4,
    "fat": 1.2
   },
-  "servings": []
+  "servings": [],
+  "aliases": "بيتي"
  },
  {
   "key": "off-6223001875840",
@@ -813,7 +846,8 @@
    "carbs": 12,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "بيتي"
  },
  {
   "key": "off-6223001876366",
@@ -829,7 +863,8 @@
    "carbs": 9.8,
    "fat": 6.2
   },
-  "servings": []
+  "servings": [],
+  "aliases": "بيتي"
  },
  {
   "key": "off-6224001105005",
@@ -845,7 +880,8 @@
    "carbs": 4.8,
    "fat": 3
   },
-  "servings": []
+  "servings": [],
+  "aliases": "لمار"
  },
  {
   "key": "off-6224001105081",
@@ -861,7 +897,8 @@
    "carbs": 11.2,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "لمار"
  },
  {
   "key": "off-6224001105838",
@@ -877,7 +914,8 @@
    "carbs": 12,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "لمار"
  },
  {
   "key": "off-0040232027727",
@@ -893,7 +931,8 @@
    "carbs": 0,
    "fat": 100
   },
-  "servings": []
+  "servings": [],
+  "aliases": "لمار"
  },
  {
   "key": "off-6224008637486",
@@ -909,7 +948,8 @@
    "carbs": 12.3,
    "fat": 1.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "لمار"
  },
  {
   "key": "off-6224008637202",
@@ -925,7 +965,8 @@
    "carbs": 0,
    "fat": 35
   },
-  "servings": []
+  "servings": [],
+  "aliases": "لمار"
  },
  {
   "key": "off-6224008637615",
@@ -941,7 +982,8 @@
    "carbs": 4.8,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "لمار"
  },
  {
   "key": "off-6224008637066",
@@ -957,7 +999,8 @@
    "carbs": 11.8,
    "fat": 1.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "لمار"
  },
  {
   "key": "off-6224008637455",
@@ -973,7 +1016,8 @@
    "carbs": 4,
    "fat": 1
   },
-  "servings": []
+  "servings": [],
+  "aliases": "لمار"
  },
  {
   "key": "off-6291108341711",
@@ -989,7 +1033,8 @@
    "carbs": 4.5,
    "fat": 18
   },
-  "servings": []
+  "servings": [],
+  "aliases": "لمار"
  },
  {
   "key": "off-6281007032261",
@@ -1005,7 +1050,8 @@
    "carbs": 4.8,
    "fat": 3.2
   },
-  "servings": []
+  "servings": [],
+  "aliases": "المراعي"
  },
  {
   "key": "off-6281007040716",
@@ -1021,7 +1067,8 @@
    "carbs": 7,
    "fat": 1.1
   },
-  "servings": []
+  "servings": [],
+  "aliases": "المراعي"
  },
  {
   "key": "off-6281007043359",
@@ -1037,7 +1084,8 @@
    "carbs": 2.6,
    "fat": 34.1
   },
-  "servings": []
+  "servings": [],
+  "aliases": "المراعي"
  },
  {
   "key": "off-6281007040655",
@@ -1053,7 +1101,8 @@
    "carbs": 2.2,
    "fat": 1.2
   },
-  "servings": []
+  "servings": [],
+  "aliases": "المراعي"
  },
  {
   "key": "off-6281007029612",
@@ -1069,7 +1118,8 @@
    "carbs": 43.3,
    "fat": 6.7
   },
-  "servings": []
+  "servings": [],
+  "aliases": "المراعي"
  },
  {
   "key": "off-6281007032834",
@@ -1085,7 +1135,8 @@
    "carbs": 19.3,
    "fat": 0.7
   },
-  "servings": []
+  "servings": [],
+  "aliases": "المراعي"
  },
  {
   "key": "off-6281007035019",
@@ -1101,7 +1152,8 @@
    "carbs": 26,
    "fat": 1
   },
-  "servings": []
+  "servings": [],
+  "aliases": "المراعي"
  },
  {
   "key": "off-6281007040235",
@@ -1117,7 +1169,8 @@
    "carbs": 12,
    "fat": 8
   },
-  "servings": []
+  "servings": [],
+  "aliases": "المراعي"
  },
  {
   "key": "off-6281007023498",
@@ -1133,7 +1186,8 @@
    "carbs": 4.7,
    "fat": 3.3
   },
-  "servings": []
+  "servings": [],
+  "aliases": "المراعي"
  },
  {
   "key": "off-6281007063067",
@@ -1149,7 +1203,8 @@
    "carbs": 6.2,
    "fat": 3.2
   },
-  "servings": []
+  "servings": [],
+  "aliases": "المراعي"
  },
  {
   "key": "off-6281007120401",
@@ -1165,7 +1220,8 @@
    "carbs": 4.8,
    "fat": 3.2
   },
-  "servings": []
+  "servings": [],
+  "aliases": "المراعي"
  },
  {
   "key": "off-6281007023504",
@@ -1181,7 +1237,8 @@
    "carbs": 4.7,
    "fat": 1.2
   },
-  "servings": []
+  "servings": [],
+  "aliases": "المراعي"
  },
  {
   "key": "off-6281007055376",
@@ -1197,7 +1254,8 @@
    "carbs": 11,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "المراعي"
  },
  {
   "key": "off-6281007110402",
@@ -1213,7 +1271,8 @@
    "carbs": 4.8,
    "fat": 3.2
   },
-  "servings": []
+  "servings": [],
+  "aliases": "المراعي"
  },
  {
   "key": "off-6281007042338",
@@ -1229,7 +1288,8 @@
    "carbs": 4.9,
    "fat": 1.1
   },
-  "servings": []
+  "servings": [],
+  "aliases": "المراعي"
  },
  {
   "key": "off-0851260006017",
@@ -1245,7 +1305,8 @@
    "carbs": 65,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "الرشيدي الميزان"
  },
  {
   "key": "off-0851260006024",
@@ -1261,7 +1322,8 @@
    "carbs": 65,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "الرشيدي الميزان"
  },
  {
   "key": "off-6223000051863",
@@ -1277,7 +1339,8 @@
    "carbs": 55,
    "fat": 30
   },
-  "servings": []
+  "servings": [],
+  "aliases": "الرشيدي الميزان"
  },
  {
   "key": "off-0851260006000",
@@ -1293,7 +1356,8 @@
    "carbs": 65,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "الرشيدي الميزان"
  },
  {
   "key": "off-0851260006031",
@@ -1309,7 +1373,8 @@
    "carbs": 65,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "الرشيدي الميزان"
  },
  {
   "key": "off-6223006312388",
@@ -1325,7 +1390,8 @@
    "carbs": 34.3,
    "fat": 10
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أبو عوف"
  },
  {
   "key": "off-6223004763762",
@@ -1341,7 +1407,8 @@
    "carbs": 23.9,
    "fat": 50
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أبو عوف"
  },
  {
   "key": "off-6223006315341",
@@ -1357,7 +1424,8 @@
    "carbs": 42.9,
    "fat": 14.3
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أبو عوف"
  },
  {
   "key": "off-6222023702998",
@@ -1373,7 +1441,8 @@
    "carbs": 85.7,
    "fat": 2.9
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أبو عوف"
  },
  {
   "key": "off-6223011433856",
@@ -1389,7 +1458,8 @@
    "carbs": 79.5,
    "fat": 3.4
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أبو عوف"
  },
  {
   "key": "off-6223006319011",
@@ -1405,7 +1475,8 @@
    "carbs": 78.6,
    "fat": 3.6
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أبو عوف"
  },
  {
   "key": "off-6223006313002",
@@ -1421,7 +1492,8 @@
    "carbs": 64.3,
    "fat": 16.1
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أبو عوف"
  },
  {
   "key": "off-6223006319172",
@@ -1437,7 +1509,8 @@
    "carbs": 77.8,
    "fat": 3.6
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أبو عوف"
  },
  {
   "key": "off-6223011431104",
@@ -1453,7 +1526,8 @@
    "carbs": 14.5,
    "fat": 18.3
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أبو عوف"
  },
  {
   "key": "off-6223011430244",
@@ -1469,7 +1543,8 @@
    "carbs": 34.3,
    "fat": 11.4
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أبو عوف"
  },
  {
   "key": "off-6223004760921",
@@ -1485,7 +1560,8 @@
    "carbs": 86.7,
    "fat": 5.3
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أبو عوف"
  },
  {
   "key": "off-6223006319196",
@@ -1501,7 +1577,8 @@
    "carbs": 78.6,
    "fat": 3.6
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أبو عوف"
  },
  {
   "key": "off-6223011434815",
@@ -1517,7 +1594,8 @@
    "carbs": 28.6,
    "fat": 22.9
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أبو عوف"
  },
  {
   "key": "off-6223011431111",
@@ -1533,7 +1611,8 @@
    "carbs": 23.7,
    "fat": 17.2
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أبو عوف"
  },
  {
   "key": "off-6223000032053",
@@ -1549,7 +1628,8 @@
    "carbs": 12,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "فرجللو"
  },
  {
   "key": "off-6223000032022",
@@ -1565,7 +1645,8 @@
    "carbs": 12,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "فرجللو"
  },
  {
   "key": "off-6223001858911",
@@ -1581,7 +1662,8 @@
    "carbs": 12,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "فرجللو"
  },
  {
   "key": "off-2000000124442",
@@ -1597,7 +1679,8 @@
    "carbs": 33.3,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "فرجللو"
  },
  {
   "key": "off-6223001858935",
@@ -1613,7 +1696,8 @@
    "carbs": 10,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "فرجللو"
  },
  {
   "key": "off-6223000032688",
@@ -1629,7 +1713,8 @@
    "carbs": 7.1,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "فرجللو"
  },
  {
   "key": "off-6223000034613",
@@ -1645,7 +1730,8 @@
    "carbs": 6,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "فرجللو"
  },
  {
   "key": "off-6223000037508",
@@ -1661,7 +1747,8 @@
    "carbs": 25,
    "fat": 25
   },
-  "servings": []
+  "servings": [],
+  "aliases": "فرجللو"
  },
  {
   "key": "off-6281041228415",
@@ -1677,7 +1764,8 @@
    "carbs": 66.7,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "حلواني"
  },
  {
   "key": "off-6221029700182",
@@ -1693,7 +1781,8 @@
    "carbs": 19.6,
    "fat": 57
   },
-  "servings": []
+  "servings": [],
+  "aliases": "حلواني"
  },
  {
   "key": "off-6221029610115",
@@ -1709,7 +1798,8 @@
    "carbs": 64,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "حلواني"
  },
  {
   "key": "off-0074265013945",
@@ -1725,7 +1815,8 @@
    "carbs": 65,
    "fat": 15
   },
-  "servings": []
+  "servings": [],
+  "aliases": "حلواني"
  },
  {
   "key": "off-6281041217112",
@@ -1741,7 +1832,8 @@
    "carbs": 0,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "حلواني"
  },
  {
   "key": "off-0281041269025",
@@ -1757,7 +1849,8 @@
    "carbs": 57.5,
    "fat": 25
   },
-  "servings": []
+  "servings": [],
+  "aliases": "حلواني"
  },
  {
   "key": "off-0814646002034",
@@ -1773,7 +1866,8 @@
    "carbs": 67.9,
    "fat": 11.8
   },
-  "servings": []
+  "servings": [],
+  "aliases": "حلواني"
  },
  {
   "key": "off-0032894022011",
@@ -1789,7 +1883,8 @@
    "carbs": 19,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أمريكانا"
  },
  {
   "key": "off-6281050114891",
@@ -1805,7 +1900,8 @@
    "carbs": 12.5,
    "fat": 9.4
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أمريكانا"
  },
  {
   "key": "off-6281050114938",
@@ -1821,7 +1917,8 @@
    "carbs": 12,
    "fat": 9
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أمريكانا"
  },
  {
   "key": "off-5037173101420",
@@ -1837,7 +1934,8 @@
    "carbs": 47.4,
    "fat": 3.9
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أمريكانا"
  },
  {
   "key": "off-0032894030511",
@@ -1853,7 +1951,8 @@
    "carbs": 11.5,
    "fat": 0.8
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أمريكانا"
  },
  {
   "key": "off-6281033414116",
@@ -1869,7 +1968,8 @@
    "carbs": 70,
    "fat": 20
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أمريكانا"
  },
  {
   "key": "off-5037173101710",
@@ -1885,7 +1985,8 @@
    "carbs": 44.7,
    "fat": 5.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أمريكانا"
  },
  {
   "key": "off-3523680280670",
@@ -1901,7 +2002,8 @@
    "carbs": 47.5,
    "fat": 4.3
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أمريكانا"
  },
  {
   "key": "off-5037173000181",
@@ -1917,7 +2019,8 @@
    "carbs": 47,
    "fat": 3.7
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أمريكانا"
  },
  {
   "key": "off-6281050826756",
@@ -1933,7 +2036,8 @@
    "carbs": 4,
    "fat": 10
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أمريكانا"
  },
  {
   "key": "off-0032894035042",
@@ -1949,7 +2053,8 @@
    "carbs": 12,
    "fat": 4
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أمريكانا"
  },
  {
   "key": "off-6281033317226",
@@ -1965,7 +2070,8 @@
    "carbs": 72,
    "fat": 13
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أمريكانا"
  },
  {
   "key": "off-6223001752066",
@@ -1981,7 +2087,8 @@
    "carbs": 5.4,
    "fat": 0.4
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أمريكانا"
  },
  {
   "key": "off-9403146717046",
@@ -1997,7 +2104,8 @@
    "carbs": 7.4,
    "fat": 55.9
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أمريكانا"
  },
  {
   "key": "off-4316268490320",
@@ -2013,7 +2121,8 @@
    "carbs": 12.1,
    "fat": 5.1
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أمريكانا"
  },
  {
   "key": "off-6223001823360",
@@ -2029,7 +2138,8 @@
    "carbs": 10,
    "fat": 13
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كوكي"
  },
  {
   "key": "off-5601055321406",
@@ -2045,7 +2155,8 @@
    "carbs": 20,
    "fat": 34
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ريجينا"
  },
  {
   "key": "off-5601055321383",
@@ -2061,7 +2172,8 @@
    "carbs": 19,
    "fat": 36
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ريجينا"
  },
  {
   "key": "off-6191574600100",
@@ -2077,7 +2189,8 @@
    "carbs": 0,
    "fat": 80
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ريجينا"
  },
  {
   "key": "off-8006099410920",
@@ -2093,7 +2206,8 @@
    "carbs": 78,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ريجينا"
  },
  {
   "key": "off-7610491041128",
@@ -2109,7 +2223,8 @@
    "carbs": 69,
    "fat": 3
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ريجينا"
  },
  {
   "key": "off-7610491041111",
@@ -2125,7 +2240,8 @@
    "carbs": 56,
    "fat": 7.1
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ريجينا"
  },
  {
   "key": "off-8002979620083",
@@ -2141,7 +2257,8 @@
    "carbs": 61,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ريجينا"
  },
  {
   "key": "off-3251870003241",
@@ -2157,7 +2274,8 @@
    "carbs": 2.1,
    "fat": 10
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ريجينا"
  },
  {
   "key": "off-3251870003173",
@@ -2173,7 +2291,8 @@
    "carbs": 1.5,
    "fat": 12
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ريجينا"
  },
  {
   "key": "off-05448031",
@@ -2189,7 +2308,8 @@
    "carbs": 0,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ريجينا"
  },
  {
   "key": "off-5601055322748",
@@ -2205,7 +2325,8 @@
    "carbs": 8,
    "fat": 56
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ريجينا"
  },
  {
   "key": "off-3859893027857",
@@ -2221,7 +2342,8 @@
    "carbs": 45,
    "fat": 0.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ريجينا"
  },
  {
   "key": "off-3251870003234",
@@ -2237,7 +2359,8 @@
    "carbs": 0.5,
    "fat": 13
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ريجينا"
  },
  {
   "key": "off-3251870003333",
@@ -2253,7 +2376,8 @@
    "carbs": 2,
    "fat": 10
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ريجينا"
  },
  {
   "key": "off-05448235",
@@ -2269,7 +2393,8 @@
    "carbs": 0,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ريجينا"
  },
  {
   "key": "off-6224000432096",
@@ -2285,7 +2410,8 @@
    "carbs": 25,
    "fat": 3
   },
-  "servings": []
+  "servings": [],
+  "aliases": "دينا فارمز"
  },
  {
   "key": "off-6224011439046",
@@ -2301,7 +2427,8 @@
    "carbs": 5,
    "fat": 21
   },
-  "servings": []
+  "servings": [],
+  "aliases": "دينا فارمز"
  },
  {
   "key": "off-6224000432249",
@@ -2317,7 +2444,8 @@
    "carbs": 5,
    "fat": 30
   },
-  "servings": []
+  "servings": [],
+  "aliases": "دينا فارمز"
  },
  {
   "key": "off-6221024240195",
@@ -2333,7 +2461,8 @@
    "carbs": 15,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "فيتراك"
  },
  {
   "key": "off-6221024991714",
@@ -2349,7 +2478,8 @@
    "carbs": 60,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "فيتراك"
  },
  {
   "key": "off-6221024240058",
@@ -2365,7 +2495,8 @@
    "carbs": 11,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "فيتراك"
  },
  {
   "key": "off-6222035236450",
@@ -2381,7 +2512,8 @@
    "carbs": 55,
    "fat": 33
   },
-  "servings": []
+  "servings": [],
+  "aliases": "تايجر"
  },
  {
   "key": "off-6222035205722",
@@ -2397,7 +2529,8 @@
    "carbs": 10.4,
    "fat": 6.2
   },
-  "servings": []
+  "servings": [],
+  "aliases": "تايجر"
  },
  {
   "key": "off-9222445232438",
@@ -2413,7 +2546,8 @@
    "carbs": 49.7,
    "fat": 35
   },
-  "servings": []
+  "servings": [],
+  "aliases": "تايجر"
  },
  {
   "key": "off-6222035211617",
@@ -2429,7 +2563,8 @@
    "carbs": 55,
    "fat": 33
   },
-  "servings": []
+  "servings": [],
+  "aliases": "تايجر"
  },
  {
   "key": "off-6222035228240",
@@ -2445,7 +2580,8 @@
    "carbs": 55,
    "fat": 33
   },
-  "servings": []
+  "servings": [],
+  "aliases": "تايجر"
  },
  {
   "key": "off-6222035205715",
@@ -2461,7 +2597,8 @@
    "carbs": 55,
    "fat": 33
   },
-  "servings": []
+  "servings": [],
+  "aliases": "تايجر"
  },
  {
   "key": "off-6222035228233",
@@ -2477,7 +2614,8 @@
    "carbs": 55,
    "fat": 33
   },
-  "servings": []
+  "servings": [],
+  "aliases": "تايجر"
  },
  {
   "key": "off-6222035228257",
@@ -2493,7 +2631,8 @@
    "carbs": 55,
    "fat": 33
   },
-  "servings": []
+  "servings": [],
+  "aliases": "تايجر"
  },
  {
   "key": "off-6223000553442",
@@ -2509,7 +2648,8 @@
    "carbs": 58,
    "fat": 17
   },
-  "servings": []
+  "servings": [],
+  "aliases": "تودو"
  },
  {
   "key": "off-6222035208693",
@@ -2525,7 +2665,8 @@
    "carbs": 5,
    "fat": 3
   },
-  "servings": []
+  "servings": [],
+  "aliases": "بيج شيبس"
  },
  {
   "key": "off-6222035205814",
@@ -2541,7 +2682,8 @@
    "carbs": 5.5,
    "fat": 2.8
   },
-  "servings": []
+  "servings": [],
+  "aliases": "بيج شيبس"
  },
  {
   "key": "off-6222035228264",
@@ -2557,7 +2699,8 @@
    "carbs": 55,
    "fat": 28.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "بيج شيبس"
  },
  {
   "key": "off-6222035228271",
@@ -2573,7 +2716,8 @@
    "carbs": 55,
    "fat": 28
   },
-  "servings": []
+  "servings": [],
+  "aliases": "بيج شيبس"
  },
  {
   "key": "off-6223000496695",
@@ -2589,7 +2733,8 @@
    "carbs": 71,
    "fat": 11
   },
-  "servings": []
+  "servings": [],
+  "aliases": "هوهوز"
  },
  {
   "key": "off-3168930167983",
@@ -2605,7 +2750,8 @@
    "carbs": 54,
    "fat": 35
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ليز lays"
  },
  {
   "key": "off-3168930009030",
@@ -2621,7 +2767,8 @@
    "carbs": 54,
    "fat": 30
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ليز lays"
  },
  {
   "key": "off-3168930164661",
@@ -2637,7 +2784,8 @@
    "carbs": 54,
    "fat": 28
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ليز lays"
  },
  {
   "key": "off-5941000025639",
@@ -2653,7 +2801,8 @@
    "carbs": 53,
    "fat": 34
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ليز lays"
  },
  {
   "key": "off-3168930168195",
@@ -2669,7 +2818,8 @@
    "carbs": 54,
    "fat": 30
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ليز lays"
  },
  {
   "key": "off-5941000024700",
@@ -2685,7 +2835,8 @@
    "carbs": 71,
    "fat": 14
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ليز lays"
  },
  {
   "key": "off-3168930000990",
@@ -2701,7 +2852,8 @@
    "carbs": 55,
    "fat": 31
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ليز lays"
  },
  {
   "key": "off-8410199002402",
@@ -2717,7 +2869,8 @@
    "carbs": 73,
    "fat": 13
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ليز lays"
  },
  {
   "key": "off-8410199023094",
@@ -2733,7 +2886,8 @@
    "carbs": 53.9,
    "fat": 30.8
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ليز lays"
  },
  {
   "key": "off-3168930171737",
@@ -2749,7 +2903,8 @@
    "carbs": 53,
    "fat": 30
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ليز lays"
  },
  {
   "key": "off-3168930169314",
@@ -2765,7 +2920,8 @@
    "carbs": 54,
    "fat": 35
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ليز lays"
  },
  {
   "key": "off-5941000025615",
@@ -2781,7 +2937,8 @@
    "carbs": 54,
    "fat": 32
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ليز lays"
  },
  {
   "key": "off-5941000029521",
@@ -2797,7 +2954,8 @@
    "carbs": 53,
    "fat": 34
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ليز lays"
  },
  {
   "key": "off-5900259056207",
@@ -2813,7 +2971,8 @@
    "carbs": 71,
    "fat": 14
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ليز lays"
  },
  {
   "key": "off-3168930008996",
@@ -2829,7 +2988,8 @@
    "carbs": 54,
    "fat": 35
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ليز lays"
  },
  {
   "key": "off-3168930009184",
@@ -2845,7 +3005,8 @@
    "carbs": 61,
    "fat": 23
   },
-  "servings": []
+  "servings": [],
+  "aliases": "دوريتوس"
  },
  {
   "key": "off-5900259094704",
@@ -2861,7 +3022,8 @@
    "carbs": 58,
    "fat": 26
   },
-  "servings": []
+  "servings": [],
+  "aliases": "دوريتوس"
  },
  {
   "key": "off-3168930009191",
@@ -2877,7 +3039,8 @@
    "carbs": 58,
    "fat": 26
   },
-  "servings": []
+  "servings": [],
+  "aliases": "دوريتوس"
  },
  {
   "key": "off-3168930008347",
@@ -2893,7 +3056,8 @@
    "carbs": 61,
    "fat": 23
   },
-  "servings": []
+  "servings": [],
+  "aliases": "دوريتوس"
  },
  {
   "key": "off-3168930009207",
@@ -2909,7 +3073,8 @@
    "carbs": 59,
    "fat": 25
   },
-  "servings": []
+  "servings": [],
+  "aliases": "دوريتوس"
  },
  {
   "key": "off-5000328741901",
@@ -2925,7 +3090,8 @@
    "carbs": 59.3,
    "fat": 24.9
   },
-  "servings": []
+  "servings": [],
+  "aliases": "دوريتوس"
  },
  {
   "key": "off-5000328741581",
@@ -2941,7 +3107,8 @@
    "carbs": 58.1,
    "fat": 25.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "دوريتوس"
  },
  {
   "key": "off-3168930166108",
@@ -2957,7 +3124,8 @@
    "carbs": 7.5,
    "fat": 18
   },
-  "servings": []
+  "servings": [],
+  "aliases": "دوريتوس"
  },
  {
   "key": "off-5900259094728",
@@ -2973,7 +3141,8 @@
    "carbs": 58,
    "fat": 25
   },
-  "servings": []
+  "servings": [],
+  "aliases": "دوريتوس"
  },
  {
   "key": "off-3168930008170",
@@ -2989,7 +3158,8 @@
    "carbs": 58,
    "fat": 26
   },
-  "servings": []
+  "servings": [],
+  "aliases": "دوريتوس"
  },
  {
   "key": "off-3168930009238",
@@ -3005,7 +3175,8 @@
    "carbs": 58,
    "fat": 25
   },
-  "servings": []
+  "servings": [],
+  "aliases": "دوريتوس"
  },
  {
   "key": "off-3168930166078",
@@ -3021,7 +3192,8 @@
    "carbs": 6.6,
    "fat": 0.2
   },
-  "servings": []
+  "servings": [],
+  "aliases": "دوريتوس"
  },
  {
   "key": "off-8410199021045",
@@ -3037,7 +3209,8 @@
    "carbs": 56.9,
    "fat": 25.8
   },
-  "servings": []
+  "servings": [],
+  "aliases": "دوريتوس"
  },
  {
   "key": "off-5000328741314",
@@ -3053,7 +3226,8 @@
    "carbs": 60.4,
    "fat": 22.9
   },
-  "servings": []
+  "servings": [],
+  "aliases": "دوريتوس"
  },
  {
   "key": "off-3168930166047",
@@ -3069,7 +3243,8 @@
    "carbs": 7.1,
    "fat": 0.2
   },
-  "servings": []
+  "servings": [],
+  "aliases": "دوريتوس"
  },
  {
   "key": "off-5053990156009",
@@ -3085,7 +3260,8 @@
    "carbs": 56,
    "fat": 31
   },
-  "servings": []
+  "servings": [],
+  "aliases": "برينجلز"
  },
  {
   "key": "off-5053990155354",
@@ -3101,7 +3277,8 @@
    "carbs": 56,
    "fat": 30
   },
-  "servings": []
+  "servings": [],
+  "aliases": "برينجلز"
  },
  {
   "key": "off-5053990127726",
@@ -3117,7 +3294,8 @@
    "carbs": 56,
    "fat": 31
   },
-  "servings": []
+  "servings": [],
+  "aliases": "برينجلز"
  },
  {
   "key": "off-5053990101597",
@@ -3133,7 +3311,8 @@
    "carbs": 56,
    "fat": 29
   },
-  "servings": []
+  "servings": [],
+  "aliases": "برينجلز"
  },
  {
   "key": "off-5053990127740",
@@ -3149,7 +3328,8 @@
    "carbs": 56,
    "fat": 29
   },
-  "servings": []
+  "servings": [],
+  "aliases": "برينجلز"
  },
  {
   "key": "off-5053990155941",
@@ -3165,7 +3345,8 @@
    "carbs": 55,
    "fat": 29
   },
-  "servings": []
+  "servings": [],
+  "aliases": "برينجلز"
  },
  {
   "key": "off-5053990107339",
@@ -3181,7 +3362,8 @@
    "carbs": 56,
    "fat": 31
   },
-  "servings": []
+  "servings": [],
+  "aliases": "برينجلز"
  },
  {
   "key": "off-5053990161669",
@@ -3197,7 +3379,8 @@
    "carbs": 55,
    "fat": 29
   },
-  "servings": []
+  "servings": [],
+  "aliases": "برينجلز"
  },
  {
   "key": "off-5053990162703",
@@ -3213,7 +3396,8 @@
    "carbs": 56,
    "fat": 29
   },
-  "servings": []
+  "servings": [],
+  "aliases": "برينجلز"
  },
  {
   "key": "off-5053990161966",
@@ -3229,7 +3413,8 @@
    "carbs": 57,
    "fat": 29
   },
-  "servings": []
+  "servings": [],
+  "aliases": "برينجلز"
  },
  {
   "key": "off-5053990167883",
@@ -3245,7 +3430,8 @@
    "carbs": 56,
    "fat": 29
   },
-  "servings": []
+  "servings": [],
+  "aliases": "برينجلز"
  },
  {
   "key": "off-5053990107384",
@@ -3261,7 +3447,8 @@
    "carbs": 55,
    "fat": 30
   },
-  "servings": []
+  "servings": [],
+  "aliases": "برينجلز"
  },
  {
   "key": "off-5053990106981",
@@ -3277,7 +3464,8 @@
    "carbs": 56,
    "fat": 30
   },
-  "servings": []
+  "servings": [],
+  "aliases": "برينجلز"
  },
  {
   "key": "off-5053990164158",
@@ -3293,7 +3481,8 @@
    "carbs": 57,
    "fat": 29
   },
-  "servings": []
+  "servings": [],
+  "aliases": "برينجلز"
  },
  {
   "key": "off-5053990138722",
@@ -3309,7 +3498,8 @@
    "carbs": 56,
    "fat": 31
   },
-  "servings": []
+  "servings": [],
+  "aliases": "برينجلز"
  },
  {
   "key": "off-3502110009357",
@@ -3325,7 +3515,8 @@
    "carbs": 0,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "بيبسي"
  },
  {
   "key": "off-5949000012031",
@@ -3341,7 +3532,8 @@
    "carbs": 11,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "بيبسي"
  },
  {
   "key": "off-5949000012086",
@@ -3357,7 +3549,8 @@
    "carbs": 11.1,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "بيبسي"
  },
  {
   "key": "off-6111252421568",
@@ -3373,7 +3566,8 @@
    "carbs": 0,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "بيبسي"
  },
  {
   "key": "off-6111252421582",
@@ -3389,7 +3583,8 @@
    "carbs": 0,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "بيبسي"
  },
  {
   "key": "off-3502110008329",
@@ -3405,7 +3600,8 @@
    "carbs": 4.6,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "بيبسي"
  },
  {
   "key": "off-5949000505359",
@@ -3421,7 +3617,8 @@
    "carbs": 11,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "بيبسي"
  },
  {
   "key": "off-3168930159742",
@@ -3437,7 +3634,8 @@
    "carbs": 0,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "بيبسي"
  },
  {
   "key": "off-4062139001705",
@@ -3453,7 +3651,8 @@
    "carbs": 0.1,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "بيبسي"
  },
  {
   "key": "off-8410494300777",
@@ -3469,7 +3668,8 @@
    "carbs": 4.8,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "بيبسي"
  },
  {
   "key": "off-5949000504758",
@@ -3485,7 +3685,8 @@
    "carbs": 11,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "بيبسي"
  },
  {
   "key": "off-5949000022047",
@@ -3501,7 +3702,8 @@
    "carbs": 0.5,
    "fat": 0.1
   },
-  "servings": []
+  "servings": [],
+  "aliases": "بيبسي"
  },
  {
   "key": "off-3502110000651",
@@ -3517,7 +3719,8 @@
    "carbs": 0,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "بيبسي"
  },
  {
   "key": "off-4060800172396",
@@ -3533,7 +3736,8 @@
    "carbs": 0,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "بيبسي"
  },
  {
   "key": "off-4062139001729",
@@ -3549,7 +3753,8 @@
    "carbs": 0.1,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "بيبسي"
  },
  {
   "key": "off-5449000214911",
@@ -3565,7 +3770,8 @@
    "carbs": 10.6,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كوكاكولا كوكا كولا coke"
  },
  {
   "key": "off-5449000214799",
@@ -3581,7 +3787,8 @@
    "carbs": 0,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كوكاكولا كوكا كولا coke"
  },
  {
   "key": "off-54491472",
@@ -3597,7 +3804,8 @@
    "carbs": 10.6,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كوكاكولا كوكا كولا coke"
  },
  {
   "key": "off-5449000131805",
@@ -3613,23 +3821,8 @@
    "carbs": 0,
    "fat": 0
   },
-  "servings": []
- },
- {
-  "key": "off-5449000000286",
-  "name": "RECYCL",
-  "nameAr": "كوكاكولا اب",
-  "brand": "Coca-Cola",
-  "kind": "brand",
-  "source": "off",
-  "barcode": "5449000000286",
-  "per100g": {
-   "calories": 42,
-   "protein": 0,
-   "carbs": 10.6,
-   "fat": 0
-  },
-  "servings": []
+  "servings": [],
+  "aliases": "كوكاكولا كوكا كولا coke"
  },
  {
   "key": "off-5449000131836",
@@ -3645,7 +3838,8 @@
    "carbs": 0,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كوكاكولا كوكا كولا coke"
  },
  {
   "key": "off-5000112611861",
@@ -3661,7 +3855,8 @@
    "carbs": 10.6,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كوكاكولا كوكا كولا coke"
  },
  {
   "key": "off-5449000131843",
@@ -3677,7 +3872,8 @@
    "carbs": 0,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كوكاكولا كوكا كولا coke"
  },
  {
   "key": "off-5449000000439",
@@ -3693,7 +3889,8 @@
    "carbs": 10.6,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كوكاكولا كوكا كولا coke"
  },
  {
   "key": "off-5449000011527",
@@ -3709,7 +3906,8 @@
    "carbs": 13.2,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كوكاكولا كوكا كولا coke"
  },
  {
   "key": "off-5449000147417",
@@ -3725,7 +3923,8 @@
    "carbs": 9.3,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كوكاكولا كوكا كولا coke"
  },
  {
   "key": "off-5449000009067",
@@ -3741,7 +3940,8 @@
    "carbs": 10.6,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كوكاكولا كوكا كولا coke"
  },
  {
   "key": "off-54492653",
@@ -3757,7 +3957,8 @@
    "carbs": 4.1,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كوكاكولا كوكا كولا coke"
  },
  {
   "key": "off-5449000214843",
@@ -3773,7 +3974,8 @@
    "carbs": 10.7,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كوكاكولا كوكا كولا coke"
  },
  {
   "key": "off-5000112546415",
@@ -3789,7 +3991,8 @@
    "carbs": 10.6,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كوكاكولا كوكا كولا coke"
  },
  {
   "key": "off-3225350000501",
@@ -3805,7 +4008,8 @@
    "carbs": 0.8,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "شويبس"
  },
  {
   "key": "off-3124480191182",
@@ -3821,7 +4025,8 @@
    "carbs": 6.6,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "شويبس"
  },
  {
   "key": "off-3124480184344",
@@ -3837,7 +4042,8 @@
    "carbs": 9.7,
    "fat": 0.1
   },
-  "servings": []
+  "servings": [],
+  "aliases": "شويبس"
  },
  {
   "key": "off-5410221305085",
@@ -3853,7 +4059,8 @@
    "carbs": 5.7,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "شويبس"
  },
  {
   "key": "off-3124480186850",
@@ -3869,7 +4076,8 @@
    "carbs": 5.8,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "شويبس"
  },
  {
   "key": "off-5410221305108",
@@ -3885,7 +4093,8 @@
    "carbs": 0.3,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "شويبس"
  },
  {
   "key": "off-3124480196262",
@@ -3901,7 +4110,8 @@
    "carbs": 4.5,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "شويبس"
  },
  {
   "key": "off-3124480001429",
@@ -3917,7 +4127,8 @@
    "carbs": 0,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "شويبس"
  },
  {
   "key": "off-5449000044730",
@@ -3933,7 +4144,8 @@
    "carbs": 7.1,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "شويبس"
  },
  {
   "key": "off-3124480196248",
@@ -3949,7 +4161,8 @@
    "carbs": 0.3,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "شويبس"
  },
  {
   "key": "off-3124480196361",
@@ -3965,7 +4178,8 @@
    "carbs": 4.4,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "شويبس"
  },
  {
   "key": "off-3124480186904",
@@ -3981,7 +4195,8 @@
    "carbs": 0,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "شويبس"
  },
  {
   "key": "off-5449000044709",
@@ -3997,7 +4212,8 @@
    "carbs": 13.3,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "شويبس"
  },
  {
   "key": "off-3124480186898",
@@ -4013,7 +4229,8 @@
    "carbs": 5.8,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "شويبس"
  },
  {
   "key": "off-5449000306821",
@@ -4029,7 +4246,8 @@
    "carbs": 8.9,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "شويبس"
  },
  {
   "key": "off-9002490100070",
@@ -4045,7 +4263,8 @@
    "carbs": 11,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ريد بول"
  },
  {
   "key": "off-9002490205973",
@@ -4061,7 +4280,8 @@
    "carbs": 11,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ريد بول"
  },
  {
   "key": "off-90162602",
@@ -4077,7 +4297,8 @@
    "carbs": 11,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ريد بول"
  },
  {
   "key": "off-90162800",
@@ -4093,7 +4314,8 @@
    "carbs": 0,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ريد بول"
  },
  {
   "key": "off-90162909",
@@ -4109,7 +4331,8 @@
    "carbs": 11,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ريد بول"
  },
  {
   "key": "off-90162480",
@@ -4125,7 +4348,8 @@
    "carbs": 0,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ريد بول"
  },
  {
   "key": "off-9002490208592",
@@ -4141,7 +4365,8 @@
    "carbs": 0,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ريد بول"
  },
  {
   "key": "off-9002490210717",
@@ -4157,7 +4382,8 @@
    "carbs": 11,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ريد بول"
  },
  {
   "key": "off-90433627",
@@ -4173,7 +4399,8 @@
    "carbs": 11,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ريد بول"
  },
  {
   "key": "off-9002490219567",
@@ -4189,7 +4416,8 @@
    "carbs": 11,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ريد بول"
  },
  {
   "key": "off-90453885",
@@ -4205,7 +4433,8 @@
    "carbs": 11,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ريد بول"
  },
  {
   "key": "off-9002490246594",
@@ -4221,7 +4450,8 @@
    "carbs": 11,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ريد بول"
  },
  {
   "key": "off-9002490255176",
@@ -4237,7 +4467,8 @@
    "carbs": 11,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ريد بول"
  },
  {
   "key": "off-90415722",
@@ -4253,7 +4484,8 @@
    "carbs": 11,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ريد بول"
  },
  {
   "key": "off-90448638",
@@ -4269,7 +4501,8 @@
    "carbs": 11,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "ريد بول"
  },
  {
   "key": "off-8002270014901",
@@ -4285,7 +4518,8 @@
    "carbs": 0,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نستله nestle"
  },
  {
   "key": "off-7613034626844",
@@ -4301,7 +4535,8 @@
    "carbs": 73.6,
    "fat": 4.8
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نستله nestle"
  },
  {
   "key": "off-7613035974685",
@@ -4317,7 +4552,8 @@
    "carbs": 0,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نستله nestle"
  },
  {
   "key": "off-7613035040823",
@@ -4333,7 +4569,8 @@
    "carbs": 50.7,
    "fat": 34.1
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نستله nestle"
  },
  {
   "key": "off-3033710084913",
@@ -4349,7 +4586,8 @@
    "carbs": 6.5,
    "fat": 0.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نستله nestle"
  },
  {
   "key": "off-3033710065967",
@@ -4365,7 +4603,8 @@
    "carbs": 78.9,
    "fat": 3.6
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نستله nestle"
  },
  {
   "key": "off-7613034947611",
@@ -4381,7 +4620,8 @@
    "carbs": 73.6,
    "fat": 4.8
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نستله nestle"
  },
  {
   "key": "off-7613036669146",
@@ -4397,7 +4637,8 @@
    "carbs": 72.3,
    "fat": 5.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نستله nestle"
  },
  {
   "key": "off-3033710065783",
@@ -4413,7 +4654,8 @@
    "carbs": 70.4,
    "fat": 7.9
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نستله nestle"
  },
  {
   "key": "off-7613035239562",
@@ -4429,7 +4671,8 @@
    "carbs": 9.8,
    "fat": 1.8
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نستله nestle"
  },
  {
   "key": "off-7613287514325",
@@ -4445,7 +4688,8 @@
    "carbs": 74.7,
    "fat": 1.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نستله nestle"
  },
  {
   "key": "off-3023290634578",
@@ -4461,7 +4705,8 @@
    "carbs": 3.5,
    "fat": 7.9
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نستله nestle"
  },
  {
   "key": "off-3023291122005",
@@ -4477,7 +4722,8 @@
    "carbs": 3.5,
    "fat": 7.9
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نستله nestle"
  },
  {
   "key": "off-8002270116544",
@@ -4493,7 +4739,8 @@
    "carbs": 0,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نستله nestle"
  },
  {
   "key": "off-7613035144699",
@@ -4509,7 +4756,8 @@
    "carbs": 75.2,
    "fat": 2.8
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نستله nestle"
  },
  {
   "key": "off-3033710075225",
@@ -4525,7 +4773,8 @@
    "carbs": 0,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نسكافيه nescafe"
  },
  {
   "key": "off-3033710047765",
@@ -4541,7 +4790,8 @@
    "carbs": 9.4,
    "fat": 1
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نسكافيه nescafe"
  },
  {
   "key": "off-7613033174667",
@@ -4557,7 +4807,8 @@
    "carbs": 29.4,
    "fat": 20
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نسكافيه nescafe"
  },
  {
   "key": "off-8000300211368",
@@ -4573,7 +4824,8 @@
    "carbs": 6.9,
    "fat": 1
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نسكافيه nescafe"
  },
  {
   "key": "off-7613038158884",
@@ -4589,7 +4841,8 @@
    "carbs": 76,
    "fat": 9.3
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نسكافيه nescafe"
  },
  {
   "key": "off-3033710075270",
@@ -4605,7 +4858,8 @@
    "carbs": 0,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نسكافيه nescafe"
  },
  {
   "key": "off-3033710074617",
@@ -4621,7 +4875,8 @@
    "carbs": 0,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نسكافيه nescafe"
  },
  {
   "key": "off-7613033162220",
@@ -4637,7 +4892,8 @@
    "carbs": 56.1,
    "fat": 15.8
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نسكافيه nescafe"
  },
  {
   "key": "off-7613038902166",
@@ -4653,7 +4909,8 @@
    "carbs": 3.3,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نسكافيه nescafe"
  },
  {
   "key": "off-7613036305846",
@@ -4669,7 +4926,8 @@
    "carbs": 0.3,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نسكافيه nescafe"
  },
  {
   "key": "off-7613037883121",
@@ -4685,7 +4943,8 @@
    "carbs": 0.3,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نسكافيه nescafe"
  },
  {
   "key": "off-7613035690639",
@@ -4701,7 +4960,8 @@
    "carbs": 7.4,
    "fat": 2.1
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نسكافيه nescafe"
  },
  {
   "key": "off-3033710076789",
@@ -4717,7 +4977,8 @@
    "carbs": 0.1,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نسكافيه nescafe"
  },
  {
   "key": "off-7613033006937",
@@ -4733,7 +4994,8 @@
    "carbs": 0,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نسكافيه nescafe"
  },
  {
   "key": "off-7613038887333",
@@ -4749,7 +5011,8 @@
    "carbs": 76.2,
    "fat": 3
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نسكافيه nescafe"
  },
  {
   "key": "off-3033710065967",
@@ -4765,7 +5028,8 @@
    "carbs": 78.9,
    "fat": 3.6
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نسكويك"
  },
  {
   "key": "off-8445290133403",
@@ -4781,7 +5045,8 @@
    "carbs": 78.9,
    "fat": 3.6
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نسكويك"
  },
  {
   "key": "off-7613035144699",
@@ -4797,7 +5062,8 @@
    "carbs": 75.2,
    "fat": 2.8
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نسكويك"
  },
  {
   "key": "off-7613036352734",
@@ -4813,7 +5079,8 @@
    "carbs": 45.2,
    "fat": 5.4
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نسكويك"
  },
  {
   "key": "off-7613036009102",
@@ -4829,7 +5096,8 @@
    "carbs": 78.9,
    "fat": 3.6
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نسكويك"
  },
  {
   "key": "off-7613033214004",
@@ -4845,7 +5113,8 @@
    "carbs": 70.7,
    "fat": 4.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نسكويك"
  },
  {
   "key": "off-7613034938688",
@@ -4861,7 +5130,8 @@
    "carbs": 75.2,
    "fat": 2.8
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نسكويك"
  },
  {
   "key": "off-7613036977869",
@@ -4877,7 +5147,8 @@
    "carbs": 78.9,
    "fat": 3.6
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نسكويك"
  },
  {
   "key": "off-7613036668910",
@@ -4893,7 +5164,8 @@
    "carbs": 75.2,
    "fat": 2.1
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نسكويك"
  },
  {
   "key": "off-7613031513031",
@@ -4909,7 +5181,8 @@
    "carbs": 10.2,
    "fat": 2
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نسكويك"
  },
  {
   "key": "off-5900020000576",
@@ -4925,7 +5198,8 @@
    "carbs": 75.8,
    "fat": 1.7
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نسكويك"
  },
  {
   "key": "off-3387390325621",
@@ -4941,7 +5215,8 @@
    "carbs": 75.2,
    "fat": 2.8
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نسكويك"
  },
  {
   "key": "off-7613032562526",
@@ -4957,7 +5232,8 @@
    "carbs": 78.9,
    "fat": 3.6
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نسكويك"
  },
  {
   "key": "off-7613031513611",
@@ -4973,7 +5249,8 @@
    "carbs": 9,
    "fat": 1.7
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نسكويك"
  },
  {
   "key": "off-5900020013491",
@@ -4989,7 +5266,8 @@
    "carbs": 75.1,
    "fat": 3.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نسكويك"
  },
  {
   "key": "off-3033710019526",
@@ -5005,7 +5283,8 @@
    "carbs": 61.9,
    "fat": 25
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيت كات kitkat"
  },
  {
   "key": "off-7613035366749",
@@ -5021,7 +5300,8 @@
    "carbs": 59,
    "fat": 26.8
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيت كات kitkat"
  },
  {
   "key": "off-7613035365896",
@@ -5037,7 +5317,8 @@
    "carbs": 60.5,
    "fat": 26.4
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيت كات kitkat"
  },
  {
   "key": "off-3800020456224",
@@ -5053,7 +5334,8 @@
    "carbs": 58.8,
    "fat": 27
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيت كات kitkat"
  },
  {
   "key": "off-7613035421554",
@@ -5069,7 +5351,8 @@
    "carbs": 59,
    "fat": 26.8
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيت كات kitkat"
  },
  {
   "key": "off-4005500569503",
@@ -5085,7 +5368,8 @@
    "carbs": 58.9,
    "fat": 26.9
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيت كات kitkat"
  },
  {
   "key": "off-40052496",
@@ -5101,7 +5385,8 @@
    "carbs": 60.5,
    "fat": 26.4
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيت كات kitkat"
  },
  {
   "key": "off-8445290039675",
@@ -5117,7 +5402,8 @@
    "carbs": 43,
    "fat": 33.3
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيت كات kitkat"
  },
  {
   "key": "off-3800020483992",
@@ -5133,7 +5419,8 @@
    "carbs": 55,
    "fat": 30
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيت كات kitkat"
  },
  {
   "key": "off-7613033134272",
@@ -5149,7 +5436,8 @@
    "carbs": 58.9,
    "fat": 26.9
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيت كات kitkat"
  },
  {
   "key": "off-3800020432259",
@@ -5165,7 +5453,8 @@
    "carbs": 58.8,
    "fat": 27
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيت كات kitkat"
  },
  {
   "key": "off-7891000248768",
@@ -5181,7 +5470,8 @@
    "carbs": 57.8,
    "fat": 28.9
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيت كات kitkat"
  },
  {
   "key": "off-03424607",
@@ -5197,7 +5487,8 @@
    "carbs": 66.7,
    "fat": 26.2
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيت كات kitkat"
  },
  {
   "key": "off-50294534",
@@ -5213,7 +5504,8 @@
    "carbs": 62.7,
    "fat": 24.4
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيت كات kitkat"
  },
  {
   "key": "off-3023290007150",
@@ -5229,7 +5521,8 @@
    "carbs": 21.2,
    "fat": 8
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيت كات kitkat"
  },
  {
   "key": "off-5060113912640",
@@ -5245,7 +5538,8 @@
    "carbs": 72,
    "fat": 8.8
   },
-  "servings": []
+  "servings": [],
+  "aliases": "جالاكسي"
  },
  {
   "key": "off-5000159553018",
@@ -5261,7 +5555,8 @@
    "carbs": 55,
    "fat": 32.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "جالاكسي"
  },
  {
   "key": "off-5060113912701",
@@ -5277,7 +5572,8 @@
    "carbs": 70,
    "fat": 8.9
   },
-  "servings": []
+  "servings": [],
+  "aliases": "جالاكسي"
  },
  {
   "key": "off-3800029104294",
@@ -5293,7 +5589,8 @@
    "carbs": 37,
    "fat": 14
   },
-  "servings": []
+  "servings": [],
+  "aliases": "جالاكسي"
  },
  {
   "key": "off-5056357905630",
@@ -5309,7 +5606,8 @@
    "carbs": 49,
    "fat": 19
   },
-  "servings": []
+  "servings": [],
+  "aliases": "جالاكسي"
  },
  {
   "key": "off-5000159552998",
@@ -5325,7 +5623,8 @@
    "carbs": 55.1,
    "fat": 32
   },
-  "servings": []
+  "servings": [],
+  "aliases": "جالاكسي"
  },
  {
   "key": "off-5900951027710",
@@ -5341,7 +5640,8 @@
    "carbs": 60.5,
    "fat": 25.7
   },
-  "servings": []
+  "servings": [],
+  "aliases": "جالاكسي"
  },
  {
   "key": "off-5000159022521",
@@ -5357,7 +5657,8 @@
    "carbs": 59.1,
    "fat": 29.1
   },
-  "servings": []
+  "servings": [],
+  "aliases": "جالاكسي"
  },
  {
   "key": "off-3800029104300",
@@ -5373,7 +5674,8 @@
    "carbs": 40,
    "fat": 13
   },
-  "servings": []
+  "servings": [],
+  "aliases": "جالاكسي"
  },
  {
   "key": "off-5000168085913",
@@ -5389,7 +5691,8 @@
    "carbs": 57,
    "fat": 27
   },
-  "servings": []
+  "servings": [],
+  "aliases": "جالاكسي"
  },
  {
   "key": "off-5000159470292",
@@ -5405,7 +5708,8 @@
    "carbs": 55.7,
    "fat": 32.4
   },
-  "servings": []
+  "servings": [],
+  "aliases": "جالاكسي"
  },
  {
   "key": "off-5056357909041",
@@ -5421,7 +5725,8 @@
    "carbs": 55,
    "fat": 37
   },
-  "servings": []
+  "servings": [],
+  "aliases": "جالاكسي"
  },
  {
   "key": "off-5000159550680",
@@ -5437,7 +5742,8 @@
    "carbs": 68,
    "fat": 22
   },
-  "servings": []
+  "servings": [],
+  "aliases": "جالاكسي"
  },
  {
   "key": "off-5000159510691",
@@ -5453,7 +5759,8 @@
    "carbs": 56,
    "fat": 32
   },
-  "servings": []
+  "servings": [],
+  "aliases": "جالاكسي"
  },
  {
   "key": "off-5000159510769",
@@ -5469,7 +5776,8 @@
    "carbs": 56,
    "fat": 32
   },
-  "servings": []
+  "servings": [],
+  "aliases": "جالاكسي"
  },
  {
   "key": "off-5034660021582",
@@ -5485,7 +5793,8 @@
    "carbs": 76,
    "fat": 5.8
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كادبوري"
  },
  {
   "key": "off-7622201824334",
@@ -5501,7 +5810,8 @@
    "carbs": 65,
    "fat": 16
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كادبوري"
  },
  {
   "key": "off-7622201679040",
@@ -5517,7 +5827,8 @@
    "carbs": 65,
    "fat": 25
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كادبوري"
  },
  {
   "key": "off-7622201148782",
@@ -5533,7 +5844,8 @@
    "carbs": 55,
    "fat": 30.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كادبوري"
  },
  {
   "key": "off-7622201678074",
@@ -5549,7 +5861,8 @@
    "carbs": 65,
    "fat": 25
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كادبوري"
  },
  {
   "key": "off-5034660021537",
@@ -5565,7 +5878,8 @@
    "carbs": 76,
    "fat": 5.8
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كادبوري"
  },
  {
   "key": "off-7622210286956",
@@ -5581,7 +5895,8 @@
    "carbs": 57,
    "fat": 30
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كادبوري"
  },
  {
   "key": "off-5034660021667",
@@ -5597,7 +5912,8 @@
    "carbs": 71,
    "fat": 9.3
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كادبوري"
  },
  {
   "key": "off-7622201824198",
@@ -5613,7 +5929,8 @@
    "carbs": 66,
    "fat": 15
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كادبوري"
  },
  {
   "key": "off-0072417152924",
@@ -5629,7 +5946,8 @@
    "carbs": 65,
    "fat": 25
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كادبوري"
  },
  {
   "key": "off-7622300845759",
@@ -5645,7 +5963,8 @@
    "carbs": 57,
    "fat": 30
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كادبوري"
  },
  {
   "key": "off-7622210249661",
@@ -5661,7 +5980,8 @@
    "carbs": 60,
    "fat": 28
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كادبوري"
  },
  {
   "key": "off-7622201734848",
@@ -5677,7 +5997,8 @@
    "carbs": 65,
    "fat": 23
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كادبوري"
  },
  {
   "key": "off-5000201468611",
@@ -5693,7 +6014,8 @@
    "carbs": 74,
    "fat": 17
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كادبوري"
  },
  {
   "key": "off-7622201149574",
@@ -5709,7 +6031,8 @@
    "carbs": 49,
    "fat": 35
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كادبوري"
  },
  {
   "key": "off-5000159461122",
@@ -5725,7 +6048,8 @@
    "carbs": 60.5,
    "fat": 22.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "سنيكرز"
  },
  {
   "key": "off-5000159452540",
@@ -5741,7 +6065,8 @@
    "carbs": 60,
    "fat": 23
   },
-  "servings": []
+  "servings": [],
+  "aliases": "سنيكرز"
  },
  {
   "key": "off-5000159541374",
@@ -5757,7 +6082,8 @@
    "carbs": 34,
    "fat": 20
   },
-  "servings": []
+  "servings": [],
+  "aliases": "سنيكرز"
  },
  {
   "key": "off-5000159382731",
@@ -5773,7 +6099,8 @@
    "carbs": 61,
    "fat": 23
   },
-  "servings": []
+  "servings": [],
+  "aliases": "سنيكرز"
  },
  {
   "key": "off-5000159541336",
@@ -5789,7 +6116,8 @@
    "carbs": 37.3,
    "fat": 21.9
   },
-  "servings": []
+  "servings": [],
+  "aliases": "سنيكرز"
  },
  {
   "key": "off-5900951295072",
@@ -5805,7 +6133,8 @@
    "carbs": 52,
    "fat": 31
   },
-  "servings": []
+  "servings": [],
+  "aliases": "سنيكرز"
  },
  {
   "key": "off-5056357900611",
@@ -5821,7 +6150,8 @@
    "carbs": 20,
    "fat": 44
   },
-  "servings": []
+  "servings": [],
+  "aliases": "سنيكرز"
  },
  {
   "key": "off-5900951251863",
@@ -5837,7 +6167,8 @@
    "carbs": 61,
    "fat": 23
   },
-  "servings": []
+  "servings": [],
+  "aliases": "سنيكرز"
  },
  {
   "key": "off-5000159541312",
@@ -5853,7 +6184,8 @@
    "carbs": 33.8,
    "fat": 19.9
   },
-  "servings": []
+  "servings": [],
+  "aliases": "سنيكرز"
  },
  {
   "key": "off-4607065735302",
@@ -5869,7 +6201,8 @@
    "carbs": 61,
    "fat": 23
   },
-  "servings": []
+  "servings": [],
+  "aliases": "سنيكرز"
  },
  {
   "key": "off-5000159474399",
@@ -5885,7 +6218,8 @@
    "carbs": 60.5,
    "fat": 22.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "سنيكرز"
  },
  {
   "key": "off-5000159436465",
@@ -5901,7 +6235,8 @@
    "carbs": 34.5,
    "fat": 19.4
   },
-  "servings": []
+  "servings": [],
+  "aliases": "سنيكرز"
  },
  {
   "key": "off-5060402908248",
@@ -5917,7 +6252,8 @@
    "carbs": 36.4,
    "fat": 13.1
   },
-  "servings": []
+  "servings": [],
+  "aliases": "سنيكرز"
  },
  {
   "key": "off-5000159509633",
@@ -5933,7 +6269,8 @@
    "carbs": 33,
    "fat": 21
   },
-  "servings": []
+  "servings": [],
+  "aliases": "سنيكرز"
  },
  {
   "key": "off-5000159343961",
@@ -5949,7 +6286,8 @@
    "carbs": 34,
    "fat": 19
   },
-  "servings": []
+  "servings": [],
+  "aliases": "سنيكرز"
  },
  {
   "key": "off-5000159459228",
@@ -5965,7 +6303,8 @@
    "carbs": 64,
    "fat": 23.6
   },
-  "servings": []
+  "servings": [],
+  "aliases": "مارس"
  },
  {
   "key": "off-5000159492737",
@@ -5981,7 +6320,8 @@
    "carbs": 60,
    "fat": 26
   },
-  "servings": []
+  "servings": [],
+  "aliases": "مارس"
  },
  {
   "key": "off-40111216",
@@ -5997,7 +6337,8 @@
    "carbs": 59,
    "fat": 25
   },
-  "servings": []
+  "servings": [],
+  "aliases": "مارس"
  },
  {
   "key": "off-5000159407236",
@@ -6013,7 +6354,8 @@
    "carbs": 70,
    "fat": 16.8
   },
-  "servings": []
+  "servings": [],
+  "aliases": "مارس"
  },
  {
   "key": "off-5000159492966",
@@ -6029,7 +6371,8 @@
    "carbs": 59,
    "fat": 26
   },
-  "servings": []
+  "servings": [],
+  "aliases": "مارس"
  },
  {
   "key": "off-5900951027307",
@@ -6045,7 +6388,8 @@
    "carbs": 60,
    "fat": 23
   },
-  "servings": []
+  "servings": [],
+  "aliases": "مارس"
  },
  {
   "key": "off-5900951028502",
@@ -6061,7 +6405,8 @@
    "carbs": 65,
    "fat": 24
   },
-  "servings": []
+  "servings": [],
+  "aliases": "مارس"
  },
  {
   "key": "off-5000159547642",
@@ -6077,7 +6422,8 @@
    "carbs": 59,
    "fat": 26
   },
-  "servings": []
+  "servings": [],
+  "aliases": "مارس"
  },
  {
   "key": "off-4009900455299",
@@ -6093,7 +6439,8 @@
    "carbs": 89.1,
    "fat": 4.2
   },
-  "servings": []
+  "servings": [],
+  "aliases": "مارس"
  },
  {
   "key": "off-5000159452540",
@@ -6109,7 +6456,8 @@
    "carbs": 60,
    "fat": 23
   },
-  "servings": []
+  "servings": [],
+  "aliases": "مارس"
  },
  {
   "key": "off-5000159437943",
@@ -6125,7 +6473,8 @@
    "carbs": 62,
    "fat": 24
   },
-  "servings": []
+  "servings": [],
+  "aliases": "مارس"
  },
  {
   "key": "off-4011100038653",
@@ -6141,7 +6490,8 @@
    "carbs": 59,
    "fat": 26
   },
-  "servings": []
+  "servings": [],
+  "aliases": "مارس"
  },
  {
   "key": "off-5000159500258",
@@ -6157,7 +6507,8 @@
    "carbs": 62,
    "fat": 24
   },
-  "servings": []
+  "servings": [],
+  "aliases": "مارس"
  },
  {
   "key": "off-5000159528481",
@@ -6173,7 +6524,8 @@
    "carbs": 24,
    "fat": 37
   },
-  "servings": []
+  "servings": [],
+  "aliases": "مارس"
  },
  {
   "key": "off-5000159472005",
@@ -6189,7 +6541,8 @@
    "carbs": 65.3,
    "fat": 23.2
   },
-  "servings": []
+  "servings": [],
+  "aliases": "مارس"
  },
  {
   "key": "off-5000159451666",
@@ -6205,7 +6558,8 @@
    "carbs": 65,
    "fat": 24
   },
-  "servings": []
+  "servings": [],
+  "aliases": "تويكس"
  },
  {
   "key": "off-5000159484695",
@@ -6221,7 +6575,8 @@
    "carbs": 34,
    "fat": 14
   },
-  "servings": []
+  "servings": [],
+  "aliases": "تويكس"
  },
  {
   "key": "off-5900951251795",
@@ -6237,7 +6592,8 @@
    "carbs": 61,
    "fat": 25
   },
-  "servings": []
+  "servings": [],
+  "aliases": "تويكس"
  },
  {
   "key": "off-5000159527279",
@@ -6253,7 +6609,8 @@
    "carbs": 65,
    "fat": 24
   },
-  "servings": []
+  "servings": [],
+  "aliases": "تويكس"
  },
  {
   "key": "off-5000159442572",
@@ -6269,7 +6626,8 @@
    "carbs": 13,
    "fat": 4.7
   },
-  "servings": []
+  "servings": [],
+  "aliases": "تويكس"
  },
  {
   "key": "off-5000159543057",
@@ -6285,7 +6643,8 @@
    "carbs": 65,
    "fat": 24
   },
-  "servings": []
+  "servings": [],
+  "aliases": "تويكس"
  },
  {
   "key": "off-5000159527255",
@@ -6301,7 +6660,8 @@
    "carbs": 65,
    "fat": 24
   },
-  "servings": []
+  "servings": [],
+  "aliases": "تويكس"
  },
  {
   "key": "off-5060402907708",
@@ -6317,7 +6677,8 @@
    "carbs": 64,
    "fat": 20
   },
-  "servings": []
+  "servings": [],
+  "aliases": "تويكس"
  },
  {
   "key": "off-5000159500845",
@@ -6333,7 +6694,8 @@
    "carbs": 62.3,
    "fat": 24.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "تويكس"
  },
  {
   "key": "off-5060402907142",
@@ -6349,7 +6711,8 @@
    "carbs": 75,
    "fat": 10
   },
-  "servings": []
+  "servings": [],
+  "aliases": "تويكس"
  },
  {
   "key": "off-5000159462594",
@@ -6365,7 +6728,8 @@
    "carbs": 65,
    "fat": 24
   },
-  "servings": []
+  "servings": [],
+  "aliases": "تويكس"
  },
  {
   "key": "off-5060402902130",
@@ -6381,7 +6745,8 @@
    "carbs": 7.3,
    "fat": 1.3
   },
-  "servings": []
+  "servings": [],
+  "aliases": "تويكس"
  },
  {
   "key": "off-5056357903421",
@@ -6397,7 +6762,8 @@
    "carbs": 57,
    "fat": 36
   },
-  "servings": []
+  "servings": [],
+  "aliases": "تويكس"
  },
  {
   "key": "off-5000159442008",
@@ -6413,7 +6779,8 @@
    "carbs": 64.5,
    "fat": 24
   },
-  "servings": []
+  "servings": [],
+  "aliases": "تويكس"
  },
  {
   "key": "off-5000159515160",
@@ -6429,7 +6796,8 @@
    "carbs": 60,
    "fat": 24
   },
-  "servings": []
+  "servings": [],
+  "aliases": "تويكس"
  },
  {
   "key": "off-3017620422003",
@@ -6445,7 +6813,8 @@
    "carbs": 57.5,
    "fat": 30.9
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نوتيلا"
  },
  {
   "key": "off-8000500310427",
@@ -6461,7 +6830,8 @@
    "carbs": 64,
    "fat": 24.8
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نوتيلا"
  },
  {
   "key": "off-59032823",
@@ -6477,7 +6847,8 @@
    "carbs": 57.5,
    "fat": 30.9
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نوتيلا"
  },
  {
   "key": "off-8000500310397",
@@ -6493,7 +6864,8 @@
    "carbs": 64,
    "fat": 24.8
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نوتيلا"
  },
  {
   "key": "off-80176800",
@@ -6509,7 +6881,8 @@
    "carbs": 57.5,
    "fat": 30.9
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نوتيلا"
  },
  {
   "key": "off-8000500150245",
@@ -6525,7 +6898,8 @@
    "carbs": 57.5,
    "fat": 30.9
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نوتيلا"
  },
  {
   "key": "off-8000500223369",
@@ -6541,7 +6915,8 @@
    "carbs": 60.7,
    "fat": 27
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نوتيلا"
  },
  {
   "key": "off-8000500217078",
@@ -6557,7 +6932,8 @@
    "carbs": 60.7,
    "fat": 27
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نوتيلا"
  },
  {
   "key": "off-4008400401829",
@@ -6573,7 +6949,8 @@
    "carbs": 57.5,
    "fat": 30.9
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نوتيلا"
  },
  {
   "key": "off-80809180",
@@ -6589,7 +6966,8 @@
    "carbs": 57.5,
    "fat": 30.9
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نوتيلا"
  },
  {
   "key": "off-8000500264850",
@@ -6605,7 +6983,8 @@
    "carbs": 60.7,
    "fat": 27
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نوتيلا"
  },
  {
   "key": "off-8000500359358",
@@ -6621,7 +7000,8 @@
    "carbs": 64,
    "fat": 24.8
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نوتيلا"
  },
  {
   "key": "off-8000500382769",
@@ -6637,7 +7017,8 @@
    "carbs": 63.3,
    "fat": 24.6
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نوتيلا"
  },
  {
   "key": "off-8000500045497",
@@ -6653,7 +7034,8 @@
    "carbs": 61.6,
    "fat": 25.2
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نوتيلا"
  },
  {
   "key": "off-80051671",
@@ -6669,7 +7051,8 @@
    "carbs": 60,
    "fat": 30
   },
-  "servings": []
+  "servings": [],
+  "aliases": "نوتيلا"
  },
  {
   "key": "off-80052760",
@@ -6685,7 +7068,8 @@
    "carbs": 49.5,
    "fat": 37.3
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيندر"
  },
  {
   "key": "off-40084701",
@@ -6701,7 +7085,8 @@
    "carbs": 53.5,
    "fat": 35
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيندر"
  },
  {
   "key": "off-8000500267035",
@@ -6717,7 +7102,8 @@
    "carbs": 56.8,
    "fat": 22.6
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيندر"
  },
  {
   "key": "off-8000500037560",
@@ -6733,7 +7119,8 @@
    "carbs": 49.5,
    "fat": 37.3
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيندر"
  },
  {
   "key": "off-4008400260921",
@@ -6749,7 +7136,8 @@
    "carbs": 54.9,
    "fat": 33.8
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيندر"
  },
  {
   "key": "off-4008400290829",
@@ -6765,7 +7153,8 @@
    "carbs": 37.8,
    "fat": 29.7
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيندر"
  },
  {
   "key": "off-5413548283128",
@@ -6781,7 +7170,8 @@
    "carbs": 52.5,
    "fat": 36.6
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيندر"
  },
  {
   "key": "off-8000500329474",
@@ -6797,7 +7187,8 @@
    "carbs": 64.7,
    "fat": 23.1
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيندر"
  },
  {
   "key": "off-80310891",
@@ -6813,7 +7204,8 @@
    "carbs": 56.5,
    "fat": 32
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيندر"
  },
  {
   "key": "off-40084107",
@@ -6829,7 +7221,8 @@
    "carbs": 52.3,
    "fat": 34.2
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيندر"
  },
  {
   "key": "off-40084077",
@@ -6845,7 +7238,8 @@
    "carbs": 53.5,
    "fat": 35
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيندر"
  },
  {
   "key": "off-4008400828121",
@@ -6861,7 +7255,8 @@
    "carbs": 53.5,
    "fat": 35
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيندر"
  },
  {
   "key": "off-8000500242612",
@@ -6877,7 +7272,8 @@
    "carbs": 52.5,
    "fat": 36.6
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيندر"
  },
  {
   "key": "off-8000500385807",
@@ -6893,7 +7289,8 @@
    "carbs": 59.8,
    "fat": 28.1
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيندر"
  },
  {
   "key": "off-40084794",
@@ -6909,7 +7306,8 @@
    "carbs": 34,
    "fat": 27.9
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيندر"
  },
  {
   "key": "off-5010029227062",
@@ -6925,7 +7323,8 @@
    "carbs": 80,
    "fat": 2.7
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أوريو"
  },
  {
   "key": "off-7622300541491",
@@ -6941,7 +7340,8 @@
    "carbs": 68,
    "fat": 20
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أوريو"
  },
  {
   "key": "off-7622210018922",
@@ -6957,7 +7357,8 @@
    "carbs": 68,
    "fat": 20
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أوريو"
  },
  {
   "key": "off-7622300744663",
@@ -6973,7 +7374,8 @@
    "carbs": 68,
    "fat": 20
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أوريو"
  },
  {
   "key": "off-7622300489427",
@@ -6989,7 +7391,8 @@
    "carbs": 68.3,
    "fat": 25.4
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أوريو"
  },
  {
   "key": "off-8410000810004",
@@ -7005,7 +7408,8 @@
    "carbs": 68,
    "fat": 20
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أوريو"
  },
  {
   "key": "off-7622300165628",
@@ -7021,7 +7425,8 @@
    "carbs": 68,
    "fat": 20
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أوريو"
  },
  {
   "key": "off-7622210137258",
@@ -7037,7 +7442,8 @@
    "carbs": 67,
    "fat": 22
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أوريو"
  },
  {
   "key": "off-7622210765338",
@@ -7053,7 +7459,8 @@
    "carbs": 68,
    "fat": 19
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أوريو"
  },
  {
   "key": "off-7622300315269",
@@ -7069,7 +7476,8 @@
    "carbs": 68,
    "fat": 19
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أوريو"
  },
  {
   "key": "off-7622300617820",
@@ -7085,7 +7493,8 @@
    "carbs": 56,
    "fat": 35
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أوريو"
  },
  {
   "key": "off-7622210148483",
@@ -7101,7 +7510,8 @@
    "carbs": 66.9,
    "fat": 22.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أوريو"
  },
  {
   "key": "off-7622210638021",
@@ -7117,7 +7527,8 @@
    "carbs": 64,
    "fat": 24
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أوريو"
  },
  {
   "key": "off-7622300753320",
@@ -7133,7 +7544,8 @@
    "carbs": 68,
    "fat": 22
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أوريو"
  },
  {
   "key": "off-7622201120931",
@@ -7149,7 +7561,8 @@
    "carbs": 59,
    "fat": 34
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أوريو"
  },
  {
   "key": "off-3033491147067",
@@ -7165,7 +7578,8 @@
    "carbs": 4.4,
    "fat": 3.4
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أكتيفيا"
  },
  {
   "key": "off-3033491350795",
@@ -7181,7 +7595,8 @@
    "carbs": 12.6,
    "fat": 3.1
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أكتيفيا"
  },
  {
   "key": "off-3033491351082",
@@ -7197,7 +7612,8 @@
    "carbs": 12.6,
    "fat": 3.1
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أكتيفيا"
  },
  {
   "key": "off-3033491235375",
@@ -7213,7 +7629,8 @@
    "carbs": 13.4,
    "fat": 3.7
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أكتيفيا"
  },
  {
   "key": "off-3033491139444",
@@ -7229,7 +7646,8 @@
    "carbs": 4.4,
    "fat": 3.4
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أكتيفيا"
  },
  {
   "key": "off-3033491350863",
@@ -7245,7 +7663,8 @@
    "carbs": 12.6,
    "fat": 3.1
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أكتيفيا"
  },
  {
   "key": "off-3033490545185",
@@ -7261,7 +7680,8 @@
    "carbs": 5.8,
    "fat": 0.1
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أكتيفيا"
  },
  {
   "key": "off-3033491325250",
@@ -7277,7 +7697,8 @@
    "carbs": 11.8,
    "fat": 2.8
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أكتيفيا"
  },
  {
   "key": "off-3033491402807",
@@ -7293,7 +7714,8 @@
    "carbs": 15.7,
    "fat": 2.6
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أكتيفيا"
  },
  {
   "key": "off-59467199",
@@ -7309,7 +7731,8 @@
    "carbs": 3.9,
    "fat": 3.4
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أكتيفيا"
  },
  {
   "key": "off-3033490699833",
@@ -7325,7 +7748,8 @@
    "carbs": 5.4,
    "fat": 3.4
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أكتيفيا"
  },
  {
   "key": "off-5060360506128",
@@ -7341,7 +7765,8 @@
    "carbs": 12.1,
    "fat": 2.8
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أكتيفيا"
  },
  {
   "key": "off-3033491325694",
@@ -7357,7 +7782,8 @@
    "carbs": 11.1,
    "fat": 3.3
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أكتيفيا"
  },
  {
   "key": "off-3033491325243",
@@ -7373,7 +7799,8 @@
    "carbs": 11.4,
    "fat": 3.4
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أكتيفيا"
  },
  {
   "key": "off-3033491325366",
@@ -7389,7 +7816,8 @@
    "carbs": 11.5,
    "fat": 3.3
   },
-  "servings": []
+  "servings": [],
+  "aliases": "أكتيفيا"
  },
  {
   "key": "off-3068320123264",
@@ -7405,7 +7833,8 @@
    "carbs": 0,
    "fat": 0
   },
-  "servings": []
+  "servings": [],
+  "aliases": "دانون"
  },
  {
   "key": "off-3033491704642",
@@ -7421,7 +7850,8 @@
    "carbs": 3.9,
    "fat": 0.2
   },
-  "servings": []
+  "servings": [],
+  "aliases": "دانون"
  },
  {
   "key": "off-5411188103387",
@@ -7437,7 +7867,8 @@
    "carbs": 7.5,
    "fat": 2.2
   },
-  "servings": []
+  "servings": [],
+  "aliases": "دانون"
  },
  {
   "key": "off-3033491588136",
@@ -7453,7 +7884,8 @@
    "carbs": 9.1,
    "fat": 1.2
   },
-  "servings": []
+  "servings": [],
+  "aliases": "دانون"
  },
  {
   "key": "off-5411188118121",
@@ -7469,7 +7901,8 @@
    "carbs": 0,
    "fat": 2.3
   },
-  "servings": []
+  "servings": [],
+  "aliases": "دانون"
  },
  {
   "key": "off-3033491482953",
@@ -7485,7 +7918,8 @@
    "carbs": 3.6,
    "fat": 0.1
   },
-  "servings": []
+  "servings": [],
+  "aliases": "دانون"
  },
  {
   "key": "off-3033491270864",
@@ -7501,7 +7935,8 @@
    "carbs": 3.9,
    "fat": 0.2
   },
-  "servings": []
+  "servings": [],
+  "aliases": "دانون"
  },
  {
   "key": "off-5411188115472",
@@ -7517,7 +7952,8 @@
    "carbs": 2.5,
    "fat": 1.8
   },
-  "servings": []
+  "servings": [],
+  "aliases": "دانون"
  },
  {
   "key": "off-3033491147067",
@@ -7533,7 +7969,8 @@
    "carbs": 4.4,
    "fat": 3.4
   },
-  "servings": []
+  "servings": [],
+  "aliases": "دانون"
  },
  {
   "key": "off-5411188124702",
@@ -7549,7 +7986,8 @@
    "carbs": 5.8,
    "fat": 1.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "دانون"
  },
  {
   "key": "off-3033490165000",
@@ -7565,7 +8003,8 @@
    "carbs": 3.7,
    "fat": 10.2
   },
-  "servings": []
+  "servings": [],
+  "aliases": "دانون"
  },
  {
   "key": "off-5411188099154",
@@ -7581,7 +8020,8 @@
    "carbs": 2.1,
    "fat": 2.3
   },
-  "servings": []
+  "servings": [],
+  "aliases": "دانون"
  },
  {
   "key": "off-3033491350795",
@@ -7597,7 +8037,8 @@
    "carbs": 12.6,
    "fat": 3.1
   },
-  "servings": []
+  "servings": [],
+  "aliases": "دانون"
  },
  {
   "key": "off-3033491485756",
@@ -7613,7 +8054,8 @@
    "carbs": 5.4,
    "fat": 0.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "دانون"
  },
  {
   "key": "off-3033491351082",
@@ -7629,7 +8071,8 @@
    "carbs": 12.6,
    "fat": 3.1
   },
-  "servings": []
+  "servings": [],
+  "aliases": "دانون"
  },
  {
   "key": "off-3228021170039",
@@ -7645,7 +8088,8 @@
    "carbs": 0,
    "fat": 21
   },
-  "servings": []
+  "servings": [],
+  "aliases": "بريزيدون president"
  },
  {
   "key": "off-3228021170022",
@@ -7661,7 +8105,8 @@
    "carbs": 0.5,
    "fat": 29
   },
-  "servings": []
+  "servings": [],
+  "aliases": "بريزيدون president"
  },
  {
   "key": "off-3228021170053",
@@ -7677,7 +8122,8 @@
    "carbs": 0.5,
    "fat": 23
   },
-  "servings": []
+  "servings": [],
+  "aliases": "بريزيدون president"
  },
  {
   "key": "off-3228020215106",
@@ -7693,7 +8139,8 @@
    "carbs": 1,
    "fat": 80
   },
-  "servings": []
+  "servings": [],
+  "aliases": "بريزيدون president"
  },
  {
   "key": "off-3228020215090",
@@ -7709,7 +8156,8 @@
    "carbs": 0.5,
    "fat": 82
   },
-  "servings": []
+  "servings": [],
+  "aliases": "بريزيدون president"
  },
  {
   "key": "off-3228021170046",
@@ -7725,7 +8173,8 @@
    "carbs": 1,
    "fat": 29
   },
-  "servings": []
+  "servings": [],
+  "aliases": "بريزيدون president"
  },
  {
   "key": "off-3155250366974",
@@ -7741,7 +8190,8 @@
    "carbs": 1,
    "fat": 80
   },
-  "servings": []
+  "servings": [],
+  "aliases": "بريزيدون president"
  },
  {
   "key": "off-3228023170068",
@@ -7757,7 +8207,8 @@
    "carbs": 0.5,
    "fat": 21
   },
-  "servings": []
+  "servings": [],
+  "aliases": "بريزيدون president"
  },
  {
   "key": "off-3228022000298",
@@ -7773,7 +8224,8 @@
    "carbs": 3,
    "fat": 40
   },
-  "servings": []
+  "servings": [],
+  "aliases": "بريزيدون president"
  },
  {
   "key": "off-3155251208082",
@@ -7789,7 +8241,8 @@
    "carbs": 1,
    "fat": 82
   },
-  "servings": []
+  "servings": [],
+  "aliases": "بريزيدون president"
  },
  {
   "key": "off-3032220061100",
@@ -7805,7 +8258,8 @@
    "carbs": 4.5,
    "fat": 17
   },
-  "servings": []
+  "servings": [],
+  "aliases": "بريزيدون president"
  },
  {
   "key": "off-3228023910077",
@@ -7821,7 +8275,8 @@
    "carbs": 1,
    "fat": 29
   },
-  "servings": []
+  "servings": [],
+  "aliases": "بريزيدون president"
  },
  {
   "key": "off-3228024930050",
@@ -7837,7 +8292,8 @@
    "carbs": 0.5,
    "fat": 29
   },
-  "servings": []
+  "servings": [],
+  "aliases": "بريزيدون president"
  },
  {
   "key": "off-3155253007737",
@@ -7853,7 +8309,8 @@
    "carbs": 1.5,
    "fat": 70
   },
-  "servings": []
+  "servings": [],
+  "aliases": "بريزيدون president"
  },
  {
   "key": "off-3228020481150",
@@ -7869,7 +8326,8 @@
    "carbs": 0.5,
    "fat": 82
   },
-  "servings": []
+  "servings": [],
+  "aliases": "بريزيدون president"
  },
  {
   "key": "off-3073781192186",
@@ -7885,7 +8343,8 @@
    "carbs": 6,
    "fat": 18
   },
-  "servings": []
+  "servings": [],
+  "aliases": "لافاش كيري البقرة الضاحكة laughing cow"
  },
  {
   "key": "off-3073781192254",
@@ -7901,7 +8360,8 @@
    "carbs": 6,
    "fat": 18
   },
-  "servings": []
+  "servings": [],
+  "aliases": "لافاش كيري البقرة الضاحكة laughing cow"
  },
  {
   "key": "off-3073781149913",
@@ -7917,7 +8377,8 @@
    "carbs": 4.5,
    "fat": 17.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "لافاش كيري البقرة الضاحكة laughing cow"
  },
  {
   "key": "off-3073781192308",
@@ -7933,7 +8394,8 @@
    "carbs": 6,
    "fat": 17.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "لافاش كيري البقرة الضاحكة laughing cow"
  },
  {
   "key": "off-3073781192278",
@@ -7949,7 +8411,8 @@
    "carbs": 4.5,
    "fat": 17.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "لافاش كيري البقرة الضاحكة laughing cow"
  },
  {
   "key": "off-3073781175011",
@@ -7965,7 +8428,8 @@
    "carbs": 6,
    "fat": 7
   },
-  "servings": []
+  "servings": [],
+  "aliases": "لافاش كيري البقرة الضاحكة laughing cow"
  },
  {
   "key": "off-3073781110180",
@@ -7981,7 +8445,8 @@
    "carbs": 5.5,
    "fat": 16.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "لافاش كيري البقرة الضاحكة laughing cow"
  },
  {
   "key": "off-3073781099348",
@@ -7997,7 +8462,8 @@
    "carbs": 6,
    "fat": 17
   },
-  "servings": []
+  "servings": [],
+  "aliases": "لافاش كيري البقرة الضاحكة laughing cow"
  },
  {
   "key": "off-3073781192339",
@@ -8013,7 +8479,8 @@
    "carbs": 11.5,
    "fat": 17.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "لافاش كيري البقرة الضاحكة laughing cow"
  },
  {
   "key": "off-3073781099324",
@@ -8029,7 +8496,8 @@
    "carbs": 6,
    "fat": 17
   },
-  "servings": []
+  "servings": [],
+  "aliases": "لافاش كيري البقرة الضاحكة laughing cow"
  },
  {
   "key": "off-3073781071559",
@@ -8045,7 +8513,8 @@
    "carbs": 6.5,
    "fat": 18.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "لافاش كيري البقرة الضاحكة laughing cow"
  },
  {
   "key": "off-3073781154467",
@@ -8061,7 +8530,8 @@
    "carbs": 6.5,
    "fat": 17
   },
-  "servings": []
+  "servings": [],
+  "aliases": "لافاش كيري البقرة الضاحكة laughing cow"
  },
  {
   "key": "off-3073780897440",
@@ -8077,7 +8547,8 @@
    "carbs": 6,
    "fat": 7
   },
-  "servings": []
+  "servings": [],
+  "aliases": "لافاش كيري البقرة الضاحكة laughing cow"
  },
  {
   "key": "off-3073781070279",
@@ -8093,7 +8564,8 @@
    "carbs": 6.5,
    "fat": 18.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "لافاش كيري البقرة الضاحكة laughing cow"
  },
  {
   "key": "off-3073781166798",
@@ -8109,7 +8581,8 @@
    "carbs": 5.5,
    "fat": 22
   },
-  "servings": []
+  "servings": [],
+  "aliases": "لافاش كيري البقرة الضاحكة laughing cow"
  },
  {
   "key": "off-3073781131888",
@@ -8125,7 +8598,8 @@
    "carbs": 2,
    "fat": 29
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيري"
  },
  {
   "key": "off-3073781131925",
@@ -8141,7 +8615,8 @@
    "carbs": 2,
    "fat": 29
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيري"
  },
  {
   "key": "off-3073781131963",
@@ -8157,7 +8632,8 @@
    "carbs": 2,
    "fat": 29
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيري"
  },
  {
   "key": "off-3073781115345",
@@ -8173,7 +8649,8 @@
    "carbs": 2,
    "fat": 29
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيري"
  },
  {
   "key": "off-3073780968997",
@@ -8189,7 +8666,8 @@
    "carbs": 22.5,
    "fat": 18
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيري"
  },
  {
   "key": "off-6111028001024",
@@ -8205,7 +8683,8 @@
    "carbs": 3.8,
    "fat": 20
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيري"
  },
  {
   "key": "off-3073781126877",
@@ -8221,7 +8700,8 @@
    "carbs": 2,
    "fat": 29
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيري"
  },
  {
   "key": "off-3073781176650",
@@ -8237,7 +8717,8 @@
    "carbs": 2,
    "fat": 29
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيري"
  },
  {
   "key": "off-3073780969000",
@@ -8253,7 +8734,8 @@
    "carbs": 22.5,
    "fat": 18
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيري"
  },
  {
   "key": "off-3073781170269",
@@ -8269,7 +8751,8 @@
    "carbs": 2.5,
    "fat": 28
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيري"
  },
  {
   "key": "off-3073781115376",
@@ -8285,7 +8768,8 @@
    "carbs": 2,
    "fat": 29
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيري"
  },
  {
   "key": "off-3073781035438",
@@ -8301,7 +8785,8 @@
    "carbs": 2,
    "fat": 33
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيري"
  },
  {
   "key": "off-3073780839631",
@@ -8317,7 +8802,8 @@
    "carbs": 2.5,
    "fat": 29
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيري"
  },
  {
   "key": "off-3073780972703",
@@ -8333,7 +8819,8 @@
    "carbs": 2,
    "fat": 29.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيري"
  },
  {
   "key": "off-3073781115840",
@@ -8349,7 +8836,8 @@
    "carbs": 2,
    "fat": 29
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيري"
  },
  {
   "key": "off-87157215",
@@ -8365,7 +8853,8 @@
    "carbs": 23.2,
    "fat": 0.1
   },
-  "servings": []
+  "servings": [],
+  "aliases": "هاينز"
  },
  {
   "key": "off-8715700407760",
@@ -8381,7 +8870,8 @@
    "carbs": 25.3,
    "fat": 0.1
   },
-  "servings": []
+  "servings": [],
+  "aliases": "هاينز"
  },
  {
   "key": "off-87157277",
@@ -8397,7 +8887,8 @@
    "carbs": 23.2,
    "fat": 0.1
   },
-  "servings": []
+  "servings": [],
+  "aliases": "هاينز"
  },
  {
   "key": "off-8715700423913",
@@ -8413,7 +8904,8 @@
    "carbs": 12,
    "fat": 0.1
   },
-  "servings": []
+  "servings": [],
+  "aliases": "هاينز"
  },
  {
   "key": "off-87157239",
@@ -8429,7 +8921,8 @@
    "carbs": 23.2,
    "fat": 0.1
   },
-  "servings": []
+  "servings": [],
+  "aliases": "هاينز"
  },
  {
   "key": "off-87157154",
@@ -8445,7 +8938,8 @@
    "carbs": 34,
    "fat": 0.2
   },
-  "servings": []
+  "servings": [],
+  "aliases": "هاينز"
  },
  {
   "key": "off-8715700421957",
@@ -8461,7 +8955,8 @@
    "carbs": 3,
    "fat": 70
   },
-  "servings": []
+  "servings": [],
+  "aliases": "هاينز"
  },
  {
   "key": "off-5000157076410",
@@ -8477,7 +8972,8 @@
    "carbs": 3.1,
    "fat": 72
   },
-  "servings": []
+  "servings": [],
+  "aliases": "هاينز"
  },
  {
   "key": "off-8715700421469",
@@ -8493,7 +8989,8 @@
    "carbs": 23.2,
    "fat": 0.1
   },
-  "servings": []
+  "servings": [],
+  "aliases": "هاينز"
  },
  {
   "key": "off-8715700423951",
@@ -8509,7 +9006,8 @@
    "carbs": 12,
    "fat": 0.1
   },
-  "servings": []
+  "servings": [],
+  "aliases": "هاينز"
  },
  {
   "key": "off-87157857",
@@ -8525,7 +9023,8 @@
    "carbs": 3,
    "fat": 70
   },
-  "servings": []
+  "servings": [],
+  "aliases": "هاينز"
  },
  {
   "key": "off-8715700423869",
@@ -8541,7 +9040,8 @@
    "carbs": 12,
    "fat": 0.1
   },
-  "servings": []
+  "servings": [],
+  "aliases": "هاينز"
  },
  {
   "key": "off-5000157024886",
@@ -8557,7 +9057,8 @@
    "carbs": 15.5,
    "fat": 0.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "هاينز"
  },
  {
   "key": "off-5000157026231",
@@ -8573,7 +9074,8 @@
    "carbs": 13.2,
    "fat": 0.2
   },
-  "servings": []
+  "servings": [],
+  "aliases": "هاينز"
  },
  {
   "key": "off-5000157024855",
@@ -8589,7 +9091,8 @@
    "carbs": 15.5,
    "fat": 0.4
   },
-  "servings": []
+  "servings": [],
+  "aliases": "هاينز"
  },
  {
   "key": "off-8718114724485",
@@ -8605,7 +9108,8 @@
    "carbs": 1.4,
    "fat": 79
   },
-  "servings": []
+  "servings": [],
+  "aliases": "هيلمانز"
  },
  {
   "key": "off-8711200389186",
@@ -8621,7 +9125,8 @@
    "carbs": 3.9,
    "fat": 72
   },
-  "servings": []
+  "servings": [],
+  "aliases": "هيلمانز"
  },
  {
   "key": "off-8722700479451",
@@ -8637,7 +9142,8 @@
    "carbs": 6,
    "fat": 26.7
   },
-  "servings": []
+  "servings": [],
+  "aliases": "هيلمانز"
  },
  {
   "key": "off-8410127050819",
@@ -8653,7 +9159,8 @@
    "carbs": 2.2,
    "fat": 61
   },
-  "servings": []
+  "servings": [],
+  "aliases": "هيلمانز"
  },
  {
   "key": "off-8720182088376",
@@ -8669,7 +9176,8 @@
    "carbs": 2.9,
    "fat": 73
   },
-  "servings": []
+  "servings": [],
+  "aliases": "هيلمانز"
  },
  {
   "key": "off-8711200344130",
@@ -8685,7 +9193,8 @@
    "carbs": 20,
    "fat": 0.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "هيلمانز"
  },
  {
   "key": "off-5000184321842",
@@ -8701,7 +9210,8 @@
    "carbs": 0.5,
    "fat": 11
   },
-  "servings": []
+  "servings": [],
+  "aliases": "هيلمانز"
  },
  {
   "key": "off-8720182592446",
@@ -8717,7 +9227,8 @@
    "carbs": 1.4,
    "fat": 79
   },
-  "servings": []
+  "servings": [],
+  "aliases": "هيلمانز"
  },
  {
   "key": "off-8712566166480",
@@ -8733,7 +9244,8 @@
    "carbs": 23,
    "fat": 0.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "هيلمانز"
  },
  {
   "key": "off-8722700136231",
@@ -8749,7 +9261,8 @@
    "carbs": 2.3,
    "fat": 63
   },
-  "servings": []
+  "servings": [],
+  "aliases": "هيلمانز"
  },
  {
   "key": "off-8711200408153",
@@ -8765,7 +9278,8 @@
    "carbs": 3.7,
    "fat": 67
   },
-  "servings": []
+  "servings": [],
+  "aliases": "هيلمانز"
  },
  {
   "key": "off-8711200398461",
@@ -8781,7 +9295,8 @@
    "carbs": 24,
    "fat": 0.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "هيلمانز"
  },
  {
   "key": "off-7794000960091",
@@ -8797,7 +9312,8 @@
    "carbs": 6.7,
    "fat": 30.8
   },
-  "servings": []
+  "servings": [],
+  "aliases": "هيلمانز"
  },
  {
   "key": "off-8720182179906",
@@ -8813,7 +9329,8 @@
    "carbs": 11,
    "fat": 21
   },
-  "servings": []
+  "servings": [],
+  "aliases": "هيلمانز"
  },
  {
   "key": "off-8711200446018",
@@ -8829,7 +9346,8 @@
    "carbs": 1.6,
    "fat": 77
   },
-  "servings": []
+  "servings": [],
+  "aliases": "هيلمانز"
  },
  {
   "key": "off-3168930010265",
@@ -8845,7 +9363,8 @@
    "carbs": 57,
    "fat": 19
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كويكر"
  },
  {
   "key": "off-3168930009078",
@@ -8861,7 +9380,8 @@
    "carbs": 60,
    "fat": 8
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كويكر"
  },
  {
   "key": "off-3168930010906",
@@ -8877,7 +9397,8 @@
    "carbs": 57,
    "fat": 19
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كويكر"
  },
  {
   "key": "off-3168930009795",
@@ -8893,7 +9414,8 @@
    "carbs": 62,
    "fat": 11
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كويكر"
  },
  {
   "key": "off-5000108022152",
@@ -8909,7 +9431,8 @@
    "carbs": 60,
    "fat": 8
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كويكر"
  },
  {
   "key": "off-3168930010890",
@@ -8925,7 +9448,8 @@
    "carbs": 59,
    "fat": 19
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كويكر"
  },
  {
   "key": "off-3168930009801",
@@ -8941,7 +9465,8 @@
    "carbs": 65,
    "fat": 7.9
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كويكر"
  },
  {
   "key": "off-5000108030553",
@@ -8957,7 +9482,8 @@
    "carbs": 67,
    "fat": 6.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كويكر"
  },
  {
   "key": "off-5000108280941",
@@ -8973,7 +9499,8 @@
    "carbs": 59,
    "fat": 7.7
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كويكر"
  },
  {
   "key": "off-5000108030904",
@@ -8989,7 +9516,8 @@
    "carbs": 60,
    "fat": 8
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كويكر"
  },
  {
   "key": "off-5000108478119",
@@ -9005,7 +9533,8 @@
    "carbs": 60,
    "fat": 8
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كويكر"
  },
  {
   "key": "off-3168930009788",
@@ -9021,7 +9550,8 @@
    "carbs": 62,
    "fat": 16
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كويكر"
  },
  {
   "key": "off-8710100126402",
@@ -9037,7 +9567,8 @@
    "carbs": 57,
    "fat": 19
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كويكر"
  },
  {
   "key": "off-8710100127300",
@@ -9053,7 +9584,8 @@
    "carbs": 57.1,
    "fat": 19.3
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كويكر"
  },
  {
   "key": "off-3168930158158",
@@ -9069,7 +9601,8 @@
    "carbs": 63,
    "fat": 18
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كويكر"
  },
  {
   "key": "off-3159470000120",
@@ -9085,7 +9618,8 @@
    "carbs": 84,
    "fat": 0.9
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيلوجز kelloggs"
  },
  {
   "key": "off-5053990167807",
@@ -9101,7 +9635,8 @@
    "carbs": 56,
    "fat": 31
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيلوجز kelloggs"
  },
  {
   "key": "off-3159470001424",
@@ -9117,7 +9652,8 @@
    "carbs": 48,
    "fat": 3.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيلوجز kelloggs"
  },
  {
   "key": "off-3159470005071",
@@ -9133,7 +9669,8 @@
    "carbs": 57,
    "fat": 25
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيلوجز kelloggs"
  },
  {
   "key": "off-5053827199568",
@@ -9149,7 +9686,8 @@
    "carbs": 71,
    "fat": 15
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيلوجز kelloggs"
  },
  {
   "key": "off-5053827199667",
@@ -9165,7 +9703,8 @@
    "carbs": 71,
    "fat": 15
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيلوجز kelloggs"
  },
  {
   "key": "off-5050083739811",
@@ -9181,7 +9720,8 @@
    "carbs": 79,
    "fat": 1.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيلوجز kelloggs"
  },
  {
   "key": "off-5000127049307",
@@ -9197,7 +9737,8 @@
    "carbs": 83.3,
    "fat": 4.7
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيلوجز kelloggs"
  },
  {
   "key": "off-5050083296079",
@@ -9213,7 +9754,8 @@
    "carbs": 84,
    "fat": 1.3
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيلوجز kelloggs"
  },
  {
   "key": "off-5059319004051",
@@ -9229,7 +9771,8 @@
    "carbs": 69,
    "fat": 6
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيلوجز kelloggs"
  },
  {
   "key": "off-5053827101424",
@@ -9245,7 +9788,8 @@
    "carbs": 81,
    "fat": 1.6
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيلوجز kelloggs"
  },
  {
   "key": "off-5053827110983",
@@ -9261,7 +9805,8 @@
    "carbs": 85,
    "fat": 1.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيلوجز kelloggs"
  },
  {
   "key": "off-5059319025711",
@@ -9277,7 +9822,8 @@
    "carbs": 81,
    "fat": 6.1
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيلوجز kelloggs"
  },
  {
   "key": "off-5053827111027",
@@ -9293,7 +9839,8 @@
    "carbs": 87,
    "fat": 0.6
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيلوجز kelloggs"
  },
  {
   "key": "off-5053827110679",
@@ -9309,7 +9856,8 @@
    "carbs": 79,
    "fat": 3
   },
-  "servings": []
+  "servings": [],
+  "aliases": "كيلوجز kelloggs"
  },
  {
   "key": "off-0089686120073",
@@ -9325,7 +9873,8 @@
    "carbs": 63,
    "fat": 18
   },
-  "servings": []
+  "servings": [],
+  "aliases": "اندومي إندومي"
  },
  {
   "key": "off-0089686170108",
@@ -9341,7 +9890,8 @@
    "carbs": 66.9,
    "fat": 15.3
   },
-  "servings": []
+  "servings": [],
+  "aliases": "اندومي إندومي"
  },
  {
   "key": "off-0089686120110",
@@ -9357,7 +9907,8 @@
    "carbs": 45,
    "fat": 12
   },
-  "servings": []
+  "servings": [],
+  "aliases": "اندومي إندومي"
  },
  {
   "key": "off-8994963002800",
@@ -9373,7 +9924,8 @@
    "carbs": 61.2,
    "fat": 21.2
   },
-  "servings": []
+  "servings": [],
+  "aliases": "اندومي إندومي"
  },
  {
   "key": "off-8606108584187",
@@ -9389,7 +9941,8 @@
    "carbs": 61,
    "fat": 21
   },
-  "servings": []
+  "servings": [],
+  "aliases": "اندومي إندومي"
  },
  {
   "key": "off-0089686120714",
@@ -9405,7 +9958,8 @@
    "carbs": 61.2,
    "fat": 21.2
   },
-  "servings": []
+  "servings": [],
+  "aliases": "اندومي إندومي"
  },
  {
   "key": "off-0089686170269",
@@ -9421,7 +9975,8 @@
    "carbs": 61,
    "fat": 21
   },
-  "servings": []
+  "servings": [],
+  "aliases": "اندومي إندومي"
  },
  {
   "key": "off-89686170726",
@@ -9437,7 +9992,8 @@
    "carbs": 61.2,
    "fat": 20
   },
-  "servings": []
+  "servings": [],
+  "aliases": "اندومي إندومي"
  },
  {
   "key": "off-0089686170924",
@@ -9453,7 +10009,8 @@
    "carbs": 29.4,
    "fat": 10.1
   },
-  "servings": []
+  "servings": [],
+  "aliases": "اندومي إندومي"
  },
  {
   "key": "off-0089686130195",
@@ -9469,7 +10026,8 @@
    "carbs": 60,
    "fat": 20
   },
-  "servings": []
+  "servings": [],
+  "aliases": "اندومي إندومي"
  },
  {
   "key": "off-0089686120196",
@@ -9485,7 +10043,8 @@
    "carbs": 60,
    "fat": 21
   },
-  "servings": []
+  "servings": [],
+  "aliases": "اندومي إندومي"
  },
  {
   "key": "off-8994963002824",
@@ -9501,7 +10060,8 @@
    "carbs": 64.1,
    "fat": 17.5
   },
-  "servings": []
+  "servings": [],
+  "aliases": "اندومي إندومي"
  },
  {
   "key": "off-0089686170115",
@@ -9517,7 +10077,8 @@
    "carbs": 63,
    "fat": 18
   },
-  "servings": []
+  "servings": [],
+  "aliases": "اندومي إندومي"
  },
  {
   "key": "off-0089686120134",
@@ -9533,7 +10094,8 @@
    "carbs": 64,
    "fat": 18
   },
-  "servings": []
+  "servings": [],
+  "aliases": "اندومي إندومي"
  },
  {
   "key": "off-0089686122015",
@@ -9549,6 +10111,7 @@
    "carbs": 59,
    "fat": 21
   },
-  "servings": []
+  "servings": [],
+  "aliases": "اندومي إندومي"
  }
 ]

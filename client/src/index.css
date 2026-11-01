@@ -101,3 +101,8 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* The search box has its own clear button; hide the browser's (it doubles up, on the left for Arabic text). */
+input[type='search']::-webkit-search-cancel-button {
+  appearance: none;
+}

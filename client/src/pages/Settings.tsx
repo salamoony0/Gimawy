@@ -5,7 +5,7 @@ import { clsx } from 'clsx';
 import { Calculator, Download, KeyRound, LogOut, MonitorSmartphone, ShieldCheck, Sparkles, Trash } from 'lucide-react';
 import { ACTIVITY, ageFrom } from '../lib/energy';
 import { api, type User } from '../lib/api';
-import { useMe } from '../lib/format';
+import { cleanDecimal, useMe } from '../lib/format';
 import { workoutStore } from '../lib/activeWorkout';
 import { clearApiCache, setOutboxOwner } from '../lib/offline';
 import { PageHeader } from '../components/Layout';
@@ -86,7 +86,7 @@ export default function Settings() {
   const num = (k: keyof Form, label: string, hint?: string) => (
     <Field label={label} hint={hint}>
       {(id) => (
-        <Input id={id} inputMode="numeric" value={f[k]} onChange={(e) => setF({ ...f, [k]: e.target.value.replace(/[^\d.]/g, '') })} className="num" />
+        <Input id={id} inputMode="numeric" value={f[k]} onChange={(e) => setF({ ...f, [k]: cleanDecimal(e.target.value) })} className="num" />
       )}
     </Field>
   );
