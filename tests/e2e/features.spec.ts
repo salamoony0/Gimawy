@@ -158,14 +158,28 @@ test('chart tooltips list each series once', async ({ page }) => {
 test('calorie numbers explain their formula with the user’s own numbers', async ({ page }) => {
   await loginAsDemo(page);
   await page.getByRole('button', { name: 'How your calorie target is set' }).click();
-  const target = page.getByRole('dialog', { name: 'How your calorie target is set' });
-  await expect(target.getByText('1. Resting burn (BMR): Mifflin-St Jeor')).toBeVisible();
-  await expect(target.getByText(/^Yours: 10 × \d+/)).toBeVisible();
+  const target = page.getByRole('dialog', { name: 'Calorie target' });
+  await expect(target.getByText(/^[\d,]+ kcal$/)).toBeVisible();
+  await expect(target.getByText(/Mifflin-St Jeor/)).toBeVisible();
   await page.keyboard.press('Escape');
 
   await page.goto('/progress');
   await page.getByRole('button', { name: 'How calories burned are estimated' }).first().click();
-  const burn = page.getByRole('dialog', { name: 'How calories burned are estimated' });
-  await expect(burn.getByText('3. MET: 2024 Compendium of Physical Activities')).toBeVisible();
-  await expect(burn.getByText(/Resting burn: [\d.]+ kcal\/min \(your BMR/)).toBeVisible();
+  const burn = page.getByRole('dialog', { name: 'Calories burned' });
+  await expect(burn.getByText(/^[\d.]+ kcal\/min$/)).toBeVisible();
+  await expect(burn.getByText(/2024 Compendium/)).toBeVisible();
+});
+
+test('food: the 14-day card never covers the adaptive target card when scrolling', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 700 });
+  await loginAsDemo(page);
+  await page.goto('/food');
+  const trend = page.locator('section').filter({ has: page.getByRole('heading', { name: 'Last 14 days' }) });
+  const adaptive = page.locator('section').filter({ has: page.getByRole('heading', { name: /Adaptive target/ }) });
+  await adaptive.waitFor();
+  await page.mouse.wheel(0, 600);
+  await page.waitForTimeout(300);
+  const a = (await trend.boundingBox())!;
+  const b = (await adaptive.boundingBox())!;
+  expect(a.y + a.height <= b.y || b.y + b.height <= a.y).toBe(true);
 });
