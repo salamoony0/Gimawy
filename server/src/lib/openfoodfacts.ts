@@ -18,7 +18,7 @@ type OffProduct = {
   product_name?: string;
   product_name_en?: string;
   generic_name?: string;
-  brands?: string;
+  brands?: string | string[];
   serving_size?: string;
   serving_quantity?: number | string;
   nutriments?: OffNutriments;
@@ -47,7 +47,7 @@ export function mapProduct(code: string, p: OffProduct): Product | null {
   return {
     code,
     name: name.slice(0, 120),
-    brand: p.brands?.split(',')[0]?.trim() || null,
+    brand: (Array.isArray(p.brands) ? p.brands[0] : p.brands?.split(',')[0])?.trim() || null,
     per100g,
     serving: grams && grams > 0 ? { label: (p.serving_size || `${grams} g`).slice(0, 40), grams } : null,
   };
@@ -73,4 +73,43 @@ export async function lookupBarcode(code: string): Promise<Product | null> {
   if (cache.size > 1000) cache.delete(cache.keys().next().value!);
   cache.set(code, { at: Date.now(), product });
   return product;
+}
+
+const searchCache = new Map<string, { at: number; products: Product[] }>();
+/** Upstream searches per minute for the whole server (Open Food Facts is a free service; be polite). */
+const SEARCH_PER_MINUTE = 30;
+let windowStart = 0;
+let windowCount = 0;
+
+/** Packaged products matching a name (Open Food Facts search, cached a day). Throws when unreachable or busy. */
+export async function searchProducts(query: string): Promise<Product[]> {
+  const key = query.trim().toLowerCase();
+  const hit = searchCache.get(key);
+  if (hit && Date.now() - hit.at < TTL_MS) return hit.products;
+
+  if (Date.now() - windowStart > 60_000) {
+    windowStart = Date.now();
+    windowCount = 0;
+  }
+  if (++windowCount > SEARCH_PER_MINUTE) throw new Error('Too many product searches right now');
+
+  const params = new URLSearchParams({
+    q: query,
+    page_size: '20',
+    fields: 'code,product_name,product_name_en,generic_name,brands,serving_size,serving_quantity,nutriments',
+  });
+  const res = await fetch(`https://search.openfoodfacts.org/search?${params}`, {
+    headers: { 'User-Agent': 'Gymawy/1.0 (fitness tracker; https://github.com/salamoony0/Gimawy)' },
+    signal: AbortSignal.timeout(6000),
+  });
+  if (!res.ok) throw new Error(`Open Food Facts search answered ${res.status}`);
+  const body = (await res.json()) as { hits?: (OffProduct & { code?: string })[] };
+  const products = (body.hits ?? [])
+    .filter((h) => /^\d{8,14}$/.test(String(h.code ?? '')))
+    .map((h) => mapProduct(String(h.code), h))
+    .filter((p): p is Product => p !== null && p.per100g !== null);
+
+  if (searchCache.size > 500) searchCache.delete(searchCache.keys().next().value!);
+  searchCache.set(key, { at: Date.now(), products });
+  return products;
 }

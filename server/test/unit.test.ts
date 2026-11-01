@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { addDays, daysBetween, e1rm, weekStart } from '../src/lib/core.js';
 import { annotateWorkouts, normalizeSupersets, recordProgressions, type WorkoutRow } from '../src/lib/training.js';
 import { withTrend } from '../src/lib/trend.js';
+import { normalizeSearch, rankFoods, toFoodRow } from '../src/lib/foodSearch.js';
 
 describe('date math', () => {
   it('weekStart returns the Monday of the week', () => {
@@ -170,5 +171,57 @@ describe('manual records', () => {
       ['2026-02-15', 90, 5, 'manual'],
     ]);
     expect(list.at(-1)).toMatchObject({ recordId: 'r1', e1rm: 105 });
+  });
+});
+
+describe('food search', () => {
+  it('normalizes case, accents, punctuation and Arabic spelling variants', () => {
+    expect(normalizeSearch("Ta'ameya – Café")).toBe('taameya cafe');
+    expect(normalizeSearch('أمّ عليّ')).toBe(normalizeSearch('ام علي'));
+    expect(normalizeSearch('سلطة طحينة')).toBe('سلطه طحينه');
+    expect(normalizeSearch('بيتى فور')).toBe('بيتي فور');
+  });
+
+  it('turns per-100 g foods into a default serving and keeps per-item restaurant foods as they are', () => {
+    const per100 = toFoodRow({
+      key: 'eg-koshari', name: 'Koshari', nameAr: 'كشري', aliases: 'koshary', kind: 'egyptian', source: 'estimate',
+      per100g: { calories: 165, protein: 5.5, carbs: 28, fat: 3.8 },
+      servings: [{ label: 'Small plate', grams: 300 }, { label: 'Large plate', grams: 600 }],
+    });
+    expect(per100).toMatchObject({ id: 'eg-koshari', serving: 'Small plate', grams: 300, calories: 495, protein: 16.5, carbs: 84, fat: 11.4 });
+    expect(per100.servings).toEqual([{ label: 'Large plate', grams: 600 }]);
+    expect(per100.search).toBe('koshari كشري koshary');
+
+    const noServing = toFoodRow({ key: 'x', name: 'Oats', kind: 'generic', source: 'usda', per100g: { calories: 379, protein: 13.2, carbs: 67.7, fat: 6.5 }, servings: [] });
+    expect(noServing).toMatchObject({ serving: '100 g', grams: 100, calories: 379 });
+
+    const item = toFoodRow({
+      key: 'r-mcd-big-mac', name: 'Big Mac', brand: "McDonald's", nameAr: 'ماكدونالدز', kind: 'restaurant', source: 'published',
+      serving: { label: '1 burger', calories: 590, protein: 25, carbs: 46, fat: 34 },
+    });
+    expect(item).toMatchObject({ serving: '1 burger', grams: null, calories: 590, servings: null, brand: "McDonald's" });
+  });
+
+  it('ranks foods whose name starts with the query first, then shorter names', () => {
+    const rows = [
+      { name: 'Eggplant', kind: 'generic' },
+      { name: 'Scrambled egg', kind: 'generic' },
+      { name: 'Egg, whole, boiled', kind: 'generic' },
+      { name: 'Egg sandwich', kind: 'restaurant' },
+    ];
+    expect(rankFoods(rows, 'egg').map((r) => r.name)).toEqual(['Egg, whole, boiled', 'Egg sandwich', 'Eggplant', 'Scrambled egg']);
+  });
+
+  it('ranks by the Arabic name and by "brand name" too', () => {
+    const rows = [
+      { name: 'Peanut butter', nameAr: 'زبدة فول سوداني', kind: 'generic' },
+      { name: 'Ful medames with oil', nameAr: 'فول مدمس بالزيت', kind: 'egyptian' },
+    ];
+    expect(rankFoods(rows, 'فول')[0].name).toBe('Ful medames with oil');
+    const burgers = [
+      { name: 'Classic beef burger', brand: 'Buffalo Burger', kind: 'restaurant' },
+      { name: 'Big Mac', brand: "McDonald's", kind: 'restaurant' },
+    ];
+    expect(rankFoods(burgers, 'mcdonalds big')[0].name).toBe('Big Mac');
   });
 });

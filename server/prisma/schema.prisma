@@ -190,7 +190,7 @@ model FoodEntry {
   protein   Float
   carbs     Float
   fat       Float
-  source    String   @default("manual") // manual | label | screenshot | photo | text | barcode
+  source    String   @default("manual") // manual | label | screenshot | photo | text | barcode | search
   barcode   String? // EAN/UPC when logged from a barcode, so the next scan finds the user's own entry first
   createdAt DateTime @default(now())
 
@@ -251,4 +251,28 @@ model PasswordResetToken {
   createdAt DateTime  @default(now())
 
   @@index([userId])
+}
+
+// Built-in food database for search (not user data): USDA generic foods, Egyptian dishes, restaurant items and
+// popular packaged products from Open Food Facts. Rebuilt from prisma/foods/*.json by `seed.ts library` on every
+// deploy, so FoodEntry rows never reference it.
+model Food {
+  id       String  @id // stable key from the JSON: usda-<fdc id>, eg-<slug>, r-<chain>-<item>, off-<barcode>
+  name     String
+  nameAr   String?
+  brand    String? // brand or restaurant chain
+  kind     String // generic | egyptian | restaurant | brand
+  source   String // usda | estimate | published | off
+  // Nutrition for the default serving (`serving`, weighing `grams` when known).
+  serving  String
+  grams    Float?
+  calories Float
+  protein  Float
+  carbs    Float
+  fat      Float
+  servings Json? // more { label, grams } choices; only when grams are known
+  barcode  String?
+  search   String // normalized name + Arabic name + brand + aliases (see lib/foodSearch.ts)
+
+  @@index([barcode])
 }

@@ -111,6 +111,13 @@ describe('cross-user isolation', () => {
     }
   });
 
+  it('B’s food search never lists A’s own foods', async () => {
+    const res = await b.agent.get('/api/food/search').query({ q: 'secret' });
+    expect(res.status).toBe(200);
+    expect(res.body.mine).toEqual([]);
+    expect((await a.agent.get('/api/food/search').query({ q: 'secret' })).body.mine.map((m: { name: string }) => m.name).sort()).toEqual(['Secret bar', 'Secret salad']);
+  });
+
   it('B reusing A’s Idempotency-Key gets a fresh request, not A’s stored answer', async () => {
     const meal = (name: string) => ({ date, meal: 'dinner', items: [{ name, calories: 100, protein: 1, carbs: 1, fat: 1 }] });
     await a.agent.post('/api/cardio').set('Idempotency-Key', 'shared-key').send({ type: 'walk', date, durationMin: 11 });

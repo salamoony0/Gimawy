@@ -60,6 +60,7 @@ npm in this repo uses `allowScripts` (root package.json) — only prisma, @prism
 - **Unit** (Vitest): `client/src/lib/*.test.ts` (energy known answers, date helpers, pace) and `server/test/unit.test.ts` (e1rm, weekStart, annotateWorkouts PR rules, withTrend). Keep math pure and exported so it can be tested.
 - **API** (`server/test/*.test.ts`, supertest against `app`): run one file at a time. `global-setup.ts` starts a throwaway embedded Postgres on a free port (or uses `TEST_DATABASE_URL`, which must be empty), runs `migrate deploy`, and hands the URL to workers via `provide`/`inject` (`setup-env.ts`). `RATE_LIMIT=off` except in `ratelimit.test.ts`; Gemini (`vi.mock('@google/genai')`) and `sendMail` are mocked. **Every new user-owned route needs a case in `isolation.test.ts`.**
 - **E2E** (`tests/e2e/*.spec.ts`, `@playwright/test`, `channel: 'chrome'`): `playwright.config.ts` starts the API on :4100 via `start-api.mjs` (throwaway Postgres on a free port, migrated + seeded; URL written to `tests/e2e/.db-url`) and Vite on :5174 (`API_PORT` env sets the proxy target). The `errors` fixture fails a test on any console error except 401/403/404/409. Specs: core (demo logging), onboarding, editing, account, features (supersets, barcode with a mocked lookup, offline sync via `context.setOffline`, adaptive target, records). The dev server doesn't run the service worker, so offline *reading* is only exercised in a production build.
+- **Run API tests only from `server/`** (`npm test -w server` or `cd server && npx vitest run test/x.test.ts`). From the repo root there is no vitest config, so Prisma falls back to `server/.env` (live DB). On 2026-11-01 that happened once and created two test accounts + a "Test Bench Press" library exercise on Supabase (deleted the same day). `test/guard.ts` (imported first by `helpers.ts`) now refuses any DATABASE_URL that isn't localhost; new DB-touching test files must import `./helpers.js`.
 - Prisma blocks destructive commands (`db push --force-reset`, `migrate reset`) from AI agents without the user's explicit consent, so test setups always start from a brand-new database instead of resetting one.
 
 ## Stack
@@ -78,10 +79,13 @@ playwright.config.ts, tests/e2e/   E2E specs, fixtures.ts, start-api.mjs
 client/vercel.json         /api rewrite to Render + SPA fallback + headers
 server/
   prisma/schema.prisma     data model (see below); provider postgresql, url + directUrl
-  prisma/migrations/       committed SQL migrations (init, phase5_features, personal_records, idempotency_keys)
-  prisma/seed.ts           `library` (69 exercises, idempotent) or `demo` (+ demo account, deterministic PRNG)
+  prisma/migrations/       committed SQL migrations (init, phase5_features, personal_records, idempotency_keys, food_database)
+  prisma/foods/*.json      built-in food database: generic (USDA), egyptian, restaurants, brands (Open Food Facts)
+  scripts/foods/           generators for those JSON files (see Food database below)
+  prisma/seed.ts           `library` (69 exercises + rebuilds the Food table from prisma/foods) or `demo` (+ demo account, deterministic PRNG)
   test/                    Vitest: unit.test.ts, auth/isolation/workouts/ai/reset/ratelimit API suites (supertest),
-                           helpers.ts (newUser agent, libraryExercise, workoutBody), env.ts, global-setup.ts, setup-env.ts
+                           foods.test.ts, helpers.ts (newUser agent, libraryExercise, workoutBody), guard.ts (refuses a non-local DB),
+                           env.ts, global-setup.ts, setup-env.ts
   src/app.ts               Express app (exported for tests): helmet, CORS, limiters, /api/auth, /api/stats, /api/ai, /api
   src/index.ts             only calls app.listen
   src/lib/core.ts          prisma client, HttpError, errorHandler (MulterError → 413/400), auth cookie + requireAuth (checks tokenVersion),
@@ -91,14 +95,16 @@ server/
   src/lib/mailer.ts        sendMail() via Resend REST (logs to console without a key), appUrl()
   src/lib/training.ts      loadTraining() → annotateWorkouts(rows, manualRecords) (pure: e1RM, PR flags, volume),
                            recordProgressions(), normalizeSupersets(), loadManualRecords(), assertExercisesVisible()
-  src/lib/openfoodfacts.ts lookupBarcode() (Open Food Facts v2, 8 s timeout, 1-day cache incl. misses), mapProduct()
+  src/lib/openfoodfacts.ts lookupBarcode() (Open Food Facts v2, 8 s timeout, 1-day cache incl. misses), mapProduct(),
+                           searchProducts() (search.openfoodfacts.org, 6 s timeout, 1-day cache, 30 upstream searches/min per server)
+  src/lib/foodSearch.ts    normalizeSearch() (case/accents/Arabic letter variants), toFoodRow() (JSON → Food row), rankFoods()
   src/lib/trend.ts         withTrend(): trailing 7-day weight average
   src/routes/auth.ts       register/login/logout, GET/PATCH/DELETE /me (+ latestWeightKg), forgot, reset, PATCH password,
                            logout-all, GET export, GET demo (is the demo account seeded?)
   src/routes/training.ts   exercises (+history, /last), workouts CRUD (POST dedupes on startedAt), routines,
                            records (GET list, POST manual, DELETE)
   src/routes/tracking.ts   cardio, body weight (PUT /body/:date upsert), goals (progress computed; lift goals include manual
-                           records), food (+summary, recent, GET /food/barcode/:code)
+                           records), food (+summary, recent, GET /food/barcode/:code, GET /food/search, GET /food/search/products)
   src/routes/stats.ts      /stats/dashboard, /stats/progress?range=30|90|365|all
   src/routes/ai.ts         /ai/status, /ai/analyze-food (image and/or text hint → JSON draft), DB daily quota
 client/src/
@@ -111,6 +117,7 @@ client/src/
   lib/activeWorkout.ts     in-progress workout store (localStorage + useSyncExternalStore); superset helpers
                            (supersetSlots, linkWithNext, unlink, splitAfter)
   lib/offline.ts           offline outbox (localStorage, per account), useOnline/useOutbox, API cache owner + clearing
+  lib/portion.ts           search results → Pickable (fromDbFood/fromMine/fromProduct), unitsFor(), portionItem()
   lib/barcode.ts           createDetector() (native BarcodeDetector or zxing-wasm ponyfill), isValidGtin, lookupCode (UPC-E → UPC-A),
                            scaleMacros, scaleQuantity
   components/ui.tsx        Button/buttonClass, IconButton, Field, Input, Select, Segmented, Sheet, Toast, Stat, Bar, Badge…
@@ -119,6 +126,7 @@ client/src/
                            end of every app page, login/register, forgot/reset)
   components/ExercisePicker.tsx  searchable picker sheet + custom exercise creation, useExercises(), MUSCLES
   components/FoodForm.tsx  shared food form bits: MEALS, guessMeal, DraftItem/toDraft/fromDraft, ItemEditor, sum
+  components/FoodSearch.tsx      SearchBox, FoodSearchResults (mine → database → packaged products), PortionPicker
   components/BarcodeSheet.tsx    camera/typed barcode → lookup → portion → log (manual entry when unknown)
   components/OfflineBar.tsx      offline/pending banner + outbox sync loop (in Layout)
   components/AdaptiveTargets.tsx useAdaptive(), AdaptiveCard (Food), AutoAdjustToggle (Food + Settings), AutoAdjustTargets (Layout)
@@ -140,6 +148,7 @@ client/src/
 - **IdempotencyKey** (userId, key, status, body JSON, createdAt; unique [userId,key]): the first answer to a POST sent with an
   `Idempotency-Key` header; pruned after 30 days.
 - **User.tokenVersion**: in every JWT; bumping it signs out all sessions. **AiUsage** (userId, UTC day, count; unique [userId,day]). **PasswordResetToken** (SHA-256 `tokenHash`, `expiresAt` 1 h, `usedAt`).
+- **Food** (not user data; no FK from FoodEntry): built-in food database, rebuilt from `prisma/foods/*.json` on every deploy. `kind` generic|egyptian|restaurant|brand, `source` usda|estimate|published|off; nutrition is for the default `serving` (weighing `grams` when known), `servings` JSON = more weighed choices, `search` = normalized English + Arabic + brand + aliases. FoodEntry `source` also `search`.
 - **BodyWeight** (one per user per day, unique [userId,date]), **Goal** (`type` weight|lift|cardio, `targetValue` kg or min/week, `startValue` snapshot), **FoodEntry** (one row per item; `meal`, `source` manual|label|screenshot|photo|text).
 
 ## Conventions & rules
@@ -164,6 +173,7 @@ client/src/
 - **Supersets**: consecutive exercises with the same `supersetGroup` (2+, renumbered 0,1,2… by `normalizeSupersets` on save, the client mirrors it in `supersetSlots`), lettered A1/A2. In the logger the rest timer only starts after the last exercise of the round. Client drafts use string keys (`superset`), converted to numbers on save.
 - **Barcodes**: UPC-E (8 digits, small US packs) is accepted and looked up/stored as its UPC-A expansion (`lookupCode`); an 8-digit code that is valid both ways is EAN-8 unless the scanner reported `upc_e`. "My last entry" servings multiply the existing count (`scaleQuantity`, ≤ 60 chars). `GET /food/barcode/:code` answers the user's own last entry with that code (`mine`) and/or the Open Food Facts product (`product`, per 100 g + serving); 404 unknown, 502 when OFF is down and there's no own entry. Codes are GTIN check-digit validated on the client and read twice in a row before accepting. Entries logged this way keep `barcode`, so editing one corrects the next scan. The zxing wasm (~460 KB gz) is bundled and loaded only when the scanner opens.
 - **Offline**: logging writes go through `api.offline(method, path, body, label)` (workouts POST/PUT, routines from "save as routine", food POST/PATCH, cardio POST/PATCH, body PUT). A network error (TypeError) queues it in the outbox and returns `{ queued: true }` (`isQueued`); HTTP errors still throw. Every POST carries a random `Idempotency-Key`, stored with the queued entry and resent on replay, so a write whose answer was lost isn't logged twice (`lib/idempotency.ts`: stored answer replayed; a failed first attempt frees the key; 409 while the first is still running). `POST /workouts` also dedupes on `startedAt` inside a per-user advisory-lock transaction (double taps), and the logger blocks a second Save while one is running. `OfflineBar` replays in order on mount, on `online` and every 30 s; a 4xx (not 401/408/409/429) drops and reports the entry. Queued results skip the global invalidate (it would wait for the network). Reads: the service worker caches signed-in GETs NetworkFirst (`gymawy-api`, no timeout; never auth except /me, AI, barcode, health); cleared on log out and when another account signs in. Queries use `networkMode: 'offlineFirst'`, mutations `'always'`.
+- **Food database & search**: the add-food sheet searches as you type (English or Arabic): the user's own past foods ("Logged before"), then the Food table (every query word must appear in `search`; ranked by `rankFoods`), then Open Food Facts products (automatically when fewer than 5 local results, else on a button). Picking a food opens `PortionPicker` (default serving, other servings, or grams; ½–3 chips) and logs with `source: 'search'` (+ barcode for OFF products). Sources: `generic.json` = 183 USDA SR Legacy foods (public domain) with Arabic names (`scripts/foods/usda_build.py` + `usda_targets.py`, needs the SR Legacy CSV download); `egyptian.json` = 79 dishes/breads/cheeses/sweets/drinks with Arabic names, **estimates** from typical recipes (`egyptian.py`); `restaurants.json` = 107 items: global chains from their published (US/UK) nutrition, Egyptian chains (Cook Door, Mo'men, Gad, Abou Tarek, Koshary El Tahrir, Zooba, Buffalo Burger, Bremer) and KFC Egypt-only/Hardee's/Costa items are **estimates** (`restaurants.py`); `brands.json` = ~600 packaged products by brand from Open Food Facts (`brands.mjs`; ODbL, attribution shown in the UI; ambiguous brand names limited to products tagged Egypt). Every generator sanity-checks kcal ≈ 4P + 4C + 9F. Estimates and OFF items are labelled in results.
 - **Adaptive targets** (`adaptiveTargets` in energy.ts, client-side): 28 days before today, days < 40% of target skipped, ≥14 logged days + ≥4 weigh-ins over ≥14 days; TDEE = avg intake − weigh-in regression slope × 7700; ideal = TDEE + goal adjustment (floored); a step is capped at ±250 kcal; macros via `macrosFor`. Auto mode applies it at most every 7 days when |change| ≥ 50.
 - **Records**: current/previous = the last two entries of `recordProgressions` (each set that beat the running best e1RM; workout sets + manual records merged by date, manual after same-day workouts). Manual records count as PR history from their date (`annotateWorkouts`) and for lift goals. 0 kg displays as "BW".
 - New accounts are forced through `/setup` until `onboarded` is true; Settings → "Recalculate targets" reopens it.
@@ -188,7 +198,7 @@ Live: client https://gimawy.vercel.app, API https://gymawy-api.onrender.com, DB 
 
 ## Ideas / backlog
 
-Progress photos, body measurements, plate calculator, data export (CSV), offline barcode cache.
+Progress photos, body measurements, plate calculator, data export (CSV), offline barcode cache, barcode lookups falling back to the Food table, user-submitted foods (community database with moderation), pg_trgm index if the Food table grows past a few thousand rows.
 
 ## Changelog
 
@@ -201,6 +211,7 @@ Progress photos, body measurements, plate calculator, data export (CSV), offline
 - **2026-10-27** — Phase 3 (automated tests): Vitest (client + server), supertest API suites incl. cross-user isolation, Playwright E2E in system Chrome. Refactors: `annotateWorkouts`, `lib/trend.ts`, `formatPace` (fixed 4:60 rounding), `assertExercisesVisible` in lib (now also guards lift goals). Root package is `"type": "module"`.
 - **2026-10-27** — Phase 4 (deploy prep): SQLite → Postgres with Prisma migrations (`directUrl` for Supabase), local `embedded-postgres` for dev (`npm run db`, part of `npm run dev`), API tests and E2E (throwaway clusters on free ports). Seed split into `library`/`demo`. `render.yaml`, `client/vercel.json`, `GET /auth/demo` + demo button gating, CORS only with `CLIENT_ORIGIN`. Fixed E2E races (forgot page, toast text).
 - **2026-10-29** — Phase 5 (features): supersets (logger, routines, workout detail), barcode scanning (camera or typed → own history / Open Food Facts → portion), offline logging (outbox + cached reads), adaptive calorie targets (measured TDEE, optional weekly auto-adjust), Train → Records tab (every exercise by muscle, current + previous best, manual PRs). `docs/CALORIES.md` documents every formula. New: `PersonalRecord` model, migrations `phase5_features` + `personal_records`.
+- **2026-11-01** — Food database search (like MyFitnessPal): ~966 built-in foods (USDA generic, Egyptian dishes with Arabic names, global + Egyptian restaurant chains, Egyptian/popular packaged brands from Open Food Facts) + live Open Food Facts product search, searchable in English or Arabic from the add-food sheet, with a serving/grams picker. New `Food` model (migration `food_database`), `GET /food/search`, `GET /food/search/products`, `lib/foodSearch.ts`, `components/FoodSearch.tsx`, `lib/portion.ts`, `test/guard.ts` (API tests refuse a non-local DB after an accidental run against Supabase, cleaned up).
 - **2026-11-01** — Calorie info sheets trimmed to a short calculation with the user's numbers + one source line (owner: too much text; full detail stays in docs/CALORIES.md). Food: removed `lg:sticky` from the "Last 14 days" card (it slid over the adaptive card). Copyright line "© <year> Salamoony" at the bottom of the app, login and recover pages.
 - **2026-11-01** — Calorie transparency: "i" buttons on every calorie target/burn number open the formula with the user's own numbers (`CalorieInfo`). Formulas checked against the sources: kept Mifflin-St Jeor, Keytel and ACSM; MET values updated to the 2024 Adult Compendium (run 9.3, walk 3.8, cycle 7.0, row 5.0, swim 5.8, stairs 9.3, HIIT 7.0, other 5.0, incline-without-speed 7.4); strength MET 5.0 → 3.5 (02054); METs now use the person's own Mifflin BMR when known (corrected METs). Demo seed uses MET 3.5.
 - **2026-11-01** — Full browser test (Playwright: every page at phone + desktop size, extra flows, live smoke test with a throwaway account) and line-by-line review; fixes (branch `fix-review-issues`): double-tap/concurrent workout saves made one workout (advisory lock + client guard); Idempotency-Key replays for every offline POST (new `IdempotencyKey` model, migration `idempotency_keys`); editing a workout no longer rounds weights to 1 decimal; unfinished workout no longer leaks to the next account on a device; exercise chart tooltip listed e1RM twice; per-user limits on signed-in auth routes + wrong-password limiter; "Recalculate targets" updates the weight goal instead of adding one; barcode quantity no longer nests "2 × 2 × …"; UPC-E barcodes accepted; empty Gemini answers fall back; 413 for big uploads; 44px tap targets (sm buttons, segmented, icon buttons, logo); CSP + Permissions-Policy on Vercel; weigh-ins stored to 2 decimals; `withTrend` O(n); `plural()` ("1 set"); one sign-out helper in Settings.

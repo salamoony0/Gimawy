@@ -1,3 +1,4 @@
+import './guard.js';
 import { randomUUID } from 'node:crypto';
 import request from 'supertest';
 import { expect } from 'vitest';

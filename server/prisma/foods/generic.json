@@ -1,0 +1,4937 @@
+[
+ {
+  "key": "usda-173424",
+  "name": "Egg, whole, boiled",
+  "nameAr": "بيض مسلوق",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Egg, whole, cooked, hard-boiled",
+  "per100g": {
+   "calories": 155,
+   "protein": 12.6,
+   "carbs": 1.1,
+   "fat": 10.6
+  },
+  "servings": [
+   {
+    "label": "1 large",
+    "grams": 50.0
+   },
+   {
+    "label": "1 cup, chopped",
+    "grams": 136.0
+   },
+   {
+    "label": "1 tbsp",
+    "grams": 8.5
+   }
+  ]
+ },
+ {
+  "key": "usda-173423",
+  "name": "Egg, fried",
+  "nameAr": "بيض مقلي",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Egg, whole, cooked, fried",
+  "per100g": {
+   "calories": 196,
+   "protein": 13.6,
+   "carbs": 0.8,
+   "fat": 14.8
+  },
+  "servings": [
+   {
+    "label": "1 large",
+    "grams": 46.0
+   }
+  ]
+ },
+ {
+  "key": "usda-172187",
+  "name": "Egg, scrambled",
+  "nameAr": "بيض مخفوق",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Egg, whole, cooked, scrambled",
+  "per100g": {
+   "calories": 149,
+   "protein": 10.0,
+   "carbs": 1.6,
+   "fat": 11.0
+  },
+  "servings": [
+   {
+    "label": "1 large",
+    "grams": 61.0
+   },
+   {
+    "label": "1 cup",
+    "grams": 220.0
+   },
+   {
+    "label": "1 tbsp",
+    "grams": 13.7
+   }
+  ]
+ },
+ {
+  "key": "usda-171287",
+  "name": "Egg, raw",
+  "nameAr": "بيض",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Egg, whole, raw, fresh",
+  "per100g": {
+   "calories": 143,
+   "protein": 12.6,
+   "carbs": 0.7,
+   "fat": 9.5
+  },
+  "servings": [
+   {
+    "label": "1 medium",
+    "grams": 44.0
+   },
+   {
+    "label": "1 large",
+    "grams": 50.0
+   },
+   {
+    "label": "1 extra large",
+    "grams": 56.0
+   },
+   {
+    "label": "1 cup (4.86 large eggs)",
+    "grams": 243.0
+   }
+  ]
+ },
+ {
+  "key": "usda-172183",
+  "name": "Egg white",
+  "nameAr": "بياض البيض",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Egg, white, raw, fresh",
+  "per100g": {
+   "calories": 52,
+   "protein": 10.9,
+   "carbs": 0.7,
+   "fat": 0.2
+  },
+  "servings": [
+   {
+    "label": "1 large",
+    "grams": 33.0
+   },
+   {
+    "label": "1 cup",
+    "grams": 243.0
+   }
+  ]
+ },
+ {
+  "key": "usda-172184",
+  "name": "Egg yolk",
+  "nameAr": "صفار البيض",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Egg, yolk, raw, fresh",
+  "per100g": {
+   "calories": 322,
+   "protein": 15.9,
+   "carbs": 3.6,
+   "fat": 26.5
+  },
+  "servings": [
+   {
+    "label": "1 large",
+    "grams": 17.0
+   },
+   {
+    "label": "1 cup",
+    "grams": 243.0
+   }
+  ]
+ },
+ {
+  "key": "usda-171265",
+  "name": "Milk, full fat",
+  "nameAr": "لبن كامل الدسم",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Milk, whole, 3.25% milkfat, with added vitamin D",
+  "per100g": {
+   "calories": 61,
+   "protein": 3.1,
+   "carbs": 4.8,
+   "fat": 3.2
+  },
+  "servings": [
+   {
+    "label": "1 cup",
+    "grams": 244.0
+   },
+   {
+    "label": "1 fl oz",
+    "grams": 30.5
+   },
+   {
+    "label": "1 tbsp",
+    "grams": 15.0
+   }
+  ]
+ },
+ {
+  "key": "usda-171267",
+  "name": "Milk, low fat (2%)",
+  "nameAr": "لبن نصف دسم",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Milk, reduced fat, fluid, 2% milkfat, with added vitamin A and vitamin D",
+  "per100g": {
+   "calories": 50,
+   "protein": 3.3,
+   "carbs": 4.8,
+   "fat": 2.0
+  },
+  "servings": [
+   {
+    "label": "1 cup",
+    "grams": 244.0
+   },
+   {
+    "label": "1 fl oz",
+    "grams": 30.5
+   }
+  ]
+ },
+ {
+  "key": "usda-171269",
+  "name": "Milk, skim",
+  "nameAr": "لبن خالي الدسم",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Milk, nonfat, fluid, with added vitamin A and vitamin D (fat free or skim)",
+  "per100g": {
+   "calories": 34,
+   "protein": 3.4,
+   "carbs": 5.0,
+   "fat": 0.1
+  },
+  "servings": [
+   {
+    "label": "1 cup",
+    "grams": 245.0
+   },
+   {
+    "label": "1 fl oz",
+    "grams": 30.6
+   }
+  ]
+ },
+ {
+  "key": "usda-171284",
+  "name": "Yogurt, plain, full fat",
+  "nameAr": "زبادي",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Yogurt, plain, whole milk",
+  "per100g": {
+   "calories": 61,
+   "protein": 3.5,
+   "carbs": 4.7,
+   "fat": 3.2
+  },
+  "servings": [
+   {
+    "label": "1 container (6 oz)",
+    "grams": 170.0
+   },
+   {
+    "label": "1 container (8 oz)",
+    "grams": 227.0
+   },
+   {
+    "label": "1/2 container (4 oz)",
+    "grams": 113.0
+   },
+   {
+    "label": "1 cup (8 fl oz)",
+    "grams": 245.0
+   }
+  ]
+ },
+ {
+  "key": "usda-170886",
+  "name": "Yogurt, plain, low fat",
+  "nameAr": "زبادي لايت",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Yogurt, plain, low fat",
+  "per100g": {
+   "calories": 63,
+   "protein": 5.2,
+   "carbs": 7.0,
+   "fat": 1.6
+  },
+  "servings": [
+   {
+    "label": "1 container (6 oz)",
+    "grams": 170.0
+   },
+   {
+    "label": "1 container (8 oz)",
+    "grams": 227.0
+   },
+   {
+    "label": "1/2 container (4 oz)",
+    "grams": 113.0
+   },
+   {
+    "label": "1 cup (8 fl oz)",
+    "grams": 245.0
+   }
+  ]
+ },
+ {
+  "key": "usda-170894",
+  "name": "Greek yogurt, plain, nonfat",
+  "nameAr": "زبادي يوناني",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Yogurt, Greek, plain, nonfat (Includes foods for USDA's Food Distribution Program)",
+  "per100g": {
+   "calories": 59,
+   "protein": 10.2,
+   "carbs": 3.6,
+   "fat": 0.4
+  },
+  "servings": [
+   {
+    "label": "1 container",
+    "grams": 170.0
+   }
+  ]
+ },
+ {
+  "key": "usda-171304",
+  "name": "Greek yogurt, plain, full fat",
+  "nameAr": "زبادي يوناني كامل الدسم",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Yogurt, Greek, plain, whole milk",
+  "per100g": {
+   "calories": 97,
+   "protein": 9.0,
+   "carbs": 4.0,
+   "fat": 5.0
+  },
+  "servings": []
+ },
+ {
+  "key": "usda-172179",
+  "name": "Cottage cheese",
+  "nameAr": "جبنة قريش",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Cheese, cottage, creamed, large or small curd",
+  "per100g": {
+   "calories": 98,
+   "protein": 11.1,
+   "carbs": 3.4,
+   "fat": 4.3
+  },
+  "servings": [
+   {
+    "label": "1 cup, large curd (not packed)",
+    "grams": 210.0
+   },
+   {
+    "label": "1 cup, small curd (not packed)",
+    "grams": 225.0
+   },
+   {
+    "label": "4 oz",
+    "grams": 113.0
+   }
+  ]
+ },
+ {
+  "key": "usda-173417",
+  "name": "Cottage cheese, low fat",
+  "nameAr": "جبنة قريش لايت",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Cheese, cottage, lowfat, 1% milkfat",
+  "per100g": {
+   "calories": 72,
+   "protein": 12.4,
+   "carbs": 2.7,
+   "fat": 1.0
+  },
+  "servings": [
+   {
+    "label": "100 g",
+    "grams": 100
+   },
+   {
+    "label": "1 cup (not packed)",
+    "grams": 226.0
+   },
+   {
+    "label": "4 oz",
+    "grams": 113.0
+   }
+  ]
+ },
+ {
+  "key": "usda-173414",
+  "name": "Cheddar cheese",
+  "nameAr": "جبنة شيدر",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Cheese, cheddar (Includes foods for USDA's Food Distribution Program)",
+  "per100g": {
+   "calories": 403,
+   "protein": 22.9,
+   "carbs": 3.4,
+   "fat": 33.3
+  },
+  "servings": [
+   {
+    "label": "1 slice (1 oz)",
+    "grams": 28.0
+   },
+   {
+    "label": "1 cup, diced",
+    "grams": 132.0
+   },
+   {
+    "label": "1 cup, melted",
+    "grams": 244.0
+   },
+   {
+    "label": "1 cup, shredded",
+    "grams": 113.0
+   }
+  ]
+ },
+ {
+  "key": "usda-170845",
+  "name": "Mozzarella",
+  "nameAr": "جبنة موتزاريلا",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Cheese, mozzarella, whole milk",
+  "per100g": {
+   "calories": 299,
+   "protein": 22.2,
+   "carbs": 2.4,
+   "fat": 22.1
+  },
+  "servings": [
+   {
+    "label": "100 g",
+    "grams": 100
+   },
+   {
+    "label": "1 cup, shredded",
+    "grams": 112.0
+   },
+   {
+    "label": "1 oz",
+    "grams": 28.4
+   },
+   {
+    "label": "6 slices",
+    "grams": 170.0
+   }
+  ]
+ },
+ {
+  "key": "usda-173420",
+  "name": "Feta cheese",
+  "nameAr": "جبنة فيتا",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Cheese, feta",
+  "per100g": {
+   "calories": 265,
+   "protein": 14.2,
+   "carbs": 3.9,
+   "fat": 21.5
+  },
+  "servings": [
+   {
+    "label": "100 g",
+    "grams": 100
+   },
+   {
+    "label": "1 cup, crumbled",
+    "grams": 150.0
+   },
+   {
+    "label": "1 oz",
+    "grams": 28.4
+   },
+   {
+    "label": "1 cubic inch",
+    "grams": 17.0
+   },
+   {
+    "label": "1 wedge (1.33 oz)",
+    "grams": 38.0
+   }
+  ]
+ },
+ {
+  "key": "usda-171247",
+  "name": "Parmesan",
+  "nameAr": "جبنة بارميزان",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Cheese, parmesan, grated",
+  "per100g": {
+   "calories": 420,
+   "protein": 28.4,
+   "carbs": 13.9,
+   "fat": 27.8
+  },
+  "servings": [
+   {
+    "label": "100 g",
+    "grams": 100
+   },
+   {
+    "label": "1 cup",
+    "grams": 100.0
+   },
+   {
+    "label": "1 tbsp",
+    "grams": 5.0
+   },
+   {
+    "label": "1 oz",
+    "grams": 28.4
+   }
+  ]
+ },
+ {
+  "key": "usda-173418",
+  "name": "Cream cheese",
+  "nameAr": "جبنة كريمي",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Cheese, cream",
+  "per100g": {
+   "calories": 350,
+   "protein": 6.2,
+   "carbs": 5.5,
+   "fat": 34.4
+  },
+  "servings": [
+   {
+    "label": "1 cup",
+    "grams": 232.0
+   },
+   {
+    "label": "1 tbsp",
+    "grams": 14.5
+   },
+   {
+    "label": "1 tbsp, whipped",
+    "grams": 10.0
+   },
+   {
+    "label": "1 oz",
+    "grams": 28.4
+   }
+  ]
+ },
+ {
+  "key": "usda-170853",
+  "name": "Processed cheese slice",
+  "nameAr": "جبنة شرائح",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Cheese, pasteurized process, American, fortified with vitamin D",
+  "per100g": {
+   "calories": 366,
+   "protein": 18.1,
+   "carbs": 4.8,
+   "fat": 30.7
+  },
+  "servings": [
+   {
+    "label": "1 slice (1 oz)",
+    "grams": 28.0
+   },
+   {
+    "label": "1 slice (3/4 oz)",
+    "grams": 21.0
+   },
+   {
+    "label": "1 cup, shredded",
+    "grams": 113.0
+   },
+   {
+    "label": "1 cup, diced",
+    "grams": 140.0
+   }
+  ]
+ },
+ {
+  "key": "usda-173410",
+  "name": "Butter",
+  "nameAr": "زبدة",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Butter, salted",
+  "per100g": {
+   "calories": 717,
+   "protein": 0.8,
+   "carbs": 0.1,
+   "fat": 81.1
+  },
+  "servings": [
+   {
+    "label": "1 tbsp",
+    "grams": 14.2
+   },
+   {
+    "label": "1 cup",
+    "grams": 227.0
+   },
+   {
+    "label": "1 pat (1\" sq, 1/3\" high)",
+    "grams": 5.0
+   },
+   {
+    "label": "1 stick",
+    "grams": 113.0
+   }
+  ]
+ },
+ {
+  "key": "usda-173412",
+  "name": "Ghee (butter oil)",
+  "nameAr": "سمنة",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Butter oil, anhydrous",
+  "per100g": {
+   "calories": 876,
+   "protein": 0.3,
+   "carbs": 0.0,
+   "fat": 99.5
+  },
+  "servings": [
+   {
+    "label": "1 tbsp",
+    "grams": 12.8
+   },
+   {
+    "label": "1 cup",
+    "grams": 205.0
+   }
+  ]
+ },
+ {
+  "key": "usda-170859",
+  "name": "Heavy cream",
+  "nameAr": "كريمة",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Cream, fluid, heavy whipping",
+  "per100g": {
+   "calories": 340,
+   "protein": 2.8,
+   "carbs": 2.8,
+   "fat": 36.1
+  },
+  "servings": [
+   {
+    "label": "1 cup, whipped",
+    "grams": 120.0
+   },
+   {
+    "label": "1 cup, fluid (yields 2 cups whipped)",
+    "grams": 238.0
+   },
+   {
+    "label": "1 tbsp",
+    "grams": 15.0
+   },
+   {
+    "label": "1 fl oz",
+    "grams": 29.8
+   }
+  ]
+ },
+ {
+  "key": "usda-168880",
+  "name": "White rice, cooked",
+  "nameAr": "أرز أبيض مطبوخ",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Rice, white, medium-grain, enriched, cooked",
+  "per100g": {
+   "calories": 130,
+   "protein": 2.4,
+   "carbs": 28.6,
+   "fat": 0.2
+  },
+  "servings": [
+   {
+    "label": "1 cup",
+    "grams": 186.0
+   }
+  ]
+ },
+ {
+  "key": "usda-169704",
+  "name": "Brown rice, cooked",
+  "nameAr": "أرز بني",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Rice, brown, long-grain, cooked (Includes foods for USDA's Food Distribution Program)",
+  "per100g": {
+   "calories": 123,
+   "protein": 2.7,
+   "carbs": 25.6,
+   "fat": 1.0
+  },
+  "servings": [
+   {
+    "label": "1 cup",
+    "grams": 202.0
+   }
+  ]
+ },
+ {
+  "key": "usda-168878",
+  "name": "Basmati / long-grain rice, cooked",
+  "nameAr": "أرز بسمتي",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Rice, white, long-grain, regular, enriched, cooked",
+  "per100g": {
+   "calories": 130,
+   "protein": 2.7,
+   "carbs": 28.2,
+   "fat": 0.3
+  },
+  "servings": [
+   {
+    "label": "1 cup",
+    "grams": 158.0
+   }
+  ]
+ },
+ {
+  "key": "usda-169737",
+  "name": "Pasta, cooked",
+  "nameAr": "مكرونة مسلوقة",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Pasta, cooked, enriched, without added salt",
+  "per100g": {
+   "calories": 158,
+   "protein": 5.8,
+   "carbs": 30.9,
+   "fat": 0.9
+  },
+  "servings": [
+   {
+    "label": "1 cup spaghetti not packed",
+    "grams": 124.0
+   },
+   {
+    "label": "1 cup spaghetti packed",
+    "grams": 151.0
+   },
+   {
+    "label": "1 cup elbows not packed",
+    "grams": 120.0
+   },
+   {
+    "label": "1 cup elbows packed",
+    "grams": 132.0
+   }
+  ]
+ },
+ {
+  "key": "usda-168910",
+  "name": "Whole-wheat pasta, cooked",
+  "nameAr": "مكرونة قمح كامل",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Pasta, whole-wheat, cooked (Includes foods for USDA's Food Distribution Program)",
+  "per100g": {
+   "calories": 149,
+   "protein": 6.0,
+   "carbs": 30.1,
+   "fat": 1.7
+  },
+  "servings": [
+   {
+    "label": "1 cup spaghetti not packed",
+    "grams": 117.0
+   },
+   {
+    "label": "1 cup spaghetti packed",
+    "grams": 151.0
+   },
+   {
+    "label": "1 cup elbows",
+    "grams": 117.0
+   },
+   {
+    "label": "1 cup penne",
+    "grams": 97.0
+   }
+  ]
+ },
+ {
+  "key": "usda-168919",
+  "name": "Vermicelli / egg noodles, cooked",
+  "nameAr": "شعرية",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Noodles, egg, cooked, enriched, with added salt",
+  "per100g": {
+   "calories": 138,
+   "protein": 4.5,
+   "carbs": 25.2,
+   "fat": 2.1
+  },
+  "servings": [
+   {
+    "label": "1 cup",
+    "grams": 160.0
+   }
+  ]
+ },
+ {
+  "key": "usda-170287",
+  "name": "Bulgur, cooked",
+  "nameAr": "برغل",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Bulgur, cooked",
+  "per100g": {
+   "calories": 83,
+   "protein": 3.1,
+   "carbs": 18.6,
+   "fat": 0.2
+  },
+  "servings": [
+   {
+    "label": "1 cup",
+    "grams": 182.0
+   },
+   {
+    "label": "1 tbsp",
+    "grams": 8.4
+   }
+  ]
+ },
+ {
+  "key": "usda-169700",
+  "name": "Couscous, cooked",
+  "nameAr": "كسكسي",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Couscous, cooked",
+  "per100g": {
+   "calories": 112,
+   "protein": 3.8,
+   "carbs": 23.2,
+   "fat": 0.2
+  },
+  "servings": [
+   {
+    "label": "1 cup, cooked",
+    "grams": 157.0
+   },
+   {
+    "label": "1 cup, dry, yields",
+    "grams": 528.0
+   },
+   {
+    "label": "1 oz, dry, yields",
+    "grams": 86.0
+   }
+  ]
+ },
+ {
+  "key": "usda-173904",
+  "name": "Oats, rolled (dry)",
+  "nameAr": "شوفان",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Cereals, oats, regular and quick, not fortified, dry",
+  "per100g": {
+   "calories": 379,
+   "protein": 13.2,
+   "carbs": 67.7,
+   "fat": 6.5
+  },
+  "servings": [
+   {
+    "label": "100 g",
+    "grams": 100
+   },
+   {
+    "label": "1 cup",
+    "grams": 81.0
+   },
+   {
+    "label": "0.33 cup",
+    "grams": 27.0
+   }
+  ]
+ },
+ {
+  "key": "usda-173905",
+  "name": "Oatmeal, cooked with water",
+  "nameAr": "شوفان مطبوخ",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Cereals, oats, regular and quick, unenriched, cooked with water (includes boiling and microwaving), without salt",
+  "per100g": {
+   "calories": 71,
+   "protein": 2.5,
+   "carbs": 12.0,
+   "fat": 1.5
+  },
+  "servings": [
+   {
+    "label": "1 cup",
+    "grams": 234.0
+   },
+   {
+    "label": "1 tbsp",
+    "grams": 14.6
+   },
+   {
+    "label": "3/4 cup",
+    "grams": 175.0
+   }
+  ]
+ },
+ {
+  "key": "usda-168917",
+  "name": "Quinoa, cooked",
+  "nameAr": "كينوا",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Quinoa, cooked",
+  "per100g": {
+   "calories": 120,
+   "protein": 4.4,
+   "carbs": 21.3,
+   "fat": 1.9
+  },
+  "servings": [
+   {
+    "label": "1 cup",
+    "grams": 185.0
+   }
+  ]
+ },
+ {
+  "key": "usda-174924",
+  "name": "White bread",
+  "nameAr": "عيش توست أبيض",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Bread, white, commercially prepared (includes soft bread crumbs)",
+  "per100g": {
+   "calories": 266,
+   "protein": 8.8,
+   "carbs": 49.4,
+   "fat": 3.3
+  },
+  "servings": [
+   {
+    "label": "1 slice",
+    "grams": 29.0
+   },
+   {
+    "label": "1 slice, large",
+    "grams": 30.0
+   },
+   {
+    "label": "1 slice crust not eaten",
+    "grams": 12.0
+   },
+   {
+    "label": "1 slice, thin",
+    "grams": 20.0
+   }
+  ]
+ },
+ {
+  "key": "usda-172688",
+  "name": "Whole-wheat bread",
+  "nameAr": "عيش توست أسمر",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Bread, whole-wheat, commercially prepared",
+  "per100g": {
+   "calories": 252,
+   "protein": 12.4,
+   "carbs": 42.7,
+   "fat": 3.5
+  },
+  "servings": [
+   {
+    "label": "1 slice",
+    "grams": 32.0
+   },
+   {
+    "label": "1 oz",
+    "grams": 28.4
+   }
+  ]
+ },
+ {
+  "key": "usda-174915",
+  "name": "Pita bread, white",
+  "nameAr": "عيش شامي",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Bread, pita, white, enriched",
+  "per100g": {
+   "calories": 275,
+   "protein": 9.1,
+   "carbs": 55.7,
+   "fat": 1.2
+  },
+  "servings": [
+   {
+    "label": "1 pita, large (6-1/2\" dia)",
+    "grams": 60.0
+   },
+   {
+    "label": "1 pita, small (4\" dia)",
+    "grams": 28.0
+   }
+  ]
+ },
+ {
+  "key": "usda-174916",
+  "name": "Pita bread, whole wheat",
+  "nameAr": "عيش شامي أسمر",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Bread, pita, whole-wheat",
+  "per100g": {
+   "calories": 262,
+   "protein": 9.8,
+   "carbs": 55.9,
+   "fat": 1.7
+  },
+  "servings": [
+   {
+    "label": "1 pita, large (6-1/2\" dia)",
+    "grams": 64.0
+   },
+   {
+    "label": "1 pita, small (4\" dia)",
+    "grams": 28.0
+   }
+  ]
+ },
+ {
+  "key": "usda-175037",
+  "name": "Tortilla, flour",
+  "nameAr": "تورتيلا",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Tortillas, ready-to-bake or -fry, flour, refrigerated",
+  "per100g": {
+   "calories": 306,
+   "protein": 8.2,
+   "carbs": 49.4,
+   "fat": 8.0
+  },
+  "servings": [
+   {
+    "label": "1 tortilla medium (approx 6\" dia)",
+    "grams": 30.0
+   },
+   {
+    "label": "1 tortilla",
+    "grams": 48.0
+   },
+   {
+    "label": "1 tortilla (approx 10\" dia)",
+    "grams": 72.0
+   },
+   {
+    "label": "1 tortilla (approx 12\" dia)",
+    "grams": 117.0
+   }
+  ]
+ },
+ {
+  "key": "usda-174987",
+  "name": "Croissant, butter",
+  "nameAr": "كرواسون",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Croissants, butter",
+  "per100g": {
+   "calories": 406,
+   "protein": 8.2,
+   "carbs": 45.8,
+   "fat": 21.0
+  },
+  "servings": [
+   {
+    "label": "1 croissant, medium",
+    "grams": 57.0
+   },
+   {
+    "label": "1 croissant, mini",
+    "grams": 28.0
+   },
+   {
+    "label": "1 croissant, small",
+    "grams": 42.0
+   },
+   {
+    "label": "1 croissant, large",
+    "grams": 67.0
+   }
+  ]
+ },
+ {
+  "key": "usda-174899",
+  "name": "Bagel, plain",
+  "nameAr": "بيجل",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Bagels, plain, enriched, with calcium propionate (includes onion, poppy, sesame)",
+  "per100g": {
+   "calories": 264,
+   "protein": 10.6,
+   "carbs": 52.4,
+   "fat": 1.3
+  },
+  "servings": [
+   {
+    "label": "1 medium bagel (3-1/2\" to 4\" dia)",
+    "grams": 105.0
+   },
+   {
+    "label": "1 bagel",
+    "grams": 99.0
+   },
+   {
+    "label": "1 mini bagel (2-1/2\" dia)",
+    "grams": 26.0
+   },
+   {
+    "label": "1 small bagel (3\" dia)",
+    "grams": 69.0
+   }
+  ]
+ },
+ {
+  "key": "usda-174648",
+  "name": "Corn flakes",
+  "nameAr": "كورن فليكس",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Cereals ready-to-eat, RALSTON Corn Flakes",
+  "per100g": {
+   "calories": 384,
+   "protein": 5.9,
+   "carbs": 88.0,
+   "fat": 0.9
+  },
+  "servings": [
+   {
+    "label": "1 cup (1 NLEA serving)",
+    "grams": 28.0
+   }
+  ]
+ },
+ {
+  "key": "usda-171646",
+  "name": "Granola",
+  "nameAr": "جرانولا",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Cereals ready-to-eat, granola, homemade",
+  "per100g": {
+   "calories": 489,
+   "protein": 13.7,
+   "carbs": 53.9,
+   "fat": 24.3
+  },
+  "servings": [
+   {
+    "label": "100 g",
+    "grams": 100
+   },
+   {
+    "label": "1 cup",
+    "grams": 122.0
+   },
+   {
+    "label": "1 oz",
+    "grams": 28.4
+   }
+  ]
+ },
+ {
+  "key": "usda-167959",
+  "name": "Popcorn, air-popped",
+  "nameAr": "فشار",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Snacks, popcorn, air-popped",
+  "per100g": {
+   "calories": 387,
+   "protein": 12.9,
+   "carbs": 77.8,
+   "fat": 4.5
+  },
+  "servings": [
+   {
+    "label": "100 g",
+    "grams": 100
+   },
+   {
+    "label": "1 cup",
+    "grams": 8.0
+   },
+   {
+    "label": "1 oz",
+    "grams": 28.4
+   }
+  ]
+ },
+ {
+  "key": "usda-172746",
+  "name": "Crackers, saltine",
+  "nameAr": "بسكويت مملح",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Crackers, saltines (includes oyster, soda, soup)",
+  "per100g": {
+   "calories": 418,
+   "protein": 9.5,
+   "carbs": 74.0,
+   "fat": 8.6
+  },
+  "servings": [
+   {
+    "label": "5 crackers square (1 serving)",
+    "grams": 15.0
+   },
+   {
+    "label": "1 cracker, round large",
+    "grams": 10.0
+   },
+   {
+    "label": "1 cup, crushed",
+    "grams": 70.0
+   },
+   {
+    "label": "1 cup oyster crackers",
+    "grams": 45.0
+   }
+  ]
+ },
+ {
+  "key": "usda-174925",
+  "name": "White bread, toasted",
+  "nameAr": "توست محمص",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Bread, white, commercially prepared, toasted",
+  "per100g": {
+   "calories": 290,
+   "protein": 9.0,
+   "carbs": 54.5,
+   "fat": 4.0
+  },
+  "servings": [
+   {
+    "label": "1 slice, large",
+    "grams": 27.0
+   },
+   {
+    "label": "1 slice crust not eaten",
+    "grams": 11.0
+   },
+   {
+    "label": "1 slice, thin",
+    "grams": 17.0
+   },
+   {
+    "label": "1 slice thin, crust not eaten",
+    "grams": 8.0
+   }
+  ]
+ },
+ {
+  "key": "usda-168894",
+  "name": "Flour, white",
+  "nameAr": "دقيق",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Wheat flour, white, all-purpose, enriched, bleached",
+  "per100g": {
+   "calories": 364,
+   "protein": 10.3,
+   "carbs": 76.3,
+   "fat": 1.0
+  },
+  "servings": [
+   {
+    "label": "1 cup",
+    "grams": 125.0
+   }
+  ]
+ },
+ {
+  "key": "usda-173753",
+  "name": "Fava beans, cooked",
+  "nameAr": "فول مدمس (بدون زيت)",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Broadbeans (fava beans), mature seeds, cooked, boiled, without salt",
+  "per100g": {
+   "calories": 110,
+   "protein": 7.6,
+   "carbs": 19.6,
+   "fat": 0.4
+  },
+  "servings": [
+   {
+    "label": "1 cup",
+    "grams": 170.0
+   }
+  ]
+ },
+ {
+  "key": "usda-173757",
+  "name": "Chickpeas, cooked",
+  "nameAr": "حمص مسلوق",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Chickpeas (garbanzo beans, bengal gram), mature seeds, cooked, boiled, without salt",
+  "per100g": {
+   "calories": 164,
+   "protein": 8.9,
+   "carbs": 27.4,
+   "fat": 2.6
+  },
+  "servings": [
+   {
+    "label": "1 cup",
+    "grams": 164.0
+   }
+  ]
+ },
+ {
+  "key": "usda-172421",
+  "name": "Lentils, cooked",
+  "nameAr": "عدس مطبوخ",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Lentils, mature seeds, cooked, boiled, without salt",
+  "per100g": {
+   "calories": 116,
+   "protein": 9.0,
+   "carbs": 20.1,
+   "fat": 0.4
+  },
+  "servings": [
+   {
+    "label": "1 cup",
+    "grams": 198.0
+   },
+   {
+    "label": "1 tbsp",
+    "grams": 12.3
+   }
+  ]
+ },
+ {
+  "key": "usda-174284",
+  "name": "Red lentils, dry",
+  "nameAr": "عدس أحمر",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Lentils, pink or red, raw",
+  "per100g": {
+   "calories": 358,
+   "protein": 23.9,
+   "carbs": 63.1,
+   "fat": 2.2
+  },
+  "servings": [
+   {
+    "label": "100 g",
+    "grams": 100
+   },
+   {
+    "label": "1 cup",
+    "grams": 192.0
+   }
+  ]
+ },
+ {
+  "key": "usda-173759",
+  "name": "Black-eyed peas, cooked",
+  "nameAr": "لوبيا",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Cowpeas, common (blackeyes, crowder, southern), mature seeds, cooked, boiled, without salt",
+  "per100g": {
+   "calories": 116,
+   "protein": 7.7,
+   "carbs": 20.8,
+   "fat": 0.5
+  },
+  "servings": [
+   {
+    "label": "1 cup",
+    "grams": 171.0
+   }
+  ]
+ },
+ {
+  "key": "usda-175203",
+  "name": "White beans, cooked",
+  "nameAr": "فاصوليا بيضاء",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Beans, white, mature seeds, cooked, boiled, without salt",
+  "per100g": {
+   "calories": 139,
+   "protein": 9.7,
+   "carbs": 25.1,
+   "fat": 0.3
+  },
+  "servings": [
+   {
+    "label": "1 cup",
+    "grams": 179.0
+   },
+   {
+    "label": "1 tbsp",
+    "grams": 11.2
+   }
+  ]
+ },
+ {
+  "key": "usda-175194",
+  "name": "Kidney beans, cooked",
+  "nameAr": "فاصوليا حمراء",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Beans, kidney, red, mature seeds, cooked, boiled, without salt",
+  "per100g": {
+   "calories": 127,
+   "protein": 8.7,
+   "carbs": 22.8,
+   "fat": 0.5
+  },
+  "servings": [
+   {
+    "label": "1 cup",
+    "grams": 177.0
+   },
+   {
+    "label": "1 tbsp",
+    "grams": 11.0
+   }
+  ]
+ },
+ {
+  "key": "usda-174289",
+  "name": "Hummus",
+  "nameAr": "حمص بالطحينة",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Hummus, commercial",
+  "per100g": {
+   "calories": 237,
+   "protein": 7.8,
+   "carbs": 15.0,
+   "fat": 17.8
+  },
+  "servings": [
+   {
+    "label": "1 cup",
+    "grams": 246.0
+   },
+   {
+    "label": "1 tbsp",
+    "grams": 15.0
+   }
+  ]
+ },
+ {
+  "key": "usda-172470",
+  "name": "Peanut butter",
+  "nameAr": "زبدة فول سوداني",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Peanut butter, smooth style, without salt",
+  "per100g": {
+   "calories": 598,
+   "protein": 22.2,
+   "carbs": 22.3,
+   "fat": 51.4
+  },
+  "servings": [
+   {
+    "label": "2 tbsp",
+    "grams": 32.0
+   },
+   {
+    "label": "1 cup",
+    "grams": 258.0
+   }
+  ]
+ },
+ {
+  "key": "usda-170189",
+  "name": "Tahini",
+  "nameAr": "طحينة",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Seeds, sesame butter, tahini, from roasted and toasted kernels (most common type)",
+  "per100g": {
+   "calories": 595,
+   "protein": 17.0,
+   "carbs": 21.2,
+   "fat": 53.8
+  },
+  "servings": [
+   {
+    "label": "1 tbsp",
+    "grams": 15.0
+   },
+   {
+    "label": "1 oz",
+    "grams": 28.4
+   }
+  ]
+ },
+ {
+  "key": "usda-172424",
+  "name": "Lupini beans (termis)",
+  "nameAr": "ترمس",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Lupins, mature seeds, cooked, boiled, without salt",
+  "per100g": {
+   "calories": 119,
+   "protein": 15.6,
+   "carbs": 9.9,
+   "fat": 2.9
+  },
+  "servings": [
+   {
+    "label": "100 g",
+    "grams": 100
+   },
+   {
+    "label": "1 cup",
+    "grams": 166.0
+   }
+  ]
+ },
+ {
+  "key": "usda-171477",
+  "name": "Chicken breast, grilled",
+  "nameAr": "صدور فراخ مشوية",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Chicken, broilers or fryers, breast, meat only, cooked, roasted",
+  "per100g": {
+   "calories": 165,
+   "protein": 31.0,
+   "carbs": 0.0,
+   "fat": 3.6
+  },
+  "servings": [
+   {
+    "label": "100 g",
+    "grams": 100
+   },
+   {
+    "label": "1 cup, chopped or diced",
+    "grams": 140.0
+   },
+   {
+    "label": "1 unit (yield from 1 lb ready-to-cook ch",
+    "grams": 52.0
+   },
+   {
+    "label": "1/2 breast, bone and skin removed",
+    "grams": 86.0
+   }
+  ]
+ },
+ {
+  "key": "usda-171077",
+  "name": "Chicken breast, raw",
+  "nameAr": "صدور فراخ نيئة",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Chicken, broiler or fryers, breast, skinless, boneless, meat only, raw",
+  "per100g": {
+   "calories": 120,
+   "protein": 22.5,
+   "carbs": 0.0,
+   "fat": 2.6
+  },
+  "servings": [
+   {
+    "label": "1 piece",
+    "grams": 272.0
+   },
+   {
+    "label": "4 oz",
+    "grams": 113.0
+   }
+  ]
+ },
+ {
+  "key": "usda-172388",
+  "name": "Chicken thigh, roasted",
+  "nameAr": "وراك فراخ",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Chicken, broilers or fryers, thigh, meat only, cooked, roasted",
+  "per100g": {
+   "calories": 179,
+   "protein": 24.8,
+   "carbs": 0.0,
+   "fat": 8.2
+  },
+  "servings": [
+   {
+    "label": "1 thigh without skin",
+    "grams": 116.0
+   },
+   {
+    "label": "1 thigh with skin",
+    "grams": 137.0
+   },
+   {
+    "label": "3 oz",
+    "grams": 85.0
+   }
+  ]
+ },
+ {
+  "key": "usda-173625",
+  "name": "Chicken thigh with skin, roasted",
+  "nameAr": "وراك فراخ بالجلد",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Chicken, broilers or fryers, thigh, meat and skin, cooked, roasted",
+  "per100g": {
+   "calories": 232,
+   "protein": 23.3,
+   "carbs": 0.0,
+   "fat": 14.7
+  },
+  "servings": [
+   {
+    "label": "1 thigh with skin",
+    "grams": 137.0
+   },
+   {
+    "label": "1 thigh without skin",
+    "grams": 116.0
+   },
+   {
+    "label": "3 oz",
+    "grams": 85.0
+   }
+  ]
+ },
+ {
+  "key": "usda-173630",
+  "name": "Chicken wings, roasted",
+  "nameAr": "أجنحة فراخ",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Chicken, broilers or fryers, wing, meat and skin, cooked, roasted",
+  "per100g": {
+   "calories": 254,
+   "protein": 23.8,
+   "carbs": 0.0,
+   "fat": 16.9
+  },
+  "servings": [
+   {
+    "label": "1 piece",
+    "grams": 85.0
+   },
+   {
+    "label": "3 oz",
+    "grams": 85.0
+   }
+  ]
+ },
+ {
+  "key": "usda-171450",
+  "name": "Whole chicken, roasted (meat + skin)",
+  "nameAr": "فرخة مشوية",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Chicken, broilers or fryers, meat and skin, cooked, roasted",
+  "per100g": {
+   "calories": 239,
+   "protein": 27.3,
+   "carbs": 0.0,
+   "fat": 13.6
+  },
+  "servings": [
+   {
+    "label": "100 g",
+    "grams": 100
+   },
+   {
+    "label": "1 cup, chopped or diced",
+    "grams": 140.0
+   },
+   {
+    "label": "3 oz",
+    "grams": 85.0
+   },
+   {
+    "label": "1/2 unit (yield from 1 lb ready-to-cook ",
+    "grams": 178.0
+   },
+   {
+    "label": "chicken, bone removed",
+    "grams": 299.0
+   }
+  ]
+ },
+ {
+  "key": "usda-171475",
+  "name": "Fried chicken (breast, batter)",
+  "nameAr": "فراخ مقلية",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Chicken, broilers or fryers, breast, meat and skin, cooked, fried, batter",
+  "per100g": {
+   "calories": 260,
+   "protein": 24.8,
+   "carbs": 9.0,
+   "fat": 13.2
+  },
+  "servings": [
+   {
+    "label": "3 oz",
+    "grams": 85.0
+   },
+   {
+    "label": "1/2 unit (yield from 1 lb ready-to-cook ",
+    "grams": 84.0
+   },
+   {
+    "label": "breast, bone removed",
+    "grams": 140.0
+   }
+  ]
+ },
+ {
+  "key": "usda-171496",
+  "name": "Turkey breast, roasted",
+  "nameAr": "ديك رومي",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Turkey, whole, breast, meat only, cooked, roasted",
+  "per100g": {
+   "calories": 147,
+   "protein": 30.1,
+   "carbs": 0.0,
+   "fat": 2.1
+  },
+  "servings": [
+   {
+    "label": "3 oz",
+    "grams": 85.0
+   }
+  ]
+ },
+ {
+  "key": "usda-171794",
+  "name": "Beef, lean minced (90%), cooked",
+  "nameAr": "لحمة مفرومة قليلة الدهن",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Beef, ground, 90% lean meat / 10% fat, crumbles, cooked, pan-browned",
+  "per100g": {
+   "calories": 230,
+   "protein": 28.4,
+   "carbs": 0.0,
+   "fat": 12.0
+  },
+  "servings": [
+   {
+    "label": "3 oz",
+    "grams": 85.0
+   },
+   {
+    "label": "1 portion ( yield from 1/2 lb raw meat )",
+    "grams": 154.0
+   }
+  ]
+ },
+ {
+  "key": "usda-171799",
+  "name": "Beef, minced (80%), cooked",
+  "nameAr": "لحمة مفرومة",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Beef, ground, 80% lean meat / 20% fat, crumbles, cooked, pan-browned",
+  "per100g": {
+   "calories": 272,
+   "protein": 27.0,
+   "carbs": 0.0,
+   "fat": 17.4
+  },
+  "servings": [
+   {
+    "label": "3 oz",
+    "grams": 85.0
+   }
+  ]
+ },
+ {
+  "key": "usda-168727",
+  "name": "Beef steak (sirloin), grilled",
+  "nameAr": "ستيك",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Beef, top sirloin, steak, separable lean and fat, trimmed to 1/8\" fat, all grades, cooked, broiled",
+  "per100g": {
+   "calories": 243,
+   "protein": 27.0,
+   "carbs": 0.0,
+   "fat": 14.2
+  },
+  "servings": [
+   {
+    "label": "1 piece, cooked, excluding refuse (yield",
+    "grams": 306.0
+   },
+   {
+    "label": "3 oz",
+    "grams": 85.0
+   }
+  ]
+ },
+ {
+  "key": "usda-168667",
+  "name": "Beef, stewing (chuck), cooked",
+  "nameAr": "لحمة بقري مسلوقة",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Beef, chuck, arm pot roast, separable lean and fat, trimmed to 1/8\" fat, all grades, cooked, braised",
+  "per100g": {
+   "calories": 302,
+   "protein": 30.1,
+   "carbs": 0.0,
+   "fat": 19.2
+  },
+  "servings": [
+   {
+    "label": "1 piece, cooked, excluding refuse (yield",
+    "grams": 258.0
+   },
+   {
+    "label": "3 oz",
+    "grams": 85.0
+   }
+  ]
+ },
+ {
+  "key": "usda-172544",
+  "name": "Lamb, minced, cooked",
+  "nameAr": "لحم ضاني مفروم",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Lamb, ground, cooked, broiled",
+  "per100g": {
+   "calories": 283,
+   "protein": 24.8,
+   "carbs": 0.0,
+   "fat": 19.6
+  },
+  "servings": [
+   {
+    "label": "3 oz",
+    "grams": 85.0
+   },
+   {
+    "label": "1 unit, cooked (yield from 1 lb raw meat",
+    "grams": 313.0
+   }
+  ]
+ },
+ {
+  "key": "usda-173818",
+  "name": "Veal, cooked",
+  "nameAr": "لحم بتلو",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Veal, leg (top round), separable lean and fat, cooked, braised",
+  "per100g": {
+   "calories": 211,
+   "protein": 36.2,
+   "carbs": 0.0,
+   "fat": 6.3
+  },
+  "servings": [
+   {
+    "label": "3 oz",
+    "grams": 85.0
+   },
+   {
+    "label": "1 unit, cooked (yield from 1 lb raw meat",
+    "grams": 272.0
+   }
+  ]
+ },
+ {
+  "key": "usda-168627",
+  "name": "Beef liver, fried",
+  "nameAr": "كبدة",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Beef, variety meats and by-products, liver, cooked, pan-fried",
+  "per100g": {
+   "calories": 175,
+   "protein": 26.5,
+   "carbs": 5.2,
+   "fat": 4.7
+  },
+  "servings": [
+   {
+    "label": "1 slice",
+    "grams": 81.0
+   },
+   {
+    "label": "3 oz",
+    "grams": 85.0
+   }
+  ]
+ },
+ {
+  "key": "usda-171061",
+  "name": "Chicken liver, cooked",
+  "nameAr": "كبدة فراخ",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Chicken, liver, all classes, cooked, simmered",
+  "per100g": {
+   "calories": 167,
+   "protein": 24.5,
+   "carbs": 0.9,
+   "fat": 6.5
+  },
+  "servings": [
+   {
+    "label": "1 liver",
+    "grams": 44.0
+   },
+   {
+    "label": "3 oz",
+    "grams": 85.0
+   }
+  ]
+ },
+ {
+  "key": "usda-174618",
+  "name": "Beef sausage",
+  "nameAr": "سجق",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Sausage, beef, fresh, cooked",
+  "per100g": {
+   "calories": 332,
+   "protein": 18.2,
+   "carbs": 0.3,
+   "fat": 28.0
+  },
+  "servings": [
+   {
+    "label": "1 serving",
+    "grams": 43.0
+   }
+  ]
+ },
+ {
+  "key": "usda-172012",
+  "name": "Beef luncheon / bologna",
+  "nameAr": "لانشون",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Bologna, beef",
+  "per100g": {
+   "calories": 299,
+   "protein": 10.9,
+   "carbs": 4.3,
+   "fat": 26.1
+  },
+  "servings": [
+   {
+    "label": "1 slice",
+    "grams": 30.0
+   },
+   {
+    "label": "1 serving",
+    "grams": 28.0
+   }
+  ]
+ },
+ {
+  "key": "usda-170204",
+  "name": "Pastrami, beef",
+  "nameAr": "بسطرمة",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Beef, cured, pastrami",
+  "per100g": {
+   "calories": 147,
+   "protein": 21.8,
+   "carbs": 0.4,
+   "fat": 5.8
+  },
+  "servings": [
+   {
+    "label": "1 slice (1 oz)",
+    "grams": 28.0
+   },
+   {
+    "label": "1 package, 2.5 oz",
+    "grams": 71.0
+   }
+  ]
+ },
+ {
+  "key": "usda-172941",
+  "name": "Turkey slices (deli)",
+  "nameAr": "شرائح ديك رومي",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Turkey breast, sliced, prepackaged",
+  "per100g": {
+   "calories": 106,
+   "protein": 14.8,
+   "carbs": 2.2,
+   "fat": 3.8
+  },
+  "servings": [
+   {
+    "label": "1 slice",
+    "grams": 16.0
+   }
+  ]
+ },
+ {
+  "key": "usda-174032",
+  "name": "Beef burger patty, cooked",
+  "nameAr": "برجر لحم",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Beef, ground, 85% lean meat / 15% fat, patty, cooked, broiled",
+  "per100g": {
+   "calories": 250,
+   "protein": 25.9,
+   "carbs": 0.0,
+   "fat": 15.4
+  },
+  "servings": [
+   {
+    "label": "1 patty (yield from 1/4 lb raw meat)",
+    "grams": 77.0
+   },
+   {
+    "label": "3 oz",
+    "grams": 85.0
+   }
+  ]
+ },
+ {
+  "key": "usda-173709",
+  "name": "Tuna, canned in water",
+  "nameAr": "تونة مياه",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Fish, tuna, light, canned in water, drained solids (Includes foods for USDA's Food Distribution Program)",
+  "per100g": {
+   "calories": 86,
+   "protein": 19.4,
+   "carbs": 0.0,
+   "fat": 1.0
+  },
+  "servings": [
+   {
+    "label": "1 can",
+    "grams": 165.0
+   },
+   {
+    "label": "1 can (12.5 oz), drained",
+    "grams": 315.0
+   },
+   {
+    "label": "1 cup, solid or chunks",
+    "grams": 154.0
+   },
+   {
+    "label": "1 oz",
+    "grams": 28.4
+   }
+  ]
+ },
+ {
+  "key": "usda-173708",
+  "name": "Tuna, canned in oil",
+  "nameAr": "تونة زيت",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Fish, tuna, light, canned in oil, drained solids",
+  "per100g": {
+   "calories": 198,
+   "protein": 29.1,
+   "carbs": 0.0,
+   "fat": 8.2
+  },
+  "servings": [
+   {
+    "label": "1 can",
+    "grams": 171.0
+   },
+   {
+    "label": "1 can (12.5 oz), drained",
+    "grams": 321.0
+   },
+   {
+    "label": "1 cup, solid or chunks",
+    "grams": 146.0
+   },
+   {
+    "label": "1 oz",
+    "grams": 28.4
+   }
+  ]
+ },
+ {
+  "key": "usda-175168",
+  "name": "Salmon, cooked",
+  "nameAr": "سالمون",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Fish, salmon, Atlantic, farmed, cooked, dry heat",
+  "per100g": {
+   "calories": 206,
+   "protein": 22.1,
+   "carbs": 0.0,
+   "fat": 12.3
+  },
+  "servings": [
+   {
+    "label": "1/2 fillet",
+    "grams": 178.0
+   },
+   {
+    "label": "3 oz",
+    "grams": 85.0
+   }
+  ]
+ },
+ {
+  "key": "usda-175177",
+  "name": "Tilapia, cooked",
+  "nameAr": "بلطي",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Fish, tilapia, cooked, dry heat",
+  "per100g": {
+   "calories": 128,
+   "protein": 26.1,
+   "carbs": 0.0,
+   "fat": 2.6
+  },
+  "servings": [
+   {
+    "label": "1 fillet",
+    "grams": 87.0
+   }
+  ]
+ },
+ {
+  "key": "usda-171956",
+  "name": "White fish (cod), cooked",
+  "nameAr": "سمك أبيض",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Fish, cod, Atlantic, cooked, dry heat",
+  "per100g": {
+   "calories": 105,
+   "protein": 22.8,
+   "carbs": 0.0,
+   "fat": 0.9
+  },
+  "servings": [
+   {
+    "label": "1 fillet",
+    "grams": 180.0
+   },
+   {
+    "label": "3 oz",
+    "grams": 85.0
+   }
+  ]
+ },
+ {
+  "key": "usda-175139",
+  "name": "Sardines, canned in oil",
+  "nameAr": "سردين",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Fish, sardine, Atlantic, canned in oil, drained solids with bone",
+  "per100g": {
+   "calories": 208,
+   "protein": 24.6,
+   "carbs": 0.0,
+   "fat": 11.4
+  },
+  "servings": [
+   {
+    "label": "1 can (3.75 oz)",
+    "grams": 92.0
+   },
+   {
+    "label": "1 cup, drained",
+    "grams": 149.0
+   },
+   {
+    "label": "1 oz",
+    "grams": 28.4
+   },
+   {
+    "label": "1 cubic inch",
+    "grams": 16.0
+   }
+  ]
+ },
+ {
+  "key": "usda-175120",
+  "name": "Mackerel, cooked",
+  "nameAr": "ماكريل",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Fish, mackerel, Atlantic, cooked, dry heat",
+  "per100g": {
+   "calories": 262,
+   "protein": 23.9,
+   "carbs": 0.0,
+   "fat": 17.8
+  },
+  "servings": [
+   {
+    "label": "1 fillet",
+    "grams": 88.0
+   },
+   {
+    "label": "3 oz",
+    "grams": 85.0
+   }
+  ]
+ },
+ {
+  "key": "usda-175180",
+  "name": "Shrimp, cooked",
+  "nameAr": "جمبري",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Crustaceans, shrimp, cooked",
+  "per100g": {
+   "calories": 99,
+   "protein": 24.0,
+   "carbs": 0.2,
+   "fat": 0.3
+  },
+  "servings": [
+   {
+    "label": "3 oz",
+    "grams": 85.0
+   }
+  ]
+ },
+ {
+  "key": "usda-171982",
+  "name": "Calamari, fried",
+  "nameAr": "كاليماري",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Mollusks, squid, mixed species, cooked, fried",
+  "per100g": {
+   "calories": 175,
+   "protein": 17.9,
+   "carbs": 7.8,
+   "fat": 7.5
+  },
+  "servings": [
+   {
+    "label": "3 oz",
+    "grams": 85.0
+   }
+  ]
+ },
+ {
+  "key": "usda-170457",
+  "name": "Tomato",
+  "nameAr": "طماطم",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Tomatoes, red, ripe, raw, year round average",
+  "per100g": {
+   "calories": 18,
+   "protein": 0.9,
+   "carbs": 3.9,
+   "fat": 0.2
+  },
+  "servings": [
+   {
+    "label": "1 medium whole (2-3/5\" dia)",
+    "grams": 123.0
+   },
+   {
+    "label": "1 slice, medium (1/4\" thick)",
+    "grams": 20.0
+   },
+   {
+    "label": "1 wedge (1/4 of medium tomato)",
+    "grams": 31.0
+   },
+   {
+    "label": "1 large whole (3\" dia)",
+    "grams": 182.0
+   }
+  ]
+ },
+ {
+  "key": "usda-168409",
+  "name": "Cucumber",
+  "nameAr": "خيار",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Cucumber, with peel, raw",
+  "per100g": {
+   "calories": 15,
+   "protein": 0.7,
+   "carbs": 3.6,
+   "fat": 0.1
+  },
+  "servings": [
+   {
+    "label": "1/2 cup slices",
+    "grams": 52.0
+   },
+   {
+    "label": "1 cucumber (8-1/4\")",
+    "grams": 301.0
+   }
+  ]
+ },
+ {
+  "key": "usda-169247",
+  "name": "Lettuce",
+  "nameAr": "خس",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Lettuce, cos or romaine, raw",
+  "per100g": {
+   "calories": 17,
+   "protein": 1.2,
+   "carbs": 3.3,
+   "fat": 0.3
+  },
+  "servings": [
+   {
+    "label": "1 cup shredded",
+    "grams": 47.0
+   },
+   {
+    "label": "1 leaf inner",
+    "grams": 6.0
+   },
+   {
+    "label": "1 leaf outer",
+    "grams": 28.0
+   },
+   {
+    "label": "1 head",
+    "grams": 626.0
+   }
+  ]
+ },
+ {
+  "key": "usda-170000",
+  "name": "Onion",
+  "nameAr": "بصل",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Onions, raw",
+  "per100g": {
+   "calories": 40,
+   "protein": 1.1,
+   "carbs": 9.3,
+   "fat": 0.1
+  },
+  "servings": [
+   {
+    "label": "1 medium (2-1/2\" dia)",
+    "grams": 110.0
+   },
+   {
+    "label": "1 slice, medium (1/8\" thick)",
+    "grams": 14.0
+   },
+   {
+    "label": "1 large",
+    "grams": 150.0
+   },
+   {
+    "label": "1 slice, large (1/4\" thick)",
+    "grams": 38.0
+   }
+  ]
+ },
+ {
+  "key": "usda-169230",
+  "name": "Garlic",
+  "nameAr": "ثوم",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Garlic, raw",
+  "per100g": {
+   "calories": 149,
+   "protein": 6.4,
+   "carbs": 33.1,
+   "fat": 0.5
+  },
+  "servings": [
+   {
+    "label": "1 cup",
+    "grams": 136.0
+   },
+   {
+    "label": "1 tsp",
+    "grams": 2.8
+   },
+   {
+    "label": "1 clove",
+    "grams": 3.0
+   },
+   {
+    "label": "3 cloves",
+    "grams": 9.0
+   }
+  ]
+ },
+ {
+  "key": "usda-170393",
+  "name": "Carrot",
+  "nameAr": "جزر",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Carrots, raw",
+  "per100g": {
+   "calories": 41,
+   "protein": 0.9,
+   "carbs": 9.6,
+   "fat": 0.2
+  },
+  "servings": [
+   {
+    "label": "1 medium",
+    "grams": 61.0
+   },
+   {
+    "label": "1 strip medium",
+    "grams": 4.0
+   },
+   {
+    "label": "1 large (7-1/4\" to 8-/1/2\" long)",
+    "grams": 72.0
+   },
+   {
+    "label": "1 slice",
+    "grams": 3.0
+   }
+  ]
+ },
+ {
+  "key": "usda-170438",
+  "name": "Potato, boiled",
+  "nameAr": "بطاطس مسلوقة",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Potatoes, boiled, cooked in skin, flesh, without salt",
+  "per100g": {
+   "calories": 87,
+   "protein": 1.9,
+   "carbs": 20.1,
+   "fat": 0.1
+  },
+  "servings": [
+   {
+    "label": "1/2 cup",
+    "grams": 78.0
+   },
+   {
+    "label": "1 potato (2-1/2\" dia, sphere)",
+    "grams": 136.0
+   }
+  ]
+ },
+ {
+  "key": "usda-170093",
+  "name": "Potato, baked",
+  "nameAr": "بطاطس مشوية",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Potatoes, baked, flesh and skin, without salt",
+  "per100g": {
+   "calories": 93,
+   "protein": 2.5,
+   "carbs": 21.1,
+   "fat": 0.1
+  },
+  "servings": [
+   {
+    "label": "1 potato medium",
+    "grams": 173.0
+   },
+   {
+    "label": "1 potato large",
+    "grams": 299.0
+   },
+   {
+    "label": "1 NLEA serving",
+    "grams": 148.0
+   },
+   {
+    "label": "1 potato small",
+    "grams": 138.0
+   }
+  ]
+ },
+ {
+  "key": "usda-170118",
+  "name": "French fries",
+  "nameAr": "بطاطس محمرة",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Potatoes, french fried, all types, salt not added in processing, frozen, oven-heated",
+  "per100g": {
+   "calories": 168,
+   "protein": 2.7,
+   "carbs": 28.7,
+   "fat": 5.2
+  },
+  "servings": [
+   {
+    "label": "10 strip",
+    "grams": 74.0
+   }
+  ]
+ },
+ {
+  "key": "usda-168555",
+  "name": "Mashed potatoes",
+  "nameAr": "بطاطس بيوريه",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Potatoes, mashed, home-prepared, whole milk and butter added",
+  "per100g": {
+   "calories": 113,
+   "protein": 1.9,
+   "carbs": 16.8,
+   "fat": 4.2
+  },
+  "servings": [
+   {
+    "label": "1 cup",
+    "grams": 210.0
+   }
+  ]
+ },
+ {
+  "key": "usda-168483",
+  "name": "Sweet potato, baked",
+  "nameAr": "بطاطا",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Sweet potato, cooked, baked in skin, flesh, without salt",
+  "per100g": {
+   "calories": 90,
+   "protein": 2.0,
+   "carbs": 20.7,
+   "fat": 0.1
+  },
+  "servings": [
+   {
+    "label": "1 medium (2\" dia, 5\" long, raw)",
+    "grams": 114.0
+   },
+   {
+    "label": "1 large",
+    "grams": 180.0
+   },
+   {
+    "label": "1 cup",
+    "grams": 200.0
+   },
+   {
+    "label": "1 small",
+    "grams": 60.0
+   }
+  ]
+ },
+ {
+  "key": "usda-170427",
+  "name": "Bell pepper",
+  "nameAr": "فلفل رومي",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Peppers, sweet, green, raw",
+  "per100g": {
+   "calories": 20,
+   "protein": 0.9,
+   "carbs": 4.6,
+   "fat": 0.2
+  },
+  "servings": [
+   {
+    "label": "1 medium (approx 2-3/4\" long, 2-1/2\" dia",
+    "grams": 119.0
+   },
+   {
+    "label": "1 large (2-1/4 per lb, approx 3-3/4\" lon",
+    "grams": 164.0
+   },
+   {
+    "label": "1 cup, chopped",
+    "grams": 149.0
+   },
+   {
+    "label": "1 cup, sliced",
+    "grams": 92.0
+   }
+  ]
+ },
+ {
+  "key": "usda-169291",
+  "name": "Zucchini",
+  "nameAr": "كوسة",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Squash, summer, zucchini, includes skin, raw",
+  "per100g": {
+   "calories": 17,
+   "protein": 1.2,
+   "carbs": 3.1,
+   "fat": 0.3
+  },
+  "servings": [
+   {
+    "label": "1 medium",
+    "grams": 196.0
+   },
+   {
+    "label": "1 large",
+    "grams": 323.0
+   },
+   {
+    "label": "1 slice",
+    "grams": 9.9
+   },
+   {
+    "label": "1 cup, chopped",
+    "grams": 124.0
+   }
+  ]
+ },
+ {
+  "key": "usda-169228",
+  "name": "Eggplant",
+  "nameAr": "باذنجان",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Eggplant, raw",
+  "per100g": {
+   "calories": 25,
+   "protein": 1.0,
+   "carbs": 5.9,
+   "fat": 0.2
+  },
+  "servings": [
+   {
+    "label": "1 cup, cubes",
+    "grams": 82.0
+   },
+   {
+    "label": "1 eggplant, peeled (yield from 1-1/4 lb)",
+    "grams": 458.0
+   },
+   {
+    "label": "1 eggplant, unpeeled (approx 1-1/4 lb)",
+    "grams": 548.0
+   }
+  ]
+ },
+ {
+  "key": "usda-169260",
+  "name": "Okra",
+  "nameAr": "بامية",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Okra, raw",
+  "per100g": {
+   "calories": 33,
+   "protein": 1.9,
+   "carbs": 7.5,
+   "fat": 0.2
+  },
+  "servings": [
+   {
+    "label": "1 cup",
+    "grams": 100.0
+   },
+   {
+    "label": "8 pods (3\" long)",
+    "grams": 95.0
+   }
+  ]
+ },
+ {
+  "key": "usda-168462",
+  "name": "Spinach",
+  "nameAr": "سبانخ",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Spinach, raw",
+  "per100g": {
+   "calories": 23,
+   "protein": 2.9,
+   "carbs": 3.6,
+   "fat": 0.4
+  },
+  "servings": [
+   {
+    "label": "1 cup",
+    "grams": 30.0
+   },
+   {
+    "label": "1 bunch",
+    "grams": 340.0
+   },
+   {
+    "label": "1 leaf",
+    "grams": 10.0
+   },
+   {
+    "label": "1 package (10 oz)",
+    "grams": 284.0
+   }
+  ]
+ },
+ {
+  "key": "usda-168419",
+  "name": "Molokhia leaves (jute, raw)",
+  "nameAr": "ملوخية خضراء",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Jute, potherb, raw",
+  "per100g": {
+   "calories": 34,
+   "protein": 4.7,
+   "carbs": 5.8,
+   "fat": 0.2
+  },
+  "servings": [
+   {
+    "label": "1 cup",
+    "grams": 28.0
+   }
+  ]
+ },
+ {
+  "key": "usda-169975",
+  "name": "Cabbage",
+  "nameAr": "كرنب",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Cabbage, raw",
+  "per100g": {
+   "calories": 25,
+   "protein": 1.3,
+   "carbs": 5.8,
+   "fat": 0.1
+  },
+  "servings": [
+   {
+    "label": "1 leaf, medium",
+    "grams": 23.0
+   },
+   {
+    "label": "1 leaf, large",
+    "grams": 33.0
+   },
+   {
+    "label": "1 cup, chopped",
+    "grams": 89.0
+   },
+   {
+    "label": "1 cup, shredded",
+    "grams": 70.0
+   }
+  ]
+ },
+ {
+  "key": "usda-169986",
+  "name": "Cauliflower",
+  "nameAr": "قرنبيط",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Cauliflower, raw",
+  "per100g": {
+   "calories": 25,
+   "protein": 1.9,
+   "carbs": 5.0,
+   "fat": 0.3
+  },
+  "servings": [
+   {
+    "label": "1 head medium (5-6\" dia.)",
+    "grams": 588.0
+   },
+   {
+    "label": "1 cup chopped (1/2\" pieces)",
+    "grams": 107.0
+   },
+   {
+    "label": "1 floweret",
+    "grams": 13.0
+   },
+   {
+    "label": "1 head small (4\" dia.)",
+    "grams": 265.0
+   }
+  ]
+ },
+ {
+  "key": "usda-170379",
+  "name": "Broccoli",
+  "nameAr": "بروكلي",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Broccoli, raw",
+  "per100g": {
+   "calories": 34,
+   "protein": 2.8,
+   "carbs": 6.6,
+   "fat": 0.4
+  },
+  "servings": [
+   {
+    "label": "1 cup chopped",
+    "grams": 91.0
+   },
+   {
+    "label": "1 bunch",
+    "grams": 608.0
+   },
+   {
+    "label": "1 spear (about 5\" long)",
+    "grams": 31.0
+   },
+   {
+    "label": "1 stalk",
+    "grams": 151.0
+   }
+  ]
+ },
+ {
+  "key": "usda-169961",
+  "name": "Green beans",
+  "nameAr": "فاصوليا خضراء",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Beans, snap, green, raw",
+  "per100g": {
+   "calories": 31,
+   "protein": 1.8,
+   "carbs": 7.0,
+   "fat": 0.2
+  },
+  "servings": [
+   {
+    "label": "1 cup 1/2\" pieces",
+    "grams": 100.0
+   },
+   {
+    "label": "10 beans (4\" long)",
+    "grams": 55.0
+   }
+  ]
+ },
+ {
+  "key": "usda-170419",
+  "name": "Green peas",
+  "nameAr": "بسلة",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Peas, green, raw",
+  "per100g": {
+   "calories": 81,
+   "protein": 5.4,
+   "carbs": 14.4,
+   "fat": 0.4
+  },
+  "servings": [
+   {
+    "label": "1 cup",
+    "grams": 145.0
+   }
+  ]
+ },
+ {
+  "key": "usda-169998",
+  "name": "Corn, sweet",
+  "nameAr": "ذرة",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Corn, sweet, yellow, raw",
+  "per100g": {
+   "calories": 86,
+   "protein": 3.3,
+   "carbs": 18.7,
+   "fat": 1.4
+  },
+  "servings": [
+   {
+    "label": "1 ear, medium (6-3/4\" to 7-1/2\" long) yi",
+    "grams": 102.0
+   },
+   {
+    "label": "1 ear, large (7-3/4\" to 9\" long) yields",
+    "grams": 143.0
+   },
+   {
+    "label": "1 cup",
+    "grams": 145.0
+   },
+   {
+    "label": "1 ear, small (5-1/2\" to 6-1/2\" long)",
+    "grams": 73.0
+   }
+  ]
+ },
+ {
+  "key": "usda-169251",
+  "name": "Mushrooms",
+  "nameAr": "مشروم",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Mushrooms, white, raw",
+  "per100g": {
+   "calories": 22,
+   "protein": 3.1,
+   "carbs": 3.3,
+   "fat": 0.3
+  },
+  "servings": [
+   {
+    "label": "1 medium",
+    "grams": 18.0
+   },
+   {
+    "label": "1 large",
+    "grams": 23.0
+   },
+   {
+    "label": "1 slice",
+    "grams": 6.0
+   },
+   {
+    "label": "1 cup, pieces or slices",
+    "grams": 70.0
+   }
+  ]
+ },
+ {
+  "key": "usda-169205",
+  "name": "Artichoke",
+  "nameAr": "خرشوف",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Artichokes, (globe or french), raw",
+  "per100g": {
+   "calories": 47,
+   "protein": 3.3,
+   "carbs": 10.5,
+   "fat": 0.1
+  },
+  "servings": [
+   {
+    "label": "1 artichoke, medium",
+    "grams": 128.0
+   },
+   {
+    "label": "1 artichoke, large",
+    "grams": 162.0
+   }
+  ]
+ },
+ {
+  "key": "usda-169145",
+  "name": "Beetroot",
+  "nameAr": "بنجر",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Beets, raw",
+  "per100g": {
+   "calories": 43,
+   "protein": 1.6,
+   "carbs": 9.6,
+   "fat": 0.2
+  },
+  "servings": [
+   {
+    "label": "1 cup",
+    "grams": 136.0
+   },
+   {
+    "label": "1 beet (2\" dia)",
+    "grams": 82.0
+   }
+  ]
+ },
+ {
+  "key": "usda-169387",
+  "name": "Rocket (arugula)",
+  "nameAr": "جرجير",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Arugula, raw",
+  "per100g": {
+   "calories": 25,
+   "protein": 2.6,
+   "carbs": 3.6,
+   "fat": 0.7
+  },
+  "servings": [
+   {
+    "label": "1 leaf",
+    "grams": 2.0
+   },
+   {
+    "label": "1/2 cup",
+    "grams": 10.0
+   }
+  ]
+ },
+ {
+  "key": "usda-170416",
+  "name": "Parsley",
+  "nameAr": "بقدونس",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Parsley, fresh",
+  "per100g": {
+   "calories": 36,
+   "protein": 3.0,
+   "carbs": 6.3,
+   "fat": 0.8
+  },
+  "servings": [
+   {
+    "label": "1 cup chopped",
+    "grams": 60.0
+   },
+   {
+    "label": "1 tbsp",
+    "grams": 3.8
+   },
+   {
+    "label": "10 sprigs",
+    "grams": 10.0
+   }
+  ]
+ },
+ {
+  "key": "usda-171705",
+  "name": "Avocado",
+  "nameAr": "أفوكادو",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Avocados, raw, all commercial varieties",
+  "per100g": {
+   "calories": 160,
+   "protein": 2.0,
+   "carbs": 8.5,
+   "fat": 14.7
+  },
+  "servings": [
+   {
+    "label": "1 cup, cubes",
+    "grams": 150.0
+   },
+   {
+    "label": "1 cup, pureed",
+    "grams": 230.0
+   },
+   {
+    "label": "1 cup, sliced",
+    "grams": 146.0
+   },
+   {
+    "label": "1 avocado, NS as to Florida or Californi",
+    "grams": 201.0
+   }
+  ]
+ },
+ {
+  "key": "usda-169096",
+  "name": "Olives, green",
+  "nameAr": "زيتون أخضر",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Olives, pickled, canned or bottled, green",
+  "per100g": {
+   "calories": 145,
+   "protein": 1.0,
+   "carbs": 3.8,
+   "fat": 15.3
+  },
+  "servings": [
+   {
+    "label": "1 olive",
+    "grams": 2.7
+   }
+  ]
+ },
+ {
+  "key": "usda-169094",
+  "name": "Olives, black",
+  "nameAr": "زيتون أسود",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Olives, ripe, canned (small-extra large)",
+  "per100g": {
+   "calories": 116,
+   "protein": 0.8,
+   "carbs": 6.0,
+   "fat": 10.9
+  },
+  "servings": [
+   {
+    "label": "1 large",
+    "grams": 4.4
+   },
+   {
+    "label": "1 tbsp",
+    "grams": 8.4
+   },
+   {
+    "label": "1 small",
+    "grams": 3.2
+   }
+  ]
+ },
+ {
+  "key": "usda-173944",
+  "name": "Banana",
+  "nameAr": "موز",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Bananas, raw",
+  "per100g": {
+   "calories": 89,
+   "protein": 1.1,
+   "carbs": 22.8,
+   "fat": 0.3
+  },
+  "servings": [
+   {
+    "label": "1 medium (7\" to 7-7/8\" long)",
+    "grams": 118.0
+   },
+   {
+    "label": "1 large (8\" to 8-7/8\" long)",
+    "grams": 136.0
+   },
+   {
+    "label": "1 extra large (9\" or longer)",
+    "grams": 152.0
+   },
+   {
+    "label": "1 cup, mashed",
+    "grams": 225.0
+   }
+  ]
+ },
+ {
+  "key": "usda-171688",
+  "name": "Apple",
+  "nameAr": "تفاح",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Apples, raw, with skin (Includes foods for USDA's Food Distribution Program)",
+  "per100g": {
+   "calories": 52,
+   "protein": 0.3,
+   "carbs": 13.8,
+   "fat": 0.2
+  },
+  "servings": [
+   {
+    "label": "1 medium (3\" dia)",
+    "grams": 182.0
+   },
+   {
+    "label": "1 large (3-1/4\" dia)",
+    "grams": 223.0
+   },
+   {
+    "label": "1 cup, quartered or chopped",
+    "grams": 125.0
+   },
+   {
+    "label": "1 cup slices",
+    "grams": 109.0
+   }
+  ]
+ },
+ {
+  "key": "usda-169097",
+  "name": "Orange",
+  "nameAr": "برتقال",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Oranges, raw, all commercial varieties",
+  "per100g": {
+   "calories": 47,
+   "protein": 0.9,
+   "carbs": 11.8,
+   "fat": 0.1
+  },
+  "servings": [
+   {
+    "label": "1 large (3-1/16\" dia)",
+    "grams": 184.0
+   },
+   {
+    "label": "1 fruit (2-5/8\" dia)",
+    "grams": 131.0
+   },
+   {
+    "label": "1 cup, sections",
+    "grams": 180.0
+   },
+   {
+    "label": "1 small (2-3/8\" dia)",
+    "grams": 96.0
+   }
+  ]
+ },
+ {
+  "key": "usda-169105",
+  "name": "Mandarin / tangerine",
+  "nameAr": "يوسفي",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Tangerines, (mandarin oranges), raw",
+  "per100g": {
+   "calories": 53,
+   "protein": 0.8,
+   "carbs": 13.3,
+   "fat": 0.3
+  },
+  "servings": [
+   {
+    "label": "1 medium (2-1/2\" dia)",
+    "grams": 88.0
+   },
+   {
+    "label": "1 large (2-3/4\" dia)",
+    "grams": 120.0
+   },
+   {
+    "label": "1 cup, sections",
+    "grams": 195.0
+   },
+   {
+    "label": "1 small (2-1/4\" dia)",
+    "grams": 76.0
+   }
+  ]
+ },
+ {
+  "key": "usda-174683",
+  "name": "Grapes",
+  "nameAr": "عنب",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Grapes, red or green (European type, such as Thompson seedless), raw",
+  "per100g": {
+   "calories": 69,
+   "protein": 0.7,
+   "carbs": 18.1,
+   "fat": 0.2
+  },
+  "servings": [
+   {
+    "label": "1 cup",
+    "grams": 151.0
+   },
+   {
+    "label": "10 grapes",
+    "grams": 49.0
+   },
+   {
+    "label": "1 NLEA serving",
+    "grams": 126.0
+   }
+  ]
+ },
+ {
+  "key": "usda-169910",
+  "name": "Mango",
+  "nameAr": "مانجو",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Mangos, raw",
+  "per100g": {
+   "calories": 60,
+   "protein": 0.8,
+   "carbs": 15.0,
+   "fat": 0.4
+  },
+  "servings": [
+   {
+    "label": "1 fruit without refuse",
+    "grams": 336.0
+   },
+   {
+    "label": "1 cup pieces",
+    "grams": 165.0
+   }
+  ]
+ },
+ {
+  "key": "usda-173044",
+  "name": "Guava",
+  "nameAr": "جوافة",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Guavas, common, raw",
+  "per100g": {
+   "calories": 68,
+   "protein": 2.5,
+   "carbs": 14.3,
+   "fat": 0.9
+  },
+  "servings": [
+   {
+    "label": "1 fruit, without refuse",
+    "grams": 55.0
+   },
+   {
+    "label": "1 cup",
+    "grams": 165.0
+   }
+  ]
+ },
+ {
+  "key": "usda-167765",
+  "name": "Watermelon",
+  "nameAr": "بطيخ",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Watermelon, raw",
+  "per100g": {
+   "calories": 30,
+   "protein": 0.6,
+   "carbs": 7.5,
+   "fat": 0.1
+  },
+  "servings": [
+   {
+    "label": "1 cup, balls",
+    "grams": 154.0
+   },
+   {
+    "label": "1 cup, diced",
+    "grams": 152.0
+   },
+   {
+    "label": "1 wedge (approx 1/16 of melon)",
+    "grams": 286.0
+   },
+   {
+    "label": "10 watermelon balls",
+    "grams": 122.0
+   }
+  ]
+ },
+ {
+  "key": "usda-169092",
+  "name": "Cantaloupe",
+  "nameAr": "كانتالوب",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Melons, cantaloupe, raw",
+  "per100g": {
+   "calories": 34,
+   "protein": 0.8,
+   "carbs": 8.2,
+   "fat": 0.2
+  },
+  "servings": [
+   {
+    "label": "1 melon, medium (about 5\" dia)",
+    "grams": 552.0
+   },
+   {
+    "label": "1 wedge, medium (1/8 of medium melon)",
+    "grams": 69.0
+   },
+   {
+    "label": "1 wedge, large (1/8 of large melon)",
+    "grams": 102.0
+   },
+   {
+    "label": "1 cup, balls",
+    "grams": 177.0
+   }
+  ]
+ },
+ {
+  "key": "usda-167762",
+  "name": "Strawberries",
+  "nameAr": "فراولة",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Strawberries, raw",
+  "per100g": {
+   "calories": 32,
+   "protein": 0.7,
+   "carbs": 7.7,
+   "fat": 0.3
+  },
+  "servings": [
+   {
+    "label": "1 medium (1-1/4\" dia)",
+    "grams": 12.0
+   },
+   {
+    "label": "1 extra large (1-5/8\" dia)",
+    "grams": 27.0
+   },
+   {
+    "label": "1 large (1-3/8\" dia)",
+    "grams": 18.0
+   },
+   {
+    "label": "1 cup, halves",
+    "grams": 152.0
+   }
+  ]
+ },
+ {
+  "key": "usda-169134",
+  "name": "Pomegranate",
+  "nameAr": "رمان",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Pomegranates, raw",
+  "per100g": {
+   "calories": 83,
+   "protein": 1.7,
+   "carbs": 18.7,
+   "fat": 1.2
+  },
+  "servings": [
+   {
+    "label": "1/2 cup arils (seed/juice sacs)",
+    "grams": 87.0
+   },
+   {
+    "label": "1 pomegranate (4\" dia)",
+    "grams": 282.0
+   }
+  ]
+ },
+ {
+  "key": "usda-173021",
+  "name": "Figs, fresh",
+  "nameAr": "تين",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Figs, raw",
+  "per100g": {
+   "calories": 74,
+   "protein": 0.8,
+   "carbs": 19.2,
+   "fat": 0.3
+  },
+  "servings": [
+   {
+    "label": "1 medium (2-1/4\" dia)",
+    "grams": 50.0
+   },
+   {
+    "label": "1 large (2-1/2\" dia)",
+    "grams": 64.0
+   },
+   {
+    "label": "1 small (1-1/2\" dia)",
+    "grams": 40.0
+   }
+  ]
+ },
+ {
+  "key": "usda-171726",
+  "name": "Dates",
+  "nameAr": "بلح / تمر",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Dates, deglet noor",
+  "per100g": {
+   "calories": 282,
+   "protein": 2.5,
+   "carbs": 75.0,
+   "fat": 0.4
+  },
+  "servings": [
+   {
+    "label": "1 date, pitted",
+    "grams": 7.1
+   },
+   {
+    "label": "1 cup, chopped",
+    "grams": 147.0
+   }
+  ]
+ },
+ {
+  "key": "usda-168191",
+  "name": "Medjool dates",
+  "nameAr": "تمر مجدول",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Dates, medjool",
+  "per100g": {
+   "calories": 277,
+   "protein": 1.8,
+   "carbs": 75.0,
+   "fat": 0.1
+  },
+  "servings": [
+   {
+    "label": "1 date, pitted",
+    "grams": 24.0
+   }
+  ]
+ },
+ {
+  "key": "usda-169928",
+  "name": "Peach",
+  "nameAr": "خوخ",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Peaches, yellow, raw",
+  "per100g": {
+   "calories": 39,
+   "protein": 0.9,
+   "carbs": 9.5,
+   "fat": 0.2
+  },
+  "servings": [
+   {
+    "label": "1 medium (2-2/3\" dia)",
+    "grams": 150.0
+   },
+   {
+    "label": "1 large (2-3/4\" dia)",
+    "grams": 175.0
+   },
+   {
+    "label": "1 extra large (3\" dia)",
+    "grams": 224.0
+   },
+   {
+    "label": "1 cup slices",
+    "grams": 154.0
+   }
+  ]
+ },
+ {
+  "key": "usda-171697",
+  "name": "Apricot",
+  "nameAr": "مشمش",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Apricots, raw",
+  "per100g": {
+   "calories": 48,
+   "protein": 1.4,
+   "carbs": 11.1,
+   "fat": 0.4
+  },
+  "servings": [
+   {
+    "label": "1 cup, halves",
+    "grams": 155.0
+   },
+   {
+    "label": "1 cup, sliced",
+    "grams": 165.0
+   },
+   {
+    "label": "1 apricot",
+    "grams": 35.0
+   }
+  ]
+ },
+ {
+  "key": "usda-169118",
+  "name": "Pear",
+  "nameAr": "كمثرى",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Pears, raw",
+  "per100g": {
+   "calories": 57,
+   "protein": 0.4,
+   "carbs": 15.2,
+   "fat": 0.1
+  },
+  "servings": [
+   {
+    "label": "1 medium",
+    "grams": 178.0
+   },
+   {
+    "label": "1 large",
+    "grams": 230.0
+   },
+   {
+    "label": "1 cup, slices",
+    "grams": 140.0
+   },
+   {
+    "label": "1 cup, cubes",
+    "grams": 161.0
+   }
+  ]
+ },
+ {
+  "key": "usda-168153",
+  "name": "Kiwi",
+  "nameAr": "كيوي",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Kiwifruit, green, raw",
+  "per100g": {
+   "calories": 61,
+   "protein": 1.1,
+   "carbs": 14.7,
+   "fat": 0.5
+  },
+  "servings": [
+   {
+    "label": "1 fruit (2\" dia)",
+    "grams": 69.0
+   },
+   {
+    "label": "1 cup, sliced",
+    "grams": 180.0
+   },
+   {
+    "label": "1 NLEA serving",
+    "grams": 148.0
+   }
+  ]
+ },
+ {
+  "key": "usda-169124",
+  "name": "Pineapple",
+  "nameAr": "أناناس",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Pineapple, raw, all varieties",
+  "per100g": {
+   "calories": 50,
+   "protein": 0.5,
+   "carbs": 13.1,
+   "fat": 0.1
+  },
+  "servings": [
+   {
+    "label": "1 slice (4-2/3\" dia x 3/4\" thick)",
+    "grams": 166.0
+   },
+   {
+    "label": "1 slice (3-1/2\" dia x 3/4\" thick)",
+    "grams": 84.0
+   },
+   {
+    "label": "1 slice, thin (3-1/2\" dia x 1/2\" thick)",
+    "grams": 56.0
+   },
+   {
+    "label": "1 cup, chunks",
+    "grams": 165.0
+   }
+  ]
+ },
+ {
+  "key": "usda-167747",
+  "name": "Lemon juice",
+  "nameAr": "عصير ليمون",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Lemon juice, raw",
+  "per100g": {
+   "calories": 22,
+   "protein": 0.3,
+   "carbs": 6.9,
+   "fat": 0.2
+  },
+  "servings": [
+   {
+    "label": "1 cup",
+    "grams": 244.0
+   },
+   {
+    "label": "1 fl oz",
+    "grams": 30.5
+   },
+   {
+    "label": "1 lemon yields",
+    "grams": 48.0
+   },
+   {
+    "label": "1 wedge yields",
+    "grams": 5.9
+   }
+  ]
+ },
+ {
+  "key": "usda-168165",
+  "name": "Raisins",
+  "nameAr": "زبيب",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Raisins, dark, seedless (Includes foods for USDA's Food Distribution Program)",
+  "per100g": {
+   "calories": 299,
+   "protein": 3.3,
+   "carbs": 79.3,
+   "fat": 0.2
+  },
+  "servings": [
+   {
+    "label": "1 cup, packed",
+    "grams": 165.0
+   },
+   {
+    "label": "1 cup (not packed)",
+    "grams": 145.0
+   },
+   {
+    "label": "1 miniature box (.5 oz)",
+    "grams": 14.0
+   },
+   {
+    "label": "1 small box (1.5 oz)",
+    "grams": 43.0
+   }
+  ]
+ },
+ {
+  "key": "usda-173941",
+  "name": "Dried apricots (amar el din style)",
+  "nameAr": "مشمش مجفف",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Apricots, dried, sulfured, uncooked",
+  "per100g": {
+   "calories": 241,
+   "protein": 3.4,
+   "carbs": 62.6,
+   "fat": 0.5
+  },
+  "servings": [
+   {
+    "label": "1 cup, halves",
+    "grams": 130.0
+   },
+   {
+    "label": "1 half",
+    "grams": 3.5
+   }
+  ]
+ },
+ {
+  "key": "usda-169098",
+  "name": "Orange juice",
+  "nameAr": "عصير برتقال",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Orange juice, raw (Includes foods for USDA's Food Distribution Program)",
+  "per100g": {
+   "calories": 45,
+   "protein": 0.7,
+   "carbs": 10.4,
+   "fat": 0.2
+  },
+  "servings": [
+   {
+    "label": "1 fruit yields",
+    "grams": 86.0
+   },
+   {
+    "label": "1 cup",
+    "grams": 248.0
+   },
+   {
+    "label": "1 fl oz",
+    "grams": 31.0
+   }
+  ]
+ },
+ {
+  "key": "usda-173933",
+  "name": "Apple juice",
+  "nameAr": "عصير تفاح",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Apple juice, canned or bottled, unsweetened, without added ascorbic acid",
+  "per100g": {
+   "calories": 46,
+   "protein": 0.1,
+   "carbs": 11.3,
+   "fat": 0.1
+  },
+  "servings": [
+   {
+    "label": "1 cup",
+    "grams": 248.0
+   },
+   {
+    "label": "1 fl oz",
+    "grams": 31.0
+   },
+   {
+    "label": "1 drink box (8.45 fl oz)",
+    "grams": 262.0
+   }
+  ]
+ },
+ {
+  "key": "usda-170567",
+  "name": "Almonds",
+  "nameAr": "لوز",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Nuts, almonds",
+  "per100g": {
+   "calories": 579,
+   "protein": 21.1,
+   "carbs": 21.6,
+   "fat": 49.9
+  },
+  "servings": [
+   {
+    "label": "100 g",
+    "grams": 100
+   },
+   {
+    "label": "1 cup, whole",
+    "grams": 143.0
+   },
+   {
+    "label": "1 cup, sliced",
+    "grams": 92.0
+   },
+   {
+    "label": "1 cup, slivered",
+    "grams": 108.0
+   },
+   {
+    "label": "1 cup, ground",
+    "grams": 95.0
+   }
+  ]
+ },
+ {
+  "key": "usda-173806",
+  "name": "Peanuts, roasted",
+  "nameAr": "سوداني",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Peanuts, all types, dry-roasted, without salt",
+  "per100g": {
+   "calories": 587,
+   "protein": 24.4,
+   "carbs": 21.3,
+   "fat": 49.7
+  },
+  "servings": [
+   {
+    "label": "100 g",
+    "grams": 100
+   },
+   {
+    "label": "1 cup",
+    "grams": 146.0
+   },
+   {
+    "label": "1 oz",
+    "grams": 28.4
+   },
+   {
+    "label": "1 peanut",
+    "grams": 1.0
+   }
+  ]
+ },
+ {
+  "key": "usda-170187",
+  "name": "Walnuts",
+  "nameAr": "عين جمل",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Nuts, walnuts, english",
+  "per100g": {
+   "calories": 654,
+   "protein": 15.2,
+   "carbs": 13.7,
+   "fat": 65.2
+  },
+  "servings": [
+   {
+    "label": "100 g",
+    "grams": 100
+   },
+   {
+    "label": "1 cup, chopped",
+    "grams": 117.0
+   },
+   {
+    "label": "1 cup, ground",
+    "grams": 80.0
+   },
+   {
+    "label": "1 cup, in shell, edible yield (7 nuts)",
+    "grams": 28.0
+   },
+   {
+    "label": "1 cup shelled (50 halves)",
+    "grams": 100.0
+   }
+  ]
+ },
+ {
+  "key": "usda-170571",
+  "name": "Cashews",
+  "nameAr": "كاجو",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Nuts, cashew nuts, dry roasted, without salt added",
+  "per100g": {
+   "calories": 574,
+   "protein": 15.3,
+   "carbs": 32.7,
+   "fat": 46.4
+  },
+  "servings": [
+   {
+    "label": "1 tbsp",
+    "grams": 8.6
+   },
+   {
+    "label": "1 cup, halves and whole",
+    "grams": 137.0
+   },
+   {
+    "label": "1 oz",
+    "grams": 28.4
+   }
+  ]
+ },
+ {
+  "key": "usda-170185",
+  "name": "Pistachios",
+  "nameAr": "فستق",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Nuts, pistachio nuts, dry roasted, without salt added",
+  "per100g": {
+   "calories": 572,
+   "protein": 21.1,
+   "carbs": 28.3,
+   "fat": 45.8
+  },
+  "servings": [
+   {
+    "label": "100 g",
+    "grams": 100
+   },
+   {
+    "label": "1 cup",
+    "grams": 123.0
+   },
+   {
+    "label": "1 oz (49 kernels)",
+    "grams": 28.4
+   },
+   {
+    "label": "1 kernel",
+    "grams": 0.7
+   }
+  ]
+ },
+ {
+  "key": "usda-170581",
+  "name": "Hazelnuts",
+  "nameAr": "بندق",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Nuts, hazelnuts or filberts",
+  "per100g": {
+   "calories": 628,
+   "protein": 14.9,
+   "carbs": 16.7,
+   "fat": 60.8
+  },
+  "servings": [
+   {
+    "label": "100 g",
+    "grams": 100
+   },
+   {
+    "label": "1 cup, chopped",
+    "grams": 115.0
+   },
+   {
+    "label": "1 cup, ground",
+    "grams": 75.0
+   },
+   {
+    "label": "1 cup, whole",
+    "grams": 135.0
+   },
+   {
+    "label": "1 oz (21 whole kernels)",
+    "grams": 28.4
+   }
+  ]
+ },
+ {
+  "key": "usda-170563",
+  "name": "Sunflower seeds (lib)",
+  "nameAr": "لب سوري",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Seeds, sunflower seed kernels, dry roasted, without salt",
+  "per100g": {
+   "calories": 582,
+   "protein": 19.3,
+   "carbs": 24.1,
+   "fat": 49.8
+  },
+  "servings": [
+   {
+    "label": "100 g",
+    "grams": 100
+   },
+   {
+    "label": "1 cup",
+    "grams": 128.0
+   },
+   {
+    "label": "1 oz",
+    "grams": 28.4
+   }
+  ]
+ },
+ {
+  "key": "usda-170557",
+  "name": "Pumpkin seeds (lib)",
+  "nameAr": "لب أبيض",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Seeds, pumpkin and squash seed kernels, roasted, without salt",
+  "per100g": {
+   "calories": 574,
+   "protein": 29.8,
+   "carbs": 14.7,
+   "fat": 49.0
+  },
+  "servings": [
+   {
+    "label": "100 g",
+    "grams": 100
+   },
+   {
+    "label": "1 cup",
+    "grams": 118.0
+   },
+   {
+    "label": "1 oz",
+    "grams": 28.4
+   }
+  ]
+ },
+ {
+  "key": "usda-169407",
+  "name": "Watermelon seeds (lib)",
+  "nameAr": "لب أسمر",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Seeds, watermelon seed kernels, dried",
+  "per100g": {
+   "calories": 557,
+   "protein": 28.3,
+   "carbs": 15.3,
+   "fat": 47.4
+  },
+  "servings": [
+   {
+    "label": "100 g",
+    "grams": 100
+   },
+   {
+    "label": "1 cup",
+    "grams": 108.0
+   },
+   {
+    "label": "1 oz",
+    "grams": 28.4
+   }
+  ]
+ },
+ {
+  "key": "usda-170150",
+  "name": "Sesame seeds",
+  "nameAr": "سمسم",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Seeds, sesame seeds, whole, dried",
+  "per100g": {
+   "calories": 573,
+   "protein": 17.7,
+   "carbs": 23.4,
+   "fat": 49.7
+  },
+  "servings": [
+   {
+    "label": "1 tbsp",
+    "grams": 9.0
+   },
+   {
+    "label": "1 cup",
+    "grams": 144.0
+   }
+  ]
+ },
+ {
+  "key": "usda-170554",
+  "name": "Chia seeds",
+  "nameAr": "بذور الشيا",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Seeds, chia seeds, dried",
+  "per100g": {
+   "calories": 486,
+   "protein": 16.5,
+   "carbs": 42.1,
+   "fat": 30.7
+  },
+  "servings": [
+   {
+    "label": "1 oz",
+    "grams": 28.4
+   }
+  ]
+ },
+ {
+  "key": "usda-171413",
+  "name": "Olive oil",
+  "nameAr": "زيت زيتون",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Oil, olive, salad or cooking",
+  "per100g": {
+   "calories": 884,
+   "protein": 0.0,
+   "carbs": 0.0,
+   "fat": 100.0
+  },
+  "servings": [
+   {
+    "label": "1 tablespoon",
+    "grams": 13.5
+   },
+   {
+    "label": "1 cup",
+    "grams": 216.0
+   },
+   {
+    "label": "1 tsp",
+    "grams": 4.5
+   }
+  ]
+ },
+ {
+  "key": "usda-171017",
+  "name": "Vegetable oil",
+  "nameAr": "زيت",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Oil, sunflower, linoleic (less than 60%)",
+  "per100g": {
+   "calories": 884,
+   "protein": 0.0,
+   "carbs": 0.0,
+   "fat": 100.0
+  },
+  "servings": [
+   {
+    "label": "1 tbsp",
+    "grams": 13.6
+   },
+   {
+    "label": "1 cup",
+    "grams": 218.0
+   },
+   {
+    "label": "1 tsp",
+    "grams": 4.5
+   }
+  ]
+ },
+ {
+  "key": "usda-169655",
+  "name": "Sugar",
+  "nameAr": "سكر",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Sugars, granulated",
+  "per100g": {
+   "calories": 387,
+   "protein": 0.0,
+   "carbs": 100.0,
+   "fat": 0.0
+  },
+  "servings": [
+   {
+    "label": "1 serving packet",
+    "grams": 2.8
+   },
+   {
+    "label": "1 serving 1 cube",
+    "grams": 2.3
+   },
+   {
+    "label": "1 cup",
+    "grams": 200.0
+   },
+   {
+    "label": "1 tsp",
+    "grams": 4.2
+   }
+  ]
+ },
+ {
+  "key": "usda-169640",
+  "name": "Honey",
+  "nameAr": "عسل نحل",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Honey",
+  "per100g": {
+   "calories": 304,
+   "protein": 0.3,
+   "carbs": 82.4,
+   "fat": 0.0
+  },
+  "servings": [
+   {
+    "label": "1 cup",
+    "grams": 339.0
+   },
+   {
+    "label": "1 tbsp",
+    "grams": 21.0
+   },
+   {
+    "label": "1 packet (0.5 oz)",
+    "grams": 14.0
+   }
+  ]
+ },
+ {
+  "key": "usda-168820",
+  "name": "Molasses (black honey)",
+  "nameAr": "عسل أسود",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Molasses",
+  "per100g": {
+   "calories": 290,
+   "protein": 0.0,
+   "carbs": 74.7,
+   "fat": 0.1
+  },
+  "servings": [
+   {
+    "label": "1 serving 1 tbsp",
+    "grams": 20.0
+   },
+   {
+    "label": "1 cup",
+    "grams": 337.0
+   }
+  ]
+ },
+ {
+  "key": "usda-169641",
+  "name": "Jam",
+  "nameAr": "مربى",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Jams and preserves",
+  "per100g": {
+   "calories": 278,
+   "protein": 0.4,
+   "carbs": 68.9,
+   "fat": 0.1
+  },
+  "servings": [
+   {
+    "label": "1 tbsp",
+    "grams": 20.0
+   },
+   {
+    "label": "1 packet (0.5 oz)",
+    "grams": 14.0
+   }
+  ]
+ },
+ {
+  "key": "usda-171009",
+  "name": "Mayonnaise",
+  "nameAr": "مايونيز",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Salad dressing, mayonnaise, regular",
+  "per100g": {
+   "calories": 680,
+   "protein": 1.0,
+   "carbs": 0.6,
+   "fat": 74.8
+  },
+  "servings": [
+   {
+    "label": "1 tbsp",
+    "grams": 13.8
+   },
+   {
+    "label": "1 cup",
+    "grams": 220.0
+   },
+   {
+    "label": "1 packet",
+    "grams": 10.0
+   }
+  ]
+ },
+ {
+  "key": "usda-168556",
+  "name": "Ketchup",
+  "nameAr": "كاتشب",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Catsup",
+  "per100g": {
+   "calories": 101,
+   "protein": 1.0,
+   "carbs": 27.4,
+   "fat": 0.1
+  },
+  "servings": [
+   {
+    "label": "1 cup",
+    "grams": 240.0
+   },
+   {
+    "label": "1 tbsp",
+    "grams": 17.0
+   },
+   {
+    "label": "1 packet",
+    "grams": 9.0
+   }
+  ]
+ },
+ {
+  "key": "usda-170273",
+  "name": "Dark chocolate (70–85%)",
+  "nameAr": "شوكولاتة داكنة",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Chocolate, dark, 70-85% cacao solids",
+  "per100g": {
+   "calories": 598,
+   "protein": 7.8,
+   "carbs": 45.9,
+   "fat": 42.6
+  },
+  "servings": [
+   {
+    "label": "1 bar",
+    "grams": 101.0
+   },
+   {
+    "label": "1 oz",
+    "grams": 28.4
+   }
+  ]
+ },
+ {
+  "key": "usda-167587",
+  "name": "Milk chocolate",
+  "nameAr": "شوكولاتة باللبن",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Candies, milk chocolate",
+  "per100g": {
+   "calories": 535,
+   "protein": 7.7,
+   "carbs": 59.4,
+   "fat": 29.7
+  },
+  "servings": [
+   {
+    "label": "1 bar, miniature",
+    "grams": 7.0
+   },
+   {
+    "label": "1 bar (1.55 oz)",
+    "grams": 44.0
+   },
+   {
+    "label": "1 cup chips",
+    "grams": 168.0
+   }
+  ]
+ },
+ {
+  "key": "usda-167575",
+  "name": "Ice cream, vanilla",
+  "nameAr": "آيس كريم",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Ice creams, vanilla",
+  "per100g": {
+   "calories": 207,
+   "protein": 3.5,
+   "carbs": 23.6,
+   "fat": 11.0
+  },
+  "servings": [
+   {
+    "label": "1 serving 1/2 cup",
+    "grams": 66.0
+   }
+  ]
+ },
+ {
+  "key": "usda-169677",
+  "name": "Potato chips",
+  "nameAr": "شيبسي",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Snacks, potato chips, plain, salted",
+  "per100g": {
+   "calories": 532,
+   "protein": 6.4,
+   "carbs": 53.8,
+   "fat": 34.0
+  },
+  "servings": [
+   {
+    "label": "1 oz",
+    "grams": 28.0
+   },
+   {
+    "label": "22 chips",
+    "grams": 28.0
+   },
+   {
+    "label": "1 bag (8 oz)",
+    "grams": 227.0
+   }
+  ]
+ },
+ {
+  "key": "usda-174950",
+  "name": "Biscuits / cookies (butter)",
+  "nameAr": "بسكويت",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Cookies, butter, commercially prepared, enriched",
+  "per100g": {
+   "calories": 467,
+   "protein": 6.1,
+   "carbs": 68.9,
+   "fat": 18.8
+  },
+  "servings": [
+   {
+    "label": "1 cookie",
+    "grams": 5.0
+   },
+   {
+    "label": "1 oz",
+    "grams": 28.4
+   }
+  ]
+ },
+ {
+  "key": "usda-172704",
+  "name": "Cake, plain",
+  "nameAr": "كيك",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Cake, pound, commercially prepared, butter (includes fresh and frozen)",
+  "per100g": {
+   "calories": 353,
+   "protein": 5.0,
+   "carbs": 53.6,
+   "fat": 14.0
+  },
+  "servings": [
+   {
+    "label": "1 piece individually wrapped cake",
+    "grams": 49.0
+   },
+   {
+    "label": "0.16 loaf 1/6 of the loaf",
+    "grams": 61.0
+   }
+  ]
+ },
+ {
+  "key": "usda-172758",
+  "name": "Donut, glazed",
+  "nameAr": "دونات",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Doughnuts, yeast-leavened, glazed, enriched (includes honey buns)",
+  "per100g": {
+   "calories": 421,
+   "protein": 6.1,
+   "carbs": 47.9,
+   "fat": 22.7
+  },
+  "servings": [
+   {
+    "label": "1 doughnut medium (approx 3-3/4\" dia)",
+    "grams": 64.0
+   },
+   {
+    "label": "1 doughnut, medium (approx 3-3/4\" dia)",
+    "grams": 60.0
+   },
+   {
+    "label": "1 extra large (approx 5\" dia)",
+    "grams": 122.0
+   },
+   {
+    "label": "1 doughnut, large (approx 4-1/4\" dia)",
+    "grams": 75.0
+   }
+  ]
+ },
+ {
+  "key": "usda-169588",
+  "name": "Halva (sesame)",
+  "nameAr": "حلاوة طحينية",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Candies, sesame crunch",
+  "per100g": {
+   "calories": 516,
+   "protein": 11.6,
+   "carbs": 50.3,
+   "fat": 33.3
+  },
+  "servings": [
+   {
+    "label": "1 piece",
+    "grams": 1.8
+   },
+   {
+    "label": "1 oz",
+    "grams": 28.4
+   },
+   {
+    "label": "20 pieces",
+    "grams": 35.0
+   }
+  ]
+ },
+ {
+  "key": "usda-168782",
+  "name": "Rice pudding",
+  "nameAr": "أرز باللبن",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Puddings, rice, ready-to-eat",
+  "per100g": {
+   "calories": 108,
+   "protein": 3.2,
+   "carbs": 18.4,
+   "fat": 2.1
+  },
+  "servings": [
+   {
+    "label": "1 can (5 oz)",
+    "grams": 142.0
+   },
+   {
+    "label": "1 cup",
+    "grams": 172.0
+   },
+   {
+    "label": "1 serving 4 oz pudding cup",
+    "grams": 113.0
+   },
+   {
+    "label": "1 oz",
+    "grams": 28.4
+   }
+  ]
+ },
+ {
+  "key": "usda-175009",
+  "name": "Pancakes",
+  "nameAr": "بان كيك",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Pancakes, plain, prepared from recipe",
+  "per100g": {
+   "calories": 227,
+   "protein": 6.4,
+   "carbs": 28.3,
+   "fat": 9.7
+  },
+  "servings": [
+   {
+    "label": "1 pancake (4\" dia)",
+    "grams": 38.0
+   },
+   {
+    "label": "1 pancake (6\" dia)",
+    "grams": 77.0
+   },
+   {
+    "label": "1 oz",
+    "grams": 28.4
+   }
+  ]
+ },
+ {
+  "key": "usda-175039",
+  "name": "Waffles",
+  "nameAr": "وافل",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Waffles, plain, prepared from recipe",
+  "per100g": {
+   "calories": 291,
+   "protein": 7.9,
+   "carbs": 32.9,
+   "fat": 14.1
+  },
+  "servings": [
+   {
+    "label": "1 waffle, round (7\" dia)",
+    "grams": 75.0
+   },
+   {
+    "label": "1 oz",
+    "grams": 28.4
+   }
+  ]
+ },
+ {
+  "key": "usda-173227",
+  "name": "Tea, black, unsweetened",
+  "nameAr": "شاي",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Beverages, tea, black, brewed, prepared with tap water",
+  "per100g": {
+   "calories": 1,
+   "protein": 0.0,
+   "carbs": 0.3,
+   "fat": 0.0
+  },
+  "servings": [
+   {
+    "label": "1 cup (8 fl oz)",
+    "grams": 237.0
+   },
+   {
+    "label": "1 fl oz",
+    "grams": 29.6
+   },
+   {
+    "label": "6 fl oz",
+    "grams": 178.0
+   }
+  ]
+ },
+ {
+  "key": "usda-171890",
+  "name": "Coffee, black",
+  "nameAr": "قهوة",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Beverages, coffee, brewed, prepared with tap water",
+  "per100g": {
+   "calories": 1,
+   "protein": 0.1,
+   "carbs": 0.0,
+   "fat": 0.0
+  },
+  "servings": [
+   {
+    "label": "1 cup (8 fl oz)",
+    "grams": 237.0
+   },
+   {
+    "label": "1 fl oz",
+    "grams": 29.6
+   },
+   {
+    "label": "6 fl oz",
+    "grams": 178.0
+   }
+  ]
+ },
+ {
+  "key": "usda-171891",
+  "name": "Espresso",
+  "nameAr": "إسبريسو",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Beverages, coffee, brewed, espresso, restaurant-prepared",
+  "per100g": {
+   "calories": 9,
+   "protein": 0.1,
+   "carbs": 1.7,
+   "fat": 0.2
+  },
+  "servings": [
+   {
+    "label": "1 fl oz",
+    "grams": 29.6
+   }
+  ]
+ },
+ {
+  "key": "usda-174852",
+  "name": "Cola",
+  "nameAr": "كولا",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Beverages, carbonated, cola, regular",
+  "per100g": {
+   "calories": 42,
+   "protein": 0.0,
+   "carbs": 10.4,
+   "fat": 0.2
+  },
+  "servings": [
+   {
+    "label": "1 drink, medium (22 fl oz)",
+    "grams": 676.0
+   },
+   {
+    "label": "1 can or bottle (12 fl oz)",
+    "grams": 370.0
+   },
+   {
+    "label": "1 can or bottle (16 fl oz)",
+    "grams": 492.0
+   },
+   {
+    "label": "1 fl oz",
+    "grams": 30.7
+   }
+  ]
+ },
+ {
+  "key": "usda-175099",
+  "name": "Diet cola",
+  "nameAr": "كولا دايت",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Beverages, carbonated, low calorie, cola or pepper-type, with aspartame, contains caffeine",
+  "per100g": {
+   "calories": 2,
+   "protein": 0.1,
+   "carbs": 0.3,
+   "fat": 0.0
+  },
+  "servings": [
+   {
+    "label": "1 serving medium 21 fl oz",
+    "grams": 486.0
+   },
+   {
+    "label": "1 can can 12 fl oz",
+    "grams": 355.0
+   },
+   {
+    "label": "1 serving child 12 fl oz",
+    "grams": 258.0
+   },
+   {
+    "label": "1 serving small 16 fl oz",
+    "grams": 347.0
+   }
+  ]
+ },
+ {
+  "key": "usda-174123",
+  "name": "Hot chocolate",
+  "nameAr": "شوكولاتة سخنة",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Beverages, Cocoa mix, powder, prepared with water",
+  "per100g": {
+   "calories": 55,
+   "protein": 0.9,
+   "carbs": 11.5,
+   "fat": 0.6
+  },
+  "servings": [
+   {
+    "label": "1 serving 6 fl oz",
+    "grams": 206.0
+   },
+   {
+    "label": "1 fl oz",
+    "grams": 34.3
+   }
+  ]
+ },
+ {
+  "key": "usda-174863",
+  "name": "Beer, non-alcoholic",
+  "nameAr": "بيرة بدون كحول",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Malt beverage, includes non-alcoholic beer",
+  "per100g": {
+   "calories": 37,
+   "protein": 0.2,
+   "carbs": 8.1,
+   "fat": 0.1
+  },
+  "servings": [
+   {
+    "label": "1 cup",
+    "grams": 237.0
+   },
+   {
+    "label": "1 fl oz",
+    "grams": 29.6
+   }
+  ]
+ },
+ {
+  "key": "usda-173180",
+  "name": "Protein powder (whey)",
+  "nameAr": "واي بروتين",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Beverages, Protein powder whey based",
+  "per100g": {
+   "calories": 352,
+   "protein": 78.1,
+   "carbs": 6.2,
+   "fat": 1.6
+  },
+  "servings": [
+   {
+    "label": "0.33 cup",
+    "grams": 32.0
+   }
+  ]
+ },
+ {
+  "key": "usda-170174",
+  "name": "Coconut water",
+  "nameAr": "ماء جوز الهند",
+  "kind": "generic",
+  "source": "usda",
+  "usda": "Nuts, coconut water (liquid from coconuts)",
+  "per100g": {
+   "calories": 19,
+   "protein": 0.7,
+   "carbs": 3.7,
+   "fat": 0.2
+  },
+  "servings": [
+   {
+    "label": "1 cup",
+    "grams": 240.0
+   },
+   {
+    "label": "1 tbsp",
+    "grams": 15.0
+   },
+   {
+    "label": "1 coconut yields",
+    "grams": 206.0
+   }
+  ]
+ }
+]
