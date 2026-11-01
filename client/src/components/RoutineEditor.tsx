@@ -77,32 +77,35 @@ export function RoutineEditor({ open, routine, onClose }: { open: boolean; routi
               <li key={`${r.exerciseId}-${i}`} className={clsx('rounded-2xl border border-line p-3', slots[i] && 'border-l-4 border-l-brand')}>
                 <div className="flex items-center gap-2">
                   <div className="min-w-0 flex-1">
-                    <p className="flex items-center gap-2 truncate font-semibold">
+                    <p className="flex items-center gap-2 font-semibold">
                       {slots[i] && <SupersetBadge slot={slots[i]} />}
-                      {r.name}
+                      <span className="truncate">{r.name}</span>
                     </p>
                     <p className="text-xs text-muted">{MUSCLE_LABEL[r.muscleGroup]}</p>
                   </div>
-                  <IconButton label={`Move ${r.name} up`} disabled={i === 0} onClick={() => move(i, -1)} className="size-9">
-                    <ArrowUp className="size-4" />
-                  </IconButton>
-                  <IconButton label={`Move ${r.name} down`} disabled={i === rows.length - 1} onClick={() => move(i, 1)} className="size-9">
-                    <ArrowDown className="size-4" />
-                  </IconButton>
-                  {slots[i] && slots[i].index < slots[i].size - 1 ? (
-                    <IconButton label={`Unlink ${r.name} from the next exercise`} onClick={() => setRows((rs) => splitAfter(rs, i))} className="size-9 text-brand">
-                      <Unlink className="size-4" />
+                  {/* 44px targets with no gap between them: the button padding already separates the icons */}
+                  <div className="-mr-2 flex shrink-0">
+                    <IconButton label={`Move ${r.name} up`} disabled={i === 0} onClick={() => move(i, -1)}>
+                      <ArrowUp className="size-4" />
                     </IconButton>
-                  ) : (
-                    i < rows.length - 1 && (
-                      <IconButton label={`Superset ${r.name} with the next exercise`} onClick={() => setRows((rs) => linkWithNext(rs, i))} className="size-9">
-                        <Link2 className="size-4" />
+                    <IconButton label={`Move ${r.name} down`} disabled={i === rows.length - 1} onClick={() => move(i, 1)}>
+                      <ArrowDown className="size-4" />
+                    </IconButton>
+                    {slots[i] && slots[i].index < slots[i].size - 1 ? (
+                      <IconButton label={`Unlink ${r.name} from the next exercise`} onClick={() => setRows((rs) => splitAfter(rs, i))} className="text-brand">
+                        <Unlink className="size-4" />
                       </IconButton>
-                    )
-                  )}
-                  <IconButton label={`Remove ${r.name}`} onClick={() => setRows((rs) => rs.filter((_, j) => j !== i))} className="size-9">
-                    <Trash className="size-4" />
-                  </IconButton>
+                    ) : (
+                      i < rows.length - 1 && (
+                        <IconButton label={`Superset ${r.name} with the next exercise`} onClick={() => setRows((rs) => linkWithNext(rs, i))}>
+                          <Link2 className="size-4" />
+                        </IconButton>
+                      )
+                    )}
+                    <IconButton label={`Remove ${r.name}`} onClick={() => setRows((rs) => rs.filter((_, j) => j !== i))}>
+                      <Trash className="size-4" />
+                    </IconButton>
+                  </div>
                 </div>
                 <div className="mt-2 grid grid-cols-2 gap-2">
                   <label className="flex items-center gap-2 text-sm text-muted">

@@ -5,7 +5,7 @@ import { motion } from 'motion/react';
 import { clsx } from 'clsx';
 import { ChevronLeft, Clock, Dumbbell, Flame, Link2, Pencil, Layers, Trash, Trophy, TrendingDown, TrendingUp } from 'lucide-react';
 import { api, type WorkoutDetail as Detail } from '../lib/api';
-import { fmtDay, fmtDuration, fmtInt, MUSCLE_LABEL, pctChange, useUnits } from '../lib/format';
+import { fmtDay, fmtDuration, fmtInt, MUSCLE_LABEL, pctChange, plural, useUnits } from '../lib/format';
 import { Badge, Button, IconButton, Sheet, Skeleton, SupersetBadge, useToast } from '../components/ui';
 import { supersetSlots, uid, useActiveWorkout, workoutStore } from '../lib/activeWorkout';
 
@@ -54,7 +54,8 @@ export default function WorkoutDetail() {
         name: e.name,
         muscleGroup: e.muscleGroup,
         superset: e.supersetGroup != null ? `s${e.supersetGroup}` : undefined,
-        sets: e.sets.map((s) => ({ key: uid(), weight: String(u.weight(s.weightKg)), reps: String(s.reps), done: true, isWarmup: s.isWarmup })),
+        // 2 decimals, like storage: re-saving must not round 41.25 kg to 41.3.
+        sets: e.sets.map((s) => ({ key: uid(), weight: String(u.weight(s.weightKg, 2)), reps: String(s.reps), done: true, isWarmup: s.isWarmup })),
       })),
     });
     navigate('/train/log');
@@ -98,7 +99,7 @@ export default function WorkoutDetail() {
       {/* Muscle split for this session */}
       <section className="card p-5">
         <h2 className="label mb-3">Sets by muscle</h2>
-        <div className="flex h-3 overflow-hidden rounded-full" role="img" aria-label={[...muscleSets].map(([m, n]) => `${MUSCLE_LABEL[m]} ${n} sets`).join(', ')}>
+        <div className="flex h-3 overflow-hidden rounded-full" role="img" aria-label={[...muscleSets].map(([m, n]) => `${MUSCLE_LABEL[m]} ${plural(n, 'set')}`).join(', ')}>
           {[...muscleSets].map(([m, n], i) => (
             <motion.span
               key={m}

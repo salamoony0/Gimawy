@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { z } from 'zod';
 import type { Prisma } from '@prisma/client';
-import { prisma, HttpError, zDay, param } from '../lib/core.js';
+import { prisma, HttpError, zDay, param, roundKg } from '../lib/core.js';
 import { assertExercisesVisible, loadManualRecords, loadTraining, normalizeSupersets, recordProgressions, summarize } from '../lib/training.js';
 
 export const trainingRouter = Router();
@@ -174,8 +174,7 @@ function nestedExercises(exercises: z.infer<typeof workoutInput>['exercises']) {
         create: e.sets.map((s, j) => ({
           order: j,
           reps: s.reps,
-          // lb inputs convert to long decimals; 2dp keeps the round trip exact on display.
-          weightKg: Math.round(s.weightKg * 100) / 100,
+          weightKg: roundKg(s.weightKg),
           rpe: s.rpe ?? null,
           isWarmup: s.isWarmup ?? false,
         })),
@@ -209,23 +208,28 @@ trainingRouter.get('/workouts/:id', async (req, res) => {
 trainingRouter.post('/workouts', async (req, res) => {
   const body = workoutInput.parse(req.body);
   await assertExercisesVisible(req.userId, body.exercises.map((e) => e.exerciseId));
-  // An offline save is replayed until a response arrives, so the same session may be posted twice.
-  // startedAt identifies a session, so answer with the one already saved instead of duplicating it.
-  const existing = await prisma.workout.findFirst({ where: { userId: req.userId, startedAt: body.startedAt }, select: { id: true } });
-  if (existing) return void res.status(200).json(existing);
-  const w = await prisma.workout.create({
-    data: {
-      userId: req.userId,
-      name: body.name,
-      date: body.date,
-      startedAt: body.startedAt,
-      endedAt: body.endedAt ?? new Date(),
-      notes: body.notes ?? null,
-      calories: body.calories ?? null,
-      exercises: nestedExercises(body.exercises),
-    },
+  // An offline save is replayed until a response arrives, and a double tap sends it twice at once.
+  // startedAt identifies a session, so answer with the one already saved instead of duplicating it; the per-user
+  // advisory lock makes the check and the insert atomic.
+  const saved = await prisma.$transaction(async (tx) => {
+    await tx.$queryRaw`SELECT pg_advisory_xact_lock(hashtext(${req.userId}))::text`;
+    const existing = await tx.workout.findFirst({ where: { userId: req.userId, startedAt: body.startedAt }, select: { id: true } });
+    if (existing) return { id: existing.id, created: false };
+    const w = await tx.workout.create({
+      data: {
+        userId: req.userId,
+        name: body.name,
+        date: body.date,
+        startedAt: body.startedAt,
+        endedAt: body.endedAt ?? new Date(),
+        notes: body.notes ?? null,
+        calories: body.calories ?? null,
+        exercises: nestedExercises(body.exercises),
+      },
+    });
+    return { id: w.id, created: true };
   });
-  res.status(201).json({ id: w.id });
+  res.status(saved.created ? 201 : 200).json({ id: saved.id });
 });
 
 trainingRouter.put('/workouts/:id', async (req, res) => {
@@ -300,7 +304,7 @@ trainingRouter.post('/records', async (req, res) => {
     .parse(req.body);
   await assertExercisesVisible(req.userId, [body.exerciseId]);
   const r = await prisma.personalRecord.create({
-    data: { ...body, weightKg: Math.round(body.weightKg * 100) / 100, userId: req.userId },
+    data: { ...body, weightKg: roundKg(body.weightKg), userId: req.userId },
   });
   res.status(201).json(r);
 });

@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { api, isQueued, syncOutbox } from './api';
+import { workoutStore } from './activeWorkout';
 import { outbox, setOutboxOwner } from './offline';
 
 const ok = (body: unknown = {}, status = 200) => new Response(JSON.stringify(body), { status });
@@ -28,6 +29,40 @@ describe('api.offline', () => {
     vi.stubGlobal('fetch', vi.fn(async () => ok({ error: 'Invalid input' }, 400)));
     await expect(api.offline('POST', '/food', {}, 'Bad')).rejects.toThrow('Invalid input');
     expect(outbox.mine()).toHaveLength(0);
+  });
+});
+
+describe('idempotency keys', () => {
+  const keyOf = (call: unknown[]) => new Headers((call[1] as RequestInit).headers).get('Idempotency-Key');
+
+  it('a queued POST is replayed with the key its first attempt used', async () => {
+    const first = vi.fn(async () => Promise.reject(new TypeError('connection reset')));
+    vi.stubGlobal('fetch', first);
+    await api.offline('POST', '/food', { items: [] }, 'Oats');
+    const replay = vi.fn(async () => ok({ created: 1 }, 201));
+    vi.stubGlobal('fetch', replay);
+    await syncOutbox();
+    expect(keyOf(first.mock.calls[0])).toMatch(/.{16,}/);
+    expect(keyOf(replay.mock.calls[0])).toBe(keyOf(first.mock.calls[0]));
+  });
+
+  it('every new POST gets its own key; PUT and PATCH need none', async () => {
+    const fetch = vi.fn(async () => ok());
+    vi.stubGlobal('fetch', fetch);
+    await api.offline('POST', '/food', {}, 'a');
+    await api.offline('POST', '/food', {}, 'b');
+    await api.offline('PUT', '/body/2026-10-01', {}, 'c');
+    const keys = fetch.mock.calls.map(keyOf);
+    expect(keys[0]).not.toBe(keys[1]);
+    expect(keys[2]).toBeNull();
+  });
+
+  it('keeps an entry the server is still saving (409) for the next sync', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () => Promise.reject(new TypeError('offline'))));
+    await api.offline('POST', '/food', {}, 'busy');
+    vi.stubGlobal('fetch', vi.fn(async () => ok({ error: 'This entry is still being saved' }, 409)));
+    expect(await syncOutbox()).toEqual({ sent: 0, failed: [] });
+    expect(outbox.mine()).toHaveLength(1);
   });
 });
 
@@ -71,5 +106,18 @@ describe('syncOutbox', () => {
     expect(fetch).not.toHaveBeenCalled();
     setOutboxOwner('user-a');
     expect(outbox.mine().map((i) => i.label)).toEqual(['mine']);
+  });
+});
+
+describe('switching accounts on one device', () => {
+  it('drops the unfinished workout when a different account signs in, keeps it for the same one', () => {
+    setOutboxOwner('user-a');
+    workoutStore.start('A’s legs');
+    setOutboxOwner(null); // log out
+    setOutboxOwner('user-a'); // and back in
+    expect(workoutStore.get()?.name).toBe('A’s legs');
+    setOutboxOwner(null);
+    setOutboxOwner('user-b');
+    expect(workoutStore.get()).toBeNull();
   });
 });

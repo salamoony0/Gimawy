@@ -111,6 +111,16 @@ describe('cross-user isolation', () => {
     }
   });
 
+  it('B reusing A’s Idempotency-Key gets a fresh request, not A’s stored answer', async () => {
+    const meal = (name: string) => ({ date, meal: 'dinner', items: [{ name, calories: 100, protein: 1, carbs: 1, fat: 1 }] });
+    await a.agent.post('/api/cardio').set('Idempotency-Key', 'shared-key').send({ type: 'walk', date, durationMin: 11 });
+    const res = await b.agent.post('/api/food').set('Idempotency-Key', 'shared-key').send(meal('B soup'));
+    expect(res.status).toBe(201);
+    expect(res.body).toEqual({ created: 1 });
+    expect((await b.agent.get(`/api/food?date=${date}`)).body.map((f: { name: string }) => f.name)).toContain('B soup');
+    await a.agent.delete(`/api/cardio/${(await a.agent.get('/api/cardio')).body.find((c: { durationMin: number }) => c.durationMin === 11).id}`);
+  });
+
   it('A’s data is untouched after all of that', async () => {
     const workout = await a.agent.get(`/api/workouts/${ids.workout}`);
     expect(workout.body.exercises[0].sets[0].weightKg).toBe(80);

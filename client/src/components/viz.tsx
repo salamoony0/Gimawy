@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { motion } from 'motion/react';
 import { clsx } from 'clsx';
-import { fmtDay, parseDay } from '../lib/format';
+import { fmtDay, parseDay, plural } from '../lib/format';
 
 // ---------- Rings ----------
 
@@ -157,7 +157,7 @@ export function Heatmap({
               <span>T</span>
               <span>S</span>
             </div>
-            <div className="flex gap-[3px]" role="img" aria-label={`Activity over the last ${weeks.length} weeks: ${active} active days`}>
+            <div className="flex gap-[3px]" role="img" aria-label={`Activity over the last ${weeks.length} weeks: ${plural(active, 'active day')}`}>
               {weeks.map((w, wi) => (
                 <div key={wi} className="flex flex-col gap-[3px]">
                   {w.map((d) => {
@@ -232,10 +232,12 @@ export function ChartTooltip({
   labelFormat?: (l: string) => string;
 }) {
   if (!active || !payload?.length) return null;
+  // An Area and a Line drawn over the same series both report it (Recharts 3 ignores tooltipType="none").
+  const rows = payload.filter((p, i) => payload.findIndex((q) => q.dataKey === p.dataKey) === i);
   return (
     <div className="rounded-xl border border-line-strong bg-surface-2/95 px-3 py-2 text-xs shadow-xl shadow-black/50 backdrop-blur">
       {label != null && <p className="mb-1 font-semibold text-fg">{labelFormat ? labelFormat(String(label)) : label}</p>}
-      {payload.map((p) => (
+      {rows.map((p) => (
         <p key={String(p.dataKey)} className="num flex items-center gap-2 text-muted">
           <span className="size-2 rounded-full" style={{ background: p.color }} aria-hidden />
           {p.name}:{' '}

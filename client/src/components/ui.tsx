@@ -29,7 +29,7 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 export function buttonClass(variant: ButtonProps['variant'] = 'primary', size: ButtonProps['size'] = 'md', className?: string) {
   return clsx(
     'inline-flex cursor-pointer select-none items-center justify-center gap-2 rounded-xl font-semibold transition-[background-color,transform,opacity,border-color] duration-150 active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100',
-    size === 'sm' && 'min-h-9 px-3 text-sm',
+    size === 'sm' && 'min-h-11 px-3 text-sm',
     size === 'md' && 'min-h-11 px-4 text-[15px]',
     size === 'lg' && 'min-h-13 px-6 text-base',
     variant === 'primary' && 'bg-brand text-on-brand hover:bg-brand-strong',
@@ -136,7 +136,7 @@ export function Segmented<T extends string>({
   className?: string;
 }) {
   return (
-    <div role="radiogroup" aria-label={label} className={clsx('flex rounded-xl border border-line bg-surface p-1', className)}>
+    <div role="radiogroup" aria-label={label} className={clsx('flex rounded-xl border border-line bg-surface p-0.5', className)}>
       {options.map((o) => {
         const active = o.value === value;
         return (
@@ -147,7 +147,7 @@ export function Segmented<T extends string>({
             aria-checked={active}
             onClick={() => onChange(o.value)}
             className={clsx(
-              'relative flex min-h-9 flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-lg px-3 text-sm font-semibold transition-colors duration-150',
+              'relative flex min-h-11 flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-lg px-3 text-sm font-semibold transition-colors duration-150',
               active ? 'text-on-brand' : 'text-muted hover:text-fg',
             )}
           >

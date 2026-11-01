@@ -40,6 +40,16 @@ export const apiLimiter = rateLimit({
   keyGenerator: (req) => `user:${req.userId}`,
 });
 
+/** Routes that check the current password (change password, delete account): 10 wrong answers per 15 min per user,
+ *  so a stolen session can't be used to guess the password. */
+export const passwordCheckLimiter = rateLimit({
+  ...base,
+  windowMs: 15 * 60_000,
+  limit: 10,
+  skipSuccessfulRequests: true,
+  keyGenerator: (req) => `pw:${req.userId}`,
+});
+
 /** AI scans are slow and cost quota: 10 per minute per user, on top of the daily cap. */
 export const aiLimiter = rateLimit({
   ...base,

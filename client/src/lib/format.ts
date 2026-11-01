@@ -54,6 +54,9 @@ export function fmtDuration(min: number | null | undefined) {
 
 export const fmtInt = (n: number) => Math.round(n).toLocaleString();
 
+/** "1 set", "3 sets" (regular nouns only). */
+export const plural = (n: number, noun: string) => `${n} ${n === 1 ? noun : `${noun}s`}`;
+
 export function fmtCompact(n: number) {
   if (Math.abs(n) >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
   if (Math.abs(n) >= 10_000) return `${Math.round(n / 1000)}k`;

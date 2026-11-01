@@ -23,7 +23,7 @@ import {
   Zap,
 } from 'lucide-react';
 import { api, isQueued, type CardioSession, type CardioType, type Routine, type WorkoutSummary } from '../lib/api';
-import { fmtCompact, fmtDay, fmtDuration, localDay, MUSCLE_LABEL, relativeDay, shiftDay, useMe, useUnits } from '../lib/format';
+import { fmtCompact, fmtDay, fmtDuration, localDay, MUSCLE_LABEL, plural, relativeDay, shiftDay, useMe, useUnits } from '../lib/format';
 import { BURN_METHOD_LABEL, estimateCardio, profileFor } from '../lib/energy';
 import { PageHeader } from '../components/Layout';
 import { Badge, Button, buttonClass, EmptyState, Field, IconButton, Input, Segmented, Select, Sheet, Skeleton, useToast } from '../components/ui';
@@ -123,10 +123,10 @@ function Strength() {
                 <div className="flex items-start justify-between gap-2">
                   <h3 className="font-display text-xl font-semibold tracking-wide">{r.name}</h3>
                   <div className="-mr-2 -mt-2 flex">
-                    <IconButton label={`Edit routine ${r.name}`} className="size-9" onClick={() => setRoutineEdit({ routine: r })}>
+                    <IconButton label={`Edit routine ${r.name}`} onClick={() => setRoutineEdit({ routine: r })}>
                       <Pencil className="size-4" />
                     </IconButton>
-                    <IconButton label={`Delete routine ${r.name}`} className="size-9" onClick={() => del.mutate(r.id)}>
+                    <IconButton label={`Delete routine ${r.name}`} onClick={() => del.mutate(r.id)}>
                       <Trash className="size-4" />
                     </IconButton>
                   </div>
@@ -177,7 +177,7 @@ function Strength() {
                 <div className="mb-2 flex items-baseline justify-between">
                   <h3 className="label">{fmtDay(`${month}-01`, { month: 'long', year: 'numeric' })}</h3>
                   <span className="num text-xs text-muted">
-                    {ws.length} workouts · {fmtCompact(u.weight(ws.reduce((n, w) => n + w.volume, 0), 0))} {u.w}
+                    {plural(ws.length, 'workout')} · {fmtCompact(u.weight(ws.reduce((n, w) => n + w.volume, 0), 0))} {u.w}
                   </span>
                 </div>
                 <ul className="flex flex-col gap-2">
@@ -214,7 +214,7 @@ function Strength() {
                         <span className="hidden shrink-0 text-right sm:block">
                           <span className="num block font-semibold">{fmtDuration(w.durationMin)}</span>
                           <span className="num block text-sm text-muted">
-                            {w.setCount} sets · {fmtCompact(u.weight(w.volume, 0))} {u.w}
+                            {plural(w.setCount, 'set')} · {fmtCompact(u.weight(w.volume, 0))} {u.w}
                           </span>
                         </span>
                         <ChevronRight className="size-4 shrink-0 text-subtle" aria-hidden />

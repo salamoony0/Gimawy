@@ -13,3 +13,6 @@ test-results/
 playwright-report/
 server/.postgres/
 tests/e2e/.db-url
+
+# /brag launch videos (large media)
+brag-output*/

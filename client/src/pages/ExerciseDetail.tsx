@@ -161,7 +161,6 @@ export default function ExerciseDetail() {
                         dot={{ r: 3, fill: 'var(--color-bg)', stroke: 'var(--color-brand)', strokeWidth: 2 }}
                         activeDot={{ r: 5 }}
                         legendType="none"
-                        tooltipType="none"
                       />
                     </>
                   )}

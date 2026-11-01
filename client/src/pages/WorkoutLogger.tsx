@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { AnimatePresence, motion } from 'motion/react';
 import { clsx } from 'clsx';
 import { Check, ChevronRight, Clock, Dumbbell, Link2, Minus, MoreHorizontal, Plus, Timer, Trash, Unlink, X } from 'lucide-react';
 import { api, isQueued, type Routine } from '../lib/api';
-import { localDay, MUSCLE_LABEL, parseDay, useMe, useUnits } from '../lib/format';
+import { localDay, MUSCLE_LABEL, parseDay, plural, useMe, useUnits } from '../lib/format';
 import { bodyWeightFor, estimateStrength } from '../lib/energy';
 import {
   linkWithNext,
@@ -94,7 +94,7 @@ function StartScreen({ routines }: { routines: Routine[] }) {
                 >
                   <span className="flex items-center justify-between">
                     <span className="font-display text-xl font-semibold tracking-wide">{r.name}</span>
-                    <span className="text-xs text-muted">{r.exercises.length} exercises</span>
+                    <span className="text-xs text-muted">{plural(r.exercises.length, 'exercise')}</span>
                   </span>
                   <span className="flex flex-wrap gap-1.5">
                     {r.exercises.map((e) => (
@@ -199,6 +199,13 @@ function Logger({ workout }: { workout: ActiveWorkout }) {
     },
     onError: (e) => toast(e.message, 'error'),
   });
+  // A double tap fires twice before isPending re-renders the button as disabled; this blocks the second one.
+  const saving = useRef(false);
+  const save = () => {
+    if (saving.current) return;
+    saving.current = true;
+    finish.mutate(undefined, { onSettled: () => (saving.current = false) });
+  };
 
   const set = (fn: (w: ActiveWorkout) => ActiveWorkout) => workoutStore.update(fn);
   const updateExercise = (key: string, fn: (e: DraftExercise) => DraftExercise) =>
@@ -250,7 +257,7 @@ function Logger({ workout }: { workout: ActiveWorkout }) {
                   <ElapsedClock since={workout.startedAt} />
                 </span>
               )}
-              <span>{doneSets.length} sets</span>
+              <span>{plural(doneSets.length, 'set')}</span>
               <span>
                 {Math.round(doneVolume).toLocaleString()} {u.w}
               </span>
@@ -259,7 +266,7 @@ function Logger({ workout }: { workout: ActiveWorkout }) {
           <IconButton label="Discard workout" onClick={() => setConfirmDiscard(true)}>
             <Trash className="size-5" />
           </IconButton>
-          <Button onClick={() => (editing ? finish.mutate() : setConfirmFinish(true))} loading={editing && finish.isPending} disabled={!doneSets.length}>
+          <Button onClick={() => (editing ? save() : setConfirmFinish(true))} loading={editing && finish.isPending} disabled={!doneSets.length}>
             {editing ? 'Save' : 'Finish'}
           </Button>
         </div>
@@ -325,7 +332,7 @@ function Logger({ workout }: { workout: ActiveWorkout }) {
         onClose={() => setConfirmFinish(false)}
         title="Finish workout?"
         footer={
-          <Button className="w-full" size="lg" loading={finish.isPending} onClick={() => finish.mutate()}>
+          <Button className="w-full" size="lg" loading={finish.isPending} onClick={save}>
             Save workout
           </Button>
         }
@@ -461,7 +468,7 @@ function ExerciseBlock({
           </div>
           <p className="text-xs text-muted">
             {MUSCLE_LABEL[ex.muscleGroup]}
-            {last && ` · last time ${last.sets.filter((s) => !s.isWarmup).length} sets`}
+            {last && ` · last time ${plural(last.sets.filter((s) => !s.isWarmup).length, 'set')}`}
           </p>
         </div>
         <div className="relative">
@@ -518,7 +525,7 @@ function ExerciseBlock({
         <AnimatePresence initial={false}>
           {ex.sets.map((s, i) => {
             const p = prev(i);
-            const prevWeight = p ? String(u.weight(p.weightKg)) : '';
+            const prevWeight = p ? String(u.weight(p.weightKg, 2)) : ''; // copied into the set, so keep stored precision
             const prevReps = p ? String(p.reps) : '';
             const workingIndex = ex.sets.slice(0, i + 1).filter((x) => !x.isWarmup).length;
             return (

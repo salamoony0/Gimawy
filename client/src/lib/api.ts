@@ -8,12 +8,15 @@ export class ApiError extends Error {
   }
 }
 
-async function request<T>(method: string, path: string, body?: unknown): Promise<T> {
+async function request<T>(method: string, path: string, body?: unknown, idempotencyKey?: string): Promise<T> {
   const isForm = body instanceof FormData;
+  const headers: Record<string, string> = {};
+  if (body && !isForm) headers['Content-Type'] = 'application/json';
+  if (idempotencyKey) headers['Idempotency-Key'] = idempotencyKey;
   const res = await fetch(`${BASE}${path}`, {
     method,
     credentials: 'include',
-    headers: body && !isForm ? { 'Content-Type': 'application/json' } : undefined,
+    headers,
     body: body === undefined ? undefined : isForm ? body : JSON.stringify(body),
   });
   if (res.status === 204) return undefined as T;
@@ -21,6 +24,9 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
   if (!res.ok) throw new ApiError(res.status, data.error ?? `Request failed (${res.status})`);
   return data as T;
 }
+
+/** crypto.randomUUID needs a secure context; a phone on the dev server's LAN address isn't one. */
+const newKey = () => globalThis.crypto?.randomUUID?.() ?? `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}${Math.random().toString(36).slice(2)}`;
 
 /** What `api.offline()` returns when the write was queued on the device instead of sent. */
 export type Queued = { queued: true };
@@ -30,13 +36,16 @@ export const api = {
   /**
    * A logging write that may happen without signal (at the gym): sent now if possible, otherwise queued in the
    * offline outbox and replayed later by `syncOutbox()`. HTTP errors (validation etc.) are thrown as usual.
+   * A POST carries an Idempotency-Key, kept for the replays: if the first attempt did reach the server and only
+   * the answer was lost, the replay gets that answer back instead of logging the entry twice.
    */
   offline: async <T,>(method: Outgoing['method'], path: string, body: unknown, label: string): Promise<T | Queued> => {
+    const key = method === 'POST' ? newKey() : undefined;
     try {
-      return await request<T>(method, path, body);
+      return await request<T>(method, path, body, key);
     } catch (e) {
       if (!isNetworkError(e)) throw e;
-      outbox.add({ method, path, body, label });
+      outbox.add({ method, path, body, label, key });
       return { queued: true };
     }
   },
@@ -62,7 +71,7 @@ let syncing: Promise<SyncResult> | null = null;
 
 /**
  * Replays the signed-in account's queued writes in order. Stops at the first one that can't be delivered yet
- * (still offline, signed out, rate limited, server error) and keeps it for next time; one the server rejects
+ * (still offline, signed out, rate limited, still being saved, server error) and keeps it for next time; one the server rejects
  * outright (4xx) is dropped and reported, so a bad entry can't block the rest forever.
  */
 export function syncOutbox(): Promise<SyncResult> {
@@ -70,11 +79,13 @@ export function syncOutbox(): Promise<SyncResult> {
     const result: SyncResult = { sent: 0, failed: [] };
     for (const item of outbox.mine()) {
       try {
-        await request(item.method, item.path, item.body);
+        await request(item.method, item.path, item.body, item.key);
         outbox.remove(item.id);
         result.sent++;
       } catch (e) {
-        if (e instanceof ApiError && e.status >= 400 && e.status < 500 && e.status !== 401 && e.status !== 408 && e.status !== 429) {
+        // 409: the first attempt is still being saved; the next sync gets its answer.
+        const retryLater = [401, 408, 409, 429];
+        if (e instanceof ApiError && e.status >= 400 && e.status < 500 && !retryLater.includes(e.status)) {
           outbox.remove(item.id);
           result.failed.push({ label: item.label, message: e.message });
           continue;

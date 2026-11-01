@@ -3,10 +3,11 @@ import { Router } from 'express';
 import bcrypt from 'bcryptjs';
 import { z } from 'zod';
 import { prisma, HttpError, setAuthCookie, clearAuthCookie, requireAuth, zDay, DEMO_EMAIL } from '../lib/core.js';
-import { accountLimiter, forgotLimiter, ipAuthLimiter, registerLimiter } from '../lib/limits.js';
+import { accountLimiter, apiLimiter, forgotLimiter, ipAuthLimiter, passwordCheckLimiter, registerLimiter } from '../lib/limits.js';
 import { appUrl, sendMail } from '../lib/mailer.js';
 
 export const authRouter = Router();
+// Signed-in routes below use requireAuth + apiLimiter, the same per-user limit as the rest of the API.
 
 const publicUser = {
   id: true,
@@ -125,7 +126,7 @@ authRouter.post('/reset', ipAuthLimiter, async (req, res) => {
   res.json(await withLatestWeight(rest));
 });
 
-authRouter.patch('/password', requireAuth, async (req, res) => {
+authRouter.patch('/password', requireAuth, apiLimiter, passwordCheckLimiter, async (req, res) => {
   const body = z.object({ current: z.string().max(200), next: zPassword }).parse(req.body);
   const user = await findUser(req.userId);
   notDemo(user.email);
@@ -140,13 +141,13 @@ authRouter.patch('/password', requireAuth, async (req, res) => {
 });
 
 /** Signs out every device, this one included. */
-authRouter.post('/logout-all', requireAuth, async (req, res) => {
+authRouter.post('/logout-all', requireAuth, apiLimiter, async (req, res) => {
   await prisma.user.update({ where: { id: req.userId }, data: { tokenVersion: { increment: 1 } } });
   clearAuthCookie(res);
   res.status(204).end();
 });
 
-authRouter.get('/export', requireAuth, async (req, res) => {
+authRouter.get('/export', requireAuth, apiLimiter, async (req, res) => {
   const userId = req.userId;
   const [user, exercises, workouts, routines, cardio, bodyWeights, goals, foods, personalRecords] = await Promise.all([
     prisma.user.findUnique({ where: { id: userId }, select: publicUser }),
@@ -188,7 +189,7 @@ authRouter.get('/export', requireAuth, async (req, res) => {
 });
 
 /** Permanently deletes the account; every row hangs off User with onDelete: Cascade. */
-authRouter.delete('/me', requireAuth, async (req, res) => {
+authRouter.delete('/me', requireAuth, apiLimiter, passwordCheckLimiter, async (req, res) => {
   const user = await findUser(req.userId);
   notDemo(user.email);
   await checkPassword(user.passwordHash, req.body?.password);
@@ -207,13 +208,13 @@ authRouter.post('/logout', (_req, res) => {
   res.status(204).end();
 });
 
-authRouter.get('/me', requireAuth, async (req, res) => {
+authRouter.get('/me', requireAuth, apiLimiter, async (req, res) => {
   const user = await prisma.user.findUnique({ where: { id: req.userId }, select: publicUser });
   if (!user) throw new HttpError(401, 'Account not found');
   res.json(await withLatestWeight(user));
 });
 
-authRouter.patch('/me', requireAuth, async (req, res) => {
+authRouter.patch('/me', requireAuth, apiLimiter, async (req, res) => {
   const body = z
     .object({
       name: z.string().trim().min(1).max(60),

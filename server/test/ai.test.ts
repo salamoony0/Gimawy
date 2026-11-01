@@ -57,6 +57,28 @@ describe('AI food analysis', () => {
     expect(await usage(id)).toBe(0);
   });
 
+  it('an empty answer falls back to the second model instead of reporting a timeout', async () => {
+    const { agent, id } = await newUser();
+    generateContent.mockResolvedValueOnce({ text: undefined }).mockResolvedValueOnce({ text: JSON.stringify(answer) });
+    const res = await agent.post('/api/ai/analyze-food').send({ hint: 'eggs' });
+    expect(res.status).toBe(200);
+    expect(generateContent).toHaveBeenCalledTimes(2);
+
+    generateContent.mockResolvedValue({ text: '' });
+    const empty = await agent.post('/api/ai/analyze-food').send({ hint: 'eggs' });
+    expect(empty.status).toBe(502);
+    expect(empty.body.error).not.toMatch(/too long/);
+    expect(await usage(id)).toBe(1);
+  });
+
+  it('rejects an image over 8 MB with 413', async () => {
+    const { agent } = await newUser();
+    const res = await agent.post('/api/ai/analyze-food').attach('image', Buffer.alloc(9 * 1024 * 1024), { filename: 'big.jpg', contentType: 'image/jpeg' });
+    expect(res.status).toBe(413);
+    expect(res.body.error).toMatch(/too large/i);
+    expect(generateContent).not.toHaveBeenCalled();
+  });
+
   it('needs an image or a description', async () => {
     const { agent } = await newUser();
     expect((await agent.post('/api/ai/analyze-food').send({})).status).toBe(400);

@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { z } from 'zod';
-import { prisma, HttpError, zDay, param, todayFromQuery, weekStart, round1, e1rm } from '../lib/core.js';
+import { prisma, HttpError, zDay, param, todayFromQuery, weekStart, round1, roundKg, e1rm } from '../lib/core.js';
 import { assertExercisesVisible, loadManualRecords, loadTraining } from '../lib/training.js';
 import { lookupBarcode } from '../lib/openfoodfacts.js';
 
@@ -60,7 +60,7 @@ trackingRouter.get('/body', async (req, res) => {
 trackingRouter.put('/body/:date', async (req, res) => {
   const date = zDay.parse(param(req, 'date'));
   const body = z
-    .object({ weightKg: z.number().min(20).max(400), bodyFatPct: z.number().min(2).max(70).nullable().optional() })
+    .object({ weightKg: z.number().min(20).max(400).transform(roundKg), bodyFatPct: z.number().min(2).max(70).nullable().optional() })
     .parse(req.body);
   const entry = await prisma.bodyWeight.upsert({
     where: { userId_date: { userId: req.userId, date } },

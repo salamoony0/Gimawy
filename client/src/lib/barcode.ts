@@ -6,7 +6,7 @@ import type { FoodItem } from './api';
 
 const FORMATS = ['ean_13', 'ean_8', 'upc_a', 'upc_e'] as const;
 
-export type Detector = { detect(source: CanvasImageSource): Promise<{ rawValue: string }[]> };
+export type Detector = { detect(source: CanvasImageSource): Promise<{ rawValue: string; format?: string }[]> };
 
 type NativeDetectorClass = {
   new (opts: { formats: string[] }): Detector;
@@ -34,13 +34,45 @@ export async function createDetector(): Promise<Detector> {
   return new BarcodeDetector({ formats: [...FORMATS] });
 }
 
-/** GTIN check digit (EAN-8, UPC-A, EAN-13, GTIN-14): rejects misreads before they hit the lookup. */
-export function isValidGtin(code: string) {
-  if (!/^(\d{8}|\d{12,14})$/.test(code)) return false;
+/** GTIN check digit (EAN-8, UPC-A, EAN-13, GTIN-14). */
+function checkDigitOk(code: string) {
   const digits = code.split('').map(Number);
   const check = digits.pop()!;
   const total = digits.reverse().reduce((n, d, i) => n + d * (i % 2 === 0 ? 3 : 1), 0);
   return (10 - (total % 10)) % 10 === check;
+}
+
+/** A UPC-E code (8 digits, number system 0 or 1) expanded to the 12-digit UPC-A it stands for; null if it isn't one. */
+function expandUpcE(code: string) {
+  if (!/^[01]\d{7}$/.test(code)) return null;
+  const [s, d1, d2, d3, d4, d5, d6, c] = code;
+  const body =
+    d6 <= '2' ? `${d1}${d2}${d6}0000${d3}${d4}${d5}` : d6 === '3' ? `${d1}${d2}${d3}00000${d4}${d5}` : d6 === '4' ? `${d1}${d2}${d3}${d4}00000${d5}` : `${d1}${d2}${d3}${d4}${d5}0000${d6}`;
+  const upcA = `${s}${body}${c}`; // UPC-E shares its check digit with the UPC-A form
+  return checkDigitOk(upcA) ? upcA : null;
+}
+
+/** Rejects misreads before they hit the lookup. 8-digit codes may be EAN-8 or UPC-E (small US packs). */
+export function isValidGtin(code: string) {
+  if (!/^(\d{8}|\d{12,14})$/.test(code)) return false;
+  return checkDigitOk(code) || expandUpcE(code) !== null;
+}
+
+/**
+ * The code to look up and store: UPC-E becomes UPC-A (how Open Food Facts lists it). An 8-digit code can pass both
+ * checks; the scanner's `format` settles it, and a typed one is taken as EAN-8.
+ */
+export function lookupCode(code: string, format?: string) {
+  if (code.length !== 8 || (format !== 'upc_e' && checkDigitOk(code))) return code;
+  return expandUpcE(code) ?? code;
+}
+
+/** "n ×" an amount, multiplying a count that's already there ("2 × 1 pot" × 2 → "4 × 1 pot"); ≤ 60 chars like the API. */
+export function scaleQuantity(quantity: string | null | undefined, n: number) {
+  const m = /^(\d+(?:\.\d+)?) × (.+)$/.exec(quantity ?? '');
+  const count = Math.round((m ? Number(m[1]) : 1) * n * 100) / 100;
+  const base = m ? m[2] : (quantity ?? 'serving');
+  return (count === 1 ? base : `${count} × ${base}`).slice(0, 60);
 }
 
 export type Macros = Pick<FoodItem, 'calories' | 'protein' | 'carbs' | 'fat'>;

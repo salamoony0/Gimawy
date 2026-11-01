@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import type { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
+import multer from 'multer';
 import { z } from 'zod';
 
 export const prisma = new PrismaClient();
@@ -24,6 +25,10 @@ export function errorHandler(err: unknown, _req: Request, res: Response, _next: 
     return res.status(400).json({ error: `${issue.path.join('.') || 'input'}: ${issue.message}` });
   }
   if (err instanceof HttpError) return res.status(err.status).json({ error: err.message });
+  if (err instanceof multer.MulterError) {
+    const tooLarge = err.code === 'LIMIT_FILE_SIZE';
+    return res.status(tooLarge ? 413 : 400).json({ error: tooLarge ? 'Image too large (max 8 MB)' : err.message });
+  }
   console.error(err);
   res.status(500).json({ error: 'Something went wrong' });
 }
@@ -124,3 +129,6 @@ export function e1rm(weightKg: number, reps: number) {
 }
 
 export const round1 = (n: number) => Math.round(n * 10) / 10;
+
+/** Stored weights keep 2 decimals: lb inputs convert to long decimals, and 2dp keeps the round trip exact on display. */
+export const roundKg = (kg: number) => Math.round(kg * 100) / 100;

@@ -6,6 +6,7 @@ import { Calculator, Download, KeyRound, LogOut, MonitorSmartphone, ShieldCheck,
 import { ACTIVITY, ageFrom } from '../lib/energy';
 import { api, type User } from '../lib/api';
 import { useMe } from '../lib/format';
+import { workoutStore } from '../lib/activeWorkout';
 import { clearApiCache, setOutboxOwner } from '../lib/offline';
 import { PageHeader } from '../components/Layout';
 import { AutoAdjustToggle } from '../components/AdaptiveTargets';
@@ -40,7 +41,6 @@ function toForm(u: User): Form {
 export default function Settings() {
   const { data: me } = useMe();
   const qc = useQueryClient();
-  const navigate = useNavigate();
   const toast = useToast();
   const [f, setF] = useState<Form | null>(null);
   const { data: ai } = useQuery({ queryKey: ['ai-status'], queryFn: () => api.get<{ enabled: boolean; model: string }>('/ai/status') });
@@ -58,14 +58,10 @@ export default function Settings() {
     onError: (e) => toast(e.message, 'error'),
   });
 
+  const signedOut = useSignedOut();
   const logout = useMutation({
     mutationFn: () => api.post('/auth/logout'),
-    onSuccess: () => {
-      setOutboxOwner(null);
-      void clearApiCache();
-      qc.clear();
-      navigate('/login', { replace: true });
-    },
+    onSuccess: () => signedOut(),
   });
 
   if (!f || !me) return <Skeleton className="h-96" />;
@@ -216,19 +212,28 @@ export default function Settings() {
 
 const DEMO_EMAIL = 'demo@gymawy.app';
 
-function SecurityCard({ email }: { email: string }) {
+/**
+ * After the server ended the session: drop this account's cached reads and go to the login page. Queued writes and
+ * the unfinished workout stay with the account (they're dropped if a different account signs in next).
+ */
+function useSignedOut() {
   const qc = useQueryClient();
   const navigate = useNavigate();
   const toast = useToast();
-  const [sheet, setSheet] = useState<'password' | 'delete' | null>(null);
-  const close = () => setSheet(null);
-  const signedOut = (message: string) => {
+  return (message?: string) => {
     setOutboxOwner(null);
     void clearApiCache();
     qc.clear();
     navigate('/login', { replace: true });
-    toast(message);
+    if (message) toast(message);
   };
+}
+
+function SecurityCard({ email }: { email: string }) {
+  const toast = useToast();
+  const [sheet, setSheet] = useState<'password' | 'delete' | null>(null);
+  const close = () => setSheet(null);
+  const signedOut = useSignedOut();
 
   const exportData = useMutation({
     mutationFn: () => api.download('/auth/export'),
@@ -263,7 +268,10 @@ function SecurityCard({ email }: { email: string }) {
         </Button>
       </div>
       <PasswordSheet open={sheet === 'password'} onClose={close} />
-      <DeleteAccountSheet open={sheet === 'delete'} onClose={close} onDeleted={() => signedOut('Your account and data were deleted')} />
+      <DeleteAccountSheet open={sheet === 'delete'} onClose={close} onDeleted={() => {
+          workoutStore.discard(); // the account is gone, so its unfinished workout can't be saved anywhere
+          signedOut('Your account and data were deleted');
+        }} />
     </Card>
   );
 }

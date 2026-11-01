@@ -74,6 +74,8 @@ async function refundQuota(userId: string, day: string) {
 // timeout per attempt so a scan can never hang.
 const DEFAULT_MODEL = 'gemini-3.1-flash-lite';
 const FALLBACK_MODEL = 'gemini-3-flash-preview';
+/** Marks an attempt that answered without text (blocked or empty), as opposed to an HTTP error or a timeout. */
+const EMPTY_ANSWER = -1;
 const ATTEMPT_TIMEOUT_MS = 25_000;
 const isTransient = (status?: number) => status === undefined || status === 503 || status === 429 || status === 500;
 
@@ -125,6 +127,12 @@ aiRouter.post('/analyze-food', aiLimiter, upload.single('image'), async (req, re
           abortSignal: AbortSignal.timeout(ATTEMPT_TIMEOUT_MS),
         },
       });
+      if (!result.text) {
+        // Blocked or empty candidate: worth trying the other model, and it isn't a timeout.
+        lastStatus = EMPTY_ANSWER;
+        console.error(`Gemini ${model} returned no text (attempt ${i + 1}/${attempts.length}, ${Date.now() - started}ms)`);
+        continue;
+      }
       raw = result.text;
       console.log(`Gemini ${model} answered in ${Date.now() - started}ms`);
       break;
@@ -141,6 +149,7 @@ aiRouter.post('/analyze-food', aiLimiter, upload.single('image'), async (req, re
     if (lastStatus === 429) throw new HttpError(429, 'The free Gemini quota is used up for now. Wait a minute and try again.');
     if (lastStatus === 503) throw new HttpError(503, 'Gemini is overloaded right now (free tier). Give it a minute and try again.');
     if (lastStatus === undefined) throw new HttpError(504, 'The AI took too long to answer. Try again, or log it manually.');
+    if (lastStatus === EMPTY_ANSWER) throw new HttpError(502, 'The AI couldn’t read that. Try another photo or describe the meal.');
     if (lastStatus === 400 || lastStatus === 403) throw new HttpError(502, 'Gemini rejected the request. Check GEMINI_API_KEY and GEMINI_MODEL.');
     throw new HttpError(502, 'Could not reach the AI service. Try again.');
   }

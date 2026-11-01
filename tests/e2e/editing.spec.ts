@@ -93,3 +93,30 @@ test('edit and delete saved items', async ({ page }) => {
     await page.waitForURL(/\/train$/);
   });
 });
+
+test('editing a workout keeps weights to 2 decimals', async ({ page }) => {
+  await loginAsDemo(page);
+  await page.goto('/train/log');
+  await page.getByRole('button', { name: /Empty workout/ }).click();
+  await page.getByRole('button', { name: /Add exercises/ }).first().click();
+  const picker = page.getByRole('dialog', { name: 'Add exercise' });
+  await picker.getByRole('textbox', { name: 'Search exercises' }).fill('lateral raise');
+  await picker.getByRole('button', { name: /^Lateral Raise/ }).first().click();
+  await picker.getByRole('button', { name: /^Add 1 exercise/ }).click();
+  await page.getByRole('textbox', { name: /Set 1 weight/ }).fill('11.25');
+  await page.getByRole('textbox', { name: /Set 1 reps/ }).fill('12');
+  await page.getByRole('button', { name: 'Mark set 1 done' }).click();
+  await page.getByRole('button', { name: 'Skip rest' }).click();
+  await page.getByRole('button', { name: 'Finish' }).click();
+  await page.getByRole('button', { name: 'Save workout' }).click();
+  await page.waitForURL(/\/train\/workouts\//);
+  const id = page.url().split('/').pop()!;
+
+  await page.getByRole('button', { name: 'Edit', exact: true }).click();
+  await expect(page.getByRole('textbox', { name: /Set 1 weight/ })).toHaveValue('11.25');
+  await page.getByRole('textbox', { name: /Set 1 reps/ }).fill('10'); // change something else, then save
+  await page.getByRole('button', { name: 'Save' }).click();
+  await page.waitForURL(/\/train\/workouts\//);
+  const saved = await (await page.request.get(`/api/workouts/${id}`)).json();
+  expect(saved.exercises[0].sets[0]).toMatchObject({ weightKg: 11.25, reps: 10 });
+});

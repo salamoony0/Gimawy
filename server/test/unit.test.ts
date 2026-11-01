@@ -117,6 +117,20 @@ describe('withTrend', () => {
     ]);
     expect(t.map((x) => x.trendKg)).toEqual([80, 81, 81, 80.7]);
   });
+
+  it('matches the plain definition on a long irregular history', () => {
+    let seed = 7;
+    const rand = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+    const entries: { date: string; weightKg: number }[] = [];
+    for (let day = '2025-01-01'; entries.length < 400; day = addDays(day, 1 + Math.floor(rand() * 4))) {
+      entries.push({ date: day, weightKg: Math.round((70 + rand() * 20) * 100) / 100 });
+    }
+    const plain = entries.map((e, i) => {
+      const window = entries.slice(0, i + 1).filter((x) => daysBetween(x.date, e.date) < 7);
+      return Math.round((window.reduce((n, x) => n + x.weightKg, 0) / window.length) * 10) / 10;
+    });
+    expect(withTrend(entries).map((x) => x.trendKg)).toEqual(plain);
+  });
 });
 
 describe('normalizeSupersets', () => {

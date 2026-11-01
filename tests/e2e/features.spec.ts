@@ -120,3 +120,37 @@ test('records: every exercise by muscle, enter a PR by hand, previous record mov
   await expect(page.getByText('Record removed')).toBeVisible();
   await expect(row).toHaveAttribute('aria-label', new RegExp(`current ${current[1]} kg × ${current[2]}`));
 });
+
+test('double-tapping Save workout saves it once', async ({ page }) => {
+  await loginAsDemo(page);
+  const count = async () => ((await (await page.request.get('/api/workouts')).json()) as unknown[]).length;
+  const before = await count();
+  await page.goto('/train/log');
+  await page.getByRole('button', { name: /Empty workout/ }).click();
+  await page.getByRole('button', { name: /Add exercises/ }).first().click();
+  const picker = page.getByRole('dialog', { name: 'Add exercise' });
+  await picker.getByRole('textbox', { name: 'Search exercises' }).fill('deadlift');
+  await picker.getByRole('button', { name: /^Deadlift/ }).first().click();
+  await picker.getByRole('button', { name: /^Add 1 exercise/ }).click();
+  await page.getByRole('textbox', { name: /Set 1 weight/ }).fill('140');
+  await page.getByRole('textbox', { name: /Set 1 reps/ }).fill('3');
+  await page.getByRole('button', { name: 'Mark set 1 done' }).click();
+  await page.getByRole('button', { name: 'Skip rest' }).click();
+  await page.getByRole('button', { name: 'Finish' }).click();
+  await page.getByRole('button', { name: 'Save workout' }).dblclick();
+  await page.waitForURL(/\/train\/workouts\//);
+  expect(await count()).toBe(before + 1);
+});
+
+test('chart tooltips list each series once', async ({ page }) => {
+  await loginAsDemo(page);
+  await page.goto('/train?tab=exercises');
+  await page.getByRole('link', { name: /Bench Press/ }).first().click();
+  await page.waitForURL(/\/train\/exercises\//);
+  const chart = page.locator('.recharts-wrapper').first();
+  const box = (await chart.boundingBox())!;
+  await page.mouse.move(box.x + box.width * 0.6, box.y + box.height / 2);
+  const tip = page.locator('.recharts-tooltip-wrapper p.num');
+  await expect(tip.first()).toBeVisible();
+  await expect(tip).toHaveCount(1);
+});

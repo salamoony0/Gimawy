@@ -5,7 +5,7 @@ import { clsx } from 'clsx';
 import { CartesianGrid, ComposedChart, Area, Line, ReferenceLine, ResponsiveContainer, Scatter, Tooltip, XAxis, YAxis } from 'recharts';
 import { CalendarClock, Dumbbell, HeartPulse, Minus, Pencil, Plus, Scale, Target, Trash } from 'lucide-react';
 import { api, isQueued, type BodyWeight, type Goal } from '../lib/api';
-import { fmtDay, localDay, parseDay, relativeDay, shiftDay, useMe, useUnits } from '../lib/format';
+import { fmtDay, localDay, parseDay, plural, relativeDay, shiftDay, useMe, useUnits } from '../lib/format';
 import { PageHeader } from '../components/Layout';
 import { Bar, Button, EmptyState, Field, IconButton, Input, Segmented, Select, Sheet, Skeleton, useToast } from '../components/ui';
 import { axisProps, ChartTooltip, GradientDefs, gridProps } from '../components/viz';
@@ -135,7 +135,7 @@ export default function Body() {
                     label={{ value: `Goal ${u.weight(weightGoal.targetValue)}`, fill: 'var(--color-pr)', fontSize: 11, position: 'insideBottomRight' }}
                   />
                 )}
-                <Area type="monotone" dataKey="trend" stroke="none" fill="url(#bodygrad)" tooltipType="none" />
+                <Area type="monotone" dataKey="trend" stroke="none" fill="url(#bodygrad)" />
                 <Scatter dataKey="scale" name="Scale" fill="var(--color-muted)" shape={(p: { cx?: number; cy?: number }) => <circle cx={p.cx} cy={p.cy} r={2.5} fill="var(--color-muted)" opacity={0.7} />} />
                 <Line type="monotone" dataKey="trend" name="7-day trend" stroke="var(--color-brand)" strokeWidth={3} dot={false} activeDot={{ r: 5 }} />
               </ComposedChart>
@@ -188,7 +188,7 @@ export default function Body() {
                   <span className="num w-20 text-right font-semibold">
                     {u.weight(e.weightKg)} <span className="text-xs font-normal text-muted">{u.w}</span>
                   </span>
-                  <IconButton label={`Delete weigh-in on ${e.date}`} className="size-9 opacity-50 group-hover:opacity-100" onClick={() => delEntry.mutate(e.date)}>
+                  <IconButton label={`Delete weigh-in on ${e.date}`} className="opacity-50 group-hover:opacity-100" onClick={() => delEntry.mutate(e.date)}>
                     <Trash className="size-4" />
                   </IconButton>
                 </li>
@@ -290,14 +290,14 @@ function GoalCard({ goal: g, index, onEdit, onDelete }: { goal: Goal; index: num
           <p className="truncate font-semibold">{g.title}</p>
           <p className="text-xs text-muted">
             {g.type === 'lift' ? `${g.exerciseName} · est. 1RM` : g.type === 'cardio' ? 'This week' : 'Body weight'}
-            {daysLeft != null && ` · ${daysLeft >= 0 ? `${daysLeft} days left` : 'past deadline'}`}
+            {daysLeft != null && ` · ${daysLeft >= 0 ? `${plural(daysLeft, 'day')} left` : 'past deadline'}`}
           </p>
         </div>
         <div className="-mr-2 -mt-2 flex opacity-60 group-hover:opacity-100">
-          <IconButton label={`Edit goal ${g.title}`} onClick={onEdit} className="size-9">
+          <IconButton label={`Edit goal ${g.title}`} onClick={onEdit}>
             <Pencil className="size-4" />
           </IconButton>
-          <IconButton label={`Delete goal ${g.title}`} onClick={onDelete} className="size-9">
+          <IconButton label={`Delete goal ${g.title}`} onClick={onDelete}>
             <Trash className="size-4" />
           </IconButton>
         </div>
