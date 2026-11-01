@@ -9,6 +9,7 @@ import { fmtCompact, fmtDay, fmtDuration, fmtInt, greeting, localDay, MUSCLE_LAB
 import { useActiveWorkout } from '../lib/activeWorkout';
 import { Badge, Bar as ProgressBar, buttonClass, SectionTitle, Skeleton } from '../components/ui';
 import { axisProps, ChartTooltip, GradientDefs, Heatmap, MacroLegend, Rings } from '../components/viz';
+import { CalorieInfo } from '../components/CalorieInfo';
 
 const rise = {
   hidden: { opacity: 0, y: 14 },
@@ -49,7 +50,9 @@ export default function Today() {
         {/* Nutrition */}
         <motion.section variants={rise} initial="hidden" animate="show" custom={1} className="card glow p-5 lg:col-span-3">
           <div className="flex items-center justify-between">
-            <h2 className="font-display text-xl font-semibold tracking-wide">Nutrition</h2>
+            <h2 className="flex items-center gap-2 font-display text-xl font-semibold tracking-wide">
+              Nutrition <CalorieInfo topic="target" />
+            </h2>
             <Link to="/food" className="flex min-h-11 items-center gap-1 text-sm font-semibold text-brand">
               Food log <ChevronRight className="size-4" aria-hidden />
             </Link>
@@ -148,6 +151,7 @@ export default function Today() {
               <p className="num flex items-center gap-1 text-xs text-muted">
                 <Flame className="size-3 text-warn" aria-hidden />
                 {fmtInt(d.week.caloriesBurned)} kcal burned
+                <CalorieInfo topic="burn" className="ml-auto" />
               </p>
             </div>
           </div>

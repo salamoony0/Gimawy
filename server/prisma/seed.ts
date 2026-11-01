@@ -251,7 +251,7 @@ async function main(mode: string) {
           startedAt,
           endedAt: new Date(startedAt.getTime() + duration * 60000),
           // Resistance training MET 5.0 × ~82 kg body weight
-          calories: Math.round((5 * 3.5 * 82 * duration) / 200),
+          calories: Math.round((3.5 * 3.5 * 82 * duration) / 200), // STRENGTH_MET (client lib/energy.ts)
           exercises: {
             create: plan.lifts.map(([name, sets, reps, startKg, gain], order) => {
               const base = startKg + gain * week * (deload ? 0.6 : 1);

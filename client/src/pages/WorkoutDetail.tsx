@@ -8,6 +8,7 @@ import { api, type WorkoutDetail as Detail } from '../lib/api';
 import { fmtDay, fmtDuration, fmtInt, MUSCLE_LABEL, pctChange, plural, useUnits } from '../lib/format';
 import { Badge, Button, IconButton, Sheet, Skeleton, SupersetBadge, useToast } from '../components/ui';
 import { supersetSlots, uid, useActiveWorkout, workoutStore } from '../lib/activeWorkout';
+import { CalorieInfo } from '../components/CalorieInfo';
 
 const MUSCLE_COLORS: Record<string, string> = {
   chest: '#4ade80',
@@ -90,7 +91,7 @@ export default function WorkoutDetail() {
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
         <HeroStat icon={<Clock className="size-4" />} label="Duration" value={fmtDuration(w.durationMin)} />
-        <HeroStat icon={<Flame className="size-4" />} label="Burned" value={w.calories != null ? `${w.calories}` : '—'} />
+        <HeroStat icon={<Flame className="size-4" />} label={<>Burned <CalorieInfo topic="burn" className="ml-auto" /></>} value={w.calories != null ? `${w.calories}` : '—'} />
         <HeroStat icon={<Dumbbell className="size-4" />} label={`Volume (${u.w})`} value={fmtInt(u.weight(w.volume, 0))} />
         <HeroStat icon={<Layers className="size-4" />} label="Working sets" value={w.setCount} />
         <HeroStat icon={<Trophy className="size-4" />} label="PRs" value={w.prCount} highlight={w.prCount > 0} />
@@ -246,7 +247,7 @@ export default function WorkoutDetail() {
   );
 }
 
-function HeroStat({ icon, label, value, highlight }: { icon: React.ReactNode; label: string; value: React.ReactNode; highlight?: boolean }) {
+function HeroStat({ icon, label, value, highlight }: { icon: React.ReactNode; label: React.ReactNode; value: React.ReactNode; highlight?: boolean }) {
   return (
     <div className={clsx('card p-4', highlight && 'border-pr/40 bg-pr/5')}>
       <p className={clsx('flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider', highlight ? 'text-pr' : 'text-muted')}>

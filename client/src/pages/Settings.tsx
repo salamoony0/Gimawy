@@ -11,6 +11,7 @@ import { clearApiCache, setOutboxOwner } from '../lib/offline';
 import { PageHeader } from '../components/Layout';
 import { AutoAdjustToggle } from '../components/AdaptiveTargets';
 import { Button, buttonClass, Card, Field, Input, Segmented, Sheet, Skeleton, useToast } from '../components/ui';
+import { CalorieInfo } from '../components/CalorieInfo';
 
 type Form = {
   name: string;
@@ -151,7 +152,9 @@ export default function Settings() {
         </Card>
 
         <Card>
-          <h2 className="mb-4 font-display text-xl font-semibold tracking-wide">Daily targets</h2>
+          <h2 className="mb-4 flex items-center gap-2 font-display text-xl font-semibold tracking-wide">
+            Daily targets <CalorieInfo topic="target" />
+          </h2>
           <div className="grid grid-cols-2 gap-4">
             {num('calorieTarget', 'Calories (kcal)')}
             {num('weeklyWorkoutTarget', 'Workouts per week')}

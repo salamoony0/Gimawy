@@ -9,6 +9,7 @@ import { fmtDay, fmtInt, localDay, shiftDay, useMe } from '../lib/format';
 import { ACTIVITY, ageFrom, KCAL_PER_KG, planTargets, type ActivityLevel, type Goal, type Sex } from '../lib/energy';
 import { Logo } from '../components/Layout';
 import { Button, Field, Input, Segmented, useToast } from '../components/ui';
+import { CalorieInfo } from '../components/CalorieInfo';
 
 const KG_PER_LB = 0.45359237;
 
@@ -466,7 +467,9 @@ function PlanSummary({ plan, goal }: { plan: ReturnType<typeof planTargets>; goa
   return (
     <div className="mt-6 flex flex-col gap-4">
       <div className="card glow p-5 text-center">
-        <p className="label">Daily calories</p>
+        <p className="label flex items-center justify-center gap-2">
+          Daily calories <CalorieInfo topic="target" personal={false} />
+        </p>
         <motion.p
           className="num font-display text-7xl font-bold leading-none text-brand"
           initial={{ scale: 0.85, opacity: 0 }}

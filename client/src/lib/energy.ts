@@ -7,8 +7,10 @@
  * - Cardio burn, best available method:
  *     1. average heart rate → Keytel et al. (2005) equation (needs age + sex)
  *     2. walking/running speed (+ incline) → ACSM metabolic equations
- *     3. otherwise → MET value for the activity × body weight × time
- * - Strength workouts: MET for resistance training × body weight × time.
+ *     3. otherwise → MET value for the activity (2024 Adult Compendium) × resting burn × time
+ * - Strength workouts: MET for resistance training × resting burn × time.
+ * - Resting burn for METs: the person's own Mifflin-St Jeor BMR when sex, age and height are known ("corrected METs"),
+ *   else the standard 1 MET = 3.5 ml O2/kg/min.
  * - Adaptive TDEE: average logged intake − (weight trend slope × 7,700 kcal/kg), over the last 28 days.
  *
  * docs/CALORIES.md explains every formula with worked examples; keep it in sync with this file.
@@ -206,35 +208,49 @@ export function adaptiveTargets(input: {
 
 // ---------- burn estimates ----------
 
-/** Compendium of Physical Activities MET values for a moderate effort. */
-const CARDIO_MET: Record<CardioType, number> = {
-  run: 9.8,
-  walk: 3.5,
-  incline: 6.0,
-  cycle: 7.5,
-  row: 7.0,
-  swim: 7.0,
-  elliptical: 5.0,
-  stairs: 9.0,
-  hiit: 8.0,
-  other: 6.0,
+/**
+ * 2024 Adult Compendium of Physical Activities (Herrmann et al., J Sport Health Sci 2024), moderate effort; code in
+ * the comment. Only used when there's no heart rate and (for walk/run/incline) no speed.
+ */
+export const CARDIO_MET: Record<CardioType, number> = {
+  run: 9.3, // 12050 running 6–6.3 mph (10 min/mile)
+  walk: 3.8, // 17190 walking 2.8–3.4 mph, level, moderate pace
+  incline: 7.4, // no Compendium code: ACSM walking equation at 4.8 km/h, 10% grade
+  cycle: 7.0, // 01014 bicycling, general
+  row: 5.0, // 02071 rowing ergometer, moderate effort
+  swim: 5.8, // 18240 swimming laps, freestyle, slow
+  elliptical: 5.0, // 02048 elliptical trainer, moderate effort
+  stairs: 9.3, // 02065 stair treadmill ergometer, general
+  hiit: 7.0, // 02210 high intensity interval exercise, moderate effort
+  other: 5.0, // 02035 circuit training, moderate effort
 };
 
-/** Resistance training, mixed intensity (Compendium 02054/02052). */
-export const STRENGTH_MET = 5.0;
+/** Compendium 02054: resistance (weight) training, multiple exercises, 8–15 reps at varied resistance. */
+export const STRENGTH_MET = 3.5;
+
+export type BodyProfile = { weightKg: number; heightCm?: number | null; age?: number | null; sex?: Sex | null };
+
+/**
+ * kcal per minute at rest, i.e. what 1 MET is for this person. The Compendium's standard 1 MET (3.5 ml O2/kg/min)
+ * overestimates most adults' resting burn, more so with higher body mass and age, so when sex, age and height are
+ * known the person's own Mifflin-St Jeor BMR is used instead ("corrected METs", pacompendium.com/corrected-mets).
+ */
+export function restingKcalPerMin({ weightKg, heightCm, age, sex }: BodyProfile) {
+  if (sex && age && heightCm) return bmr({ sex, weightKg, heightCm, age }) / 1440;
+  return (3.5 * weightKg) / 200;
+}
+
+const metKcal = (met: number, durationMin: number, profile: BodyProfile) => Math.round(met * restingKcalPerMin(profile) * durationMin);
 
 export type BurnMethod = 'heart-rate' | 'speed' | 'met';
 
 export function estimateCardio(input: {
   type: CardioType;
   durationMin: number;
-  weightKg: number;
   speedKmh?: number | null;
   inclinePct?: number | null;
   avgHeartRate?: number | null;
-  age?: number | null;
-  sex?: Sex | null;
-}): { kcal: number; method: BurnMethod } {
+} & BodyProfile): { kcal: number; method: BurnMethod } {
   const { type, durationMin, weightKg } = input;
   if (!(durationMin > 0) || !(weightKg > 0)) return { kcal: 0, method: 'met' };
 
@@ -258,18 +274,18 @@ export function estimateCardio(input: {
     return { kcal: Math.round(((vo2 * weightKg) / 1000) * 5 * durationMin), method: 'speed' };
   }
 
-  return { kcal: Math.round((CARDIO_MET[type] * 3.5 * weightKg * durationMin) / 200), method: 'met' };
+  return { kcal: metKcal(CARDIO_MET[type], durationMin, input), method: 'met' };
 }
 
-export function estimateStrength(durationMin: number, weightKg: number) {
-  if (!(durationMin > 0) || !(weightKg > 0)) return 0;
-  return Math.round((STRENGTH_MET * 3.5 * weightKg * durationMin) / 200);
+export function estimateStrength(durationMin: number, profile: BodyProfile) {
+  if (!(durationMin > 0) || !(profile.weightKg > 0)) return 0;
+  return metKcal(STRENGTH_MET, durationMin, profile);
 }
 
 export const BURN_METHOD_LABEL: Record<BurnMethod, string> = {
   'heart-rate': 'from your heart rate, age and weight',
   speed: 'from your speed, incline and weight',
-  met: 'from activity type, time and your weight',
+  met: 'from activity type, time and your body stats',
 };
 
 /** Body weight to use for estimates: latest weigh-in, else a neutral default. */
@@ -277,9 +293,10 @@ export function bodyWeightFor(me: User | undefined) {
   return me?.latestWeightKg ?? 75;
 }
 
-export function profileFor(me: User | undefined) {
+export function profileFor(me: User | undefined): BodyProfile {
   return {
     weightKg: bodyWeightFor(me),
+    heightCm: me?.heightCm ?? null,
     age: me?.birthDate ? ageFrom(me.birthDate) : null,
     sex: (me?.sex as Sex | null) ?? null,
   };

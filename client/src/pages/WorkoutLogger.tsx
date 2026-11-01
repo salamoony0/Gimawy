@@ -6,7 +6,7 @@ import { clsx } from 'clsx';
 import { Check, ChevronRight, Clock, Dumbbell, Link2, Minus, MoreHorizontal, Plus, Timer, Trash, Unlink, X } from 'lucide-react';
 import { api, isQueued, type Routine } from '../lib/api';
 import { localDay, MUSCLE_LABEL, parseDay, plural, useMe, useUnits } from '../lib/format';
-import { bodyWeightFor, estimateStrength } from '../lib/energy';
+import { estimateStrength, profileFor } from '../lib/energy';
 import {
   linkWithNext,
   newSet,
@@ -21,6 +21,7 @@ import {
 } from '../lib/activeWorkout';
 import { Badge, Button, EmptyState, IconButton, Input, Sheet, SupersetBadge, useToast } from '../components/ui';
 import { ExercisePicker } from '../components/ExercisePicker';
+import { CalorieInfo } from '../components/CalorieInfo';
 
 function defaultName() {
   const h = new Date().getHours();
@@ -166,7 +167,7 @@ function Logger({ workout }: { workout: ActiveWorkout }) {
           date: localDay(new Date(workout.startedAt)),
           startedAt: workout.startedAt,
           endedAt: new Date().toISOString(),
-          calories: estimateStrength(minutesSoFar(), bodyWeightFor(me)),
+          calories: estimateStrength(minutesSoFar(), profileFor(me)),
           exercises,
         },
         name,
@@ -339,7 +340,7 @@ function Logger({ workout }: { workout: ActiveWorkout }) {
       >
         <div className="grid grid-cols-2 gap-3 text-center">
           <SummaryStat label="Duration" value={<ElapsedClock since={workout.startedAt} />} />
-          <SummaryStat label="Burned (est.)" value={`${estimateStrength(minutesSoFar(), bodyWeightFor(me))} kcal`} />
+          <SummaryStat label={<>Burned (est.) <CalorieInfo topic="burn" /></>} value={`${estimateStrength(minutesSoFar(), profileFor(me))} kcal`} />
           <SummaryStat label="Sets" value={doneSets.length} />
           <SummaryStat label={`Volume (${u.w})`} value={Math.round(doneVolume).toLocaleString()} />
         </div>
@@ -389,11 +390,11 @@ function Logger({ workout }: { workout: ActiveWorkout }) {
   );
 }
 
-function SummaryStat({ label, value }: { label: string; value: React.ReactNode }) {
+function SummaryStat({ label, value }: { label: React.ReactNode; value: React.ReactNode }) {
   return (
     <div className="rounded-2xl bg-surface-2 p-3">
       <p className="num font-display text-2xl font-semibold">{value}</p>
-      <p className="text-xs text-muted">{label}</p>
+      <p className="flex items-center justify-center gap-2 text-xs text-muted">{label}</p>
     </div>
   );
 }
