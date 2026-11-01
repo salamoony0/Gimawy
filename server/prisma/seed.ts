@@ -1,5 +1,6 @@
 /**
- * `seed.ts library` adds any missing built-in exercises (idempotent; runs on every deploy).
+ * `seed.ts library` adds any missing built-in exercises and rebuilds the food database from prisma/foods/*.json
+ * (idempotent; runs on every deploy).
  * `seed.ts demo` does that and rebuilds a demo account with ~12 weeks of
  * realistic history so every chart has something to show:
  *
@@ -7,8 +8,10 @@
  *
  * Other accounts are never touched.
  */
-import { PrismaClient } from '@prisma/client';
+import { readFileSync } from 'node:fs';
+import { Prisma, PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
+import { toFoodRow, type FoodJson } from '../src/lib/foodSearch.js';
 
 const prisma = new PrismaClient();
 
@@ -191,6 +194,19 @@ const MEALS = {
   ],
 } as const;
 
+/** Replaces the whole Food table (nothing references it, so a rebuild picks up edits and removals). */
+async function seedFoods() {
+  const files = ['generic', 'egyptian', 'restaurants', 'brands'];
+  const rows = new Map<string, ReturnType<typeof toFoodRow>>();
+  for (const file of files) {
+    const foods = JSON.parse(readFileSync(new URL(`./foods/${file}.json`, import.meta.url), 'utf8')) as FoodJson[];
+    for (const f of foods) rows.set(f.key, toFoodRow(f));
+  }
+  const data = [...rows.values()].map((r) => ({ ...r, servings: r.servings ?? Prisma.DbNull }));
+  await prisma.$transaction([prisma.food.deleteMany(), prisma.food.createMany({ data })]);
+  console.log(`Food database: ${data.length} foods`);
+}
+
 async function main(mode: string) {
   if (mode !== 'library' && mode !== 'demo') throw new Error('Usage: seed.ts library|demo');
 
@@ -202,6 +218,7 @@ async function main(mode: string) {
     byName.set(name, ex.id);
   }
   console.log(`Exercise library: ${byName.size} exercises`);
+  await seedFoods();
   if (mode === 'library') return;
 
   // Demo account

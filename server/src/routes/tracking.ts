@@ -2,7 +2,8 @@ import { Router } from 'express';
 import { z } from 'zod';
 import { prisma, HttpError, zDay, param, todayFromQuery, weekStart, round1, roundKg, e1rm } from '../lib/core.js';
 import { assertExercisesVisible, loadManualRecords, loadTraining } from '../lib/training.js';
-import { lookupBarcode } from '../lib/openfoodfacts.js';
+import { lookupBarcode, searchProducts } from '../lib/openfoodfacts.js';
+import { normalizeSearch, rankFoods } from '../lib/foodSearch.js';
 
 export const trackingRouter = Router();
 
@@ -196,7 +197,7 @@ const foodItem = z.object({
   barcode: z.string().regex(/^\d{8,14}$/).nullable().optional(),
 });
 
-const FOOD_SOURCES = ['manual', 'label', 'screenshot', 'photo', 'text', 'barcode'] as const;
+const FOOD_SOURCES = ['manual', 'label', 'screenshot', 'photo', 'text', 'barcode', 'search'] as const;
 
 trackingRouter.get('/food', async (req, res) => {
   const date = zDay.parse(req.query.date);
@@ -256,6 +257,38 @@ trackingRouter.get('/food/recent', async (req, res) => {
         count,
       })),
   );
+});
+
+const zQuery = z.string().trim().min(1).max(80);
+
+/** Food search: the user's own past foods first, then the built-in food database (English, Arabic, brand). */
+trackingRouter.get('/food/search', async (req, res) => {
+  const q = zQuery.parse(req.query.q);
+  const words = normalizeSearch(q).split(' ').filter(Boolean).slice(0, 6);
+  const [entries, rows] = await Promise.all([
+    prisma.foodEntry.findMany({
+      where: { userId: req.userId, name: { contains: q, mode: 'insensitive' } },
+      orderBy: { createdAt: 'desc' },
+      take: 50,
+      select: { name: true, quantity: true, calories: true, protein: true, carbs: true, fat: true },
+    }),
+    words.length ? prisma.food.findMany({ where: { AND: words.map((w) => ({ search: { contains: w } })) }, take: 300 }) : [],
+  ]);
+  const mine = [...new Map(entries.map((e) => [e.name.toLowerCase(), e])).values()].slice(0, 5);
+  const foods = rankFoods(rows, q)
+    .slice(0, 25)
+    .map(({ search: _, barcode: __, ...food }) => food);
+  res.json({ mine, foods });
+});
+
+/** Packaged products from Open Food Facts by name, for what the built-in database doesn't have. */
+trackingRouter.get('/food/search/products', async (req, res) => {
+  const q = zQuery.parse(req.query.q);
+  try {
+    res.json({ products: await searchProducts(q) });
+  } catch {
+    throw new HttpError(502, 'Couldn’t search Open Food Facts right now. Try again in a minute.');
+  }
 });
 
 /**

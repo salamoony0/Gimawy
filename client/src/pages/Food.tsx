@@ -27,6 +27,8 @@ import { AdaptiveCard } from '../components/AdaptiveTargets';
 import { BarcodeSheet } from '../components/BarcodeSheet';
 import { fromDraft, guessMeal, ItemEditor, MEALS, sum, toDraft, type DraftItem } from '../components/FoodForm';
 import { CalorieInfo } from '../components/CalorieInfo';
+import { FoodSearchResults, PortionPicker, SearchBox } from '../components/FoodSearch';
+import type { Pickable } from '../lib/portion';
 
 const SOURCE_LABEL: Record<FoodSource, string> = {
   manual: 'Manual',
@@ -35,6 +37,7 @@ const SOURCE_LABEL: Record<FoodSource, string> = {
   photo: 'AI · photo',
   text: 'AI · text',
   barcode: 'Barcode',
+  search: 'Food database',
 };
 
 export default function Food() {
@@ -567,63 +570,109 @@ function ScanSheet({ open, onClose, date }: { open: boolean; onClose: () => void
 
 function ManualSheet({ meal, onClose, date }: { meal: Meal | null; onClose: () => void; date: string }) {
   const toast = useToast();
-  const [item, setItem] = useState<DraftItem>({ name: '', quantity: '', calories: '', protein: '', carbs: '', fat: '' });
+  const empty: DraftItem = { name: '', quantity: '', calories: '', protein: '', carbs: '', fat: '' };
+  const [item, setItem] = useState<DraftItem>(empty);
+  const [query, setQuery] = useState('');
+  const [picked, setPicked] = useState<Pickable | null>(null);
   const { data: recent } = useQuery({
     queryKey: ['food-recent'],
     queryFn: () => api.get<(FoodItem & { count: number })[]>('/food/recent'),
     enabled: meal !== null,
   });
+  const close = () => {
+    setItem(empty);
+    setQuery('');
+    setPicked(null);
+    onClose();
+  };
   const save = useMutation({
-    mutationFn: (items: FoodItem[]) => api.offline('POST', '/food', { date, meal, source: 'manual', items }, items[0].name),
-    onSuccess: (res, items) => {
+    mutationFn: ({ items, source, barcode }: { items: FoodItem[]; source: FoodSource; barcode?: string | null }) =>
+      api.offline('POST', '/food', { date, meal, source, items: items.map((i) => ({ ...i, barcode: barcode ?? null })) }, items[0].name),
+    onSuccess: (res, { items }) => {
       toast(isQueued(res) ? `${items[0].name} saved on this device, it will sync automatically.` : `Added ${items[0].name}`);
-      setItem({ name: '', quantity: '', calories: '', protein: '', carbs: '', fat: '' });
-      onClose();
+      close();
     },
     onError: (e) => toast(e.message, 'error'),
   });
   const label = MEALS.find((m) => m.value === meal)?.label ?? '';
+  const searching = query.trim().length > 0;
 
   return (
     <Sheet
       open={meal !== null}
-      onClose={onClose}
+      onClose={close}
       title={`Add to ${label}`}
       footer={
-        <Button className="w-full" size="lg" disabled={!item.name.trim() || !item.calories} loading={save.isPending} onClick={() => save.mutate([fromDraft(item)])}>
-          Add food
-        </Button>
+        !searching &&
+        !picked && (
+          <Button
+            className="w-full"
+            size="lg"
+            disabled={!item.name.trim() || !item.calories}
+            loading={save.isPending}
+            onClick={() => save.mutate({ items: [fromDraft(item)], source: 'manual' })}
+          >
+            Add food
+          </Button>
+        )
       }
     >
-      {recent && recent.length > 0 && (
-        <div className="mb-5">
-          <p className="label mb-2">Quick add</p>
-          <ul className="flex flex-col gap-1.5">
-            {recent.slice(0, 6).map((r) => (
-              <li key={r.name}>
-                <button
-                  type="button"
-                  onClick={() => save.mutate([r])}
-                  className="flex min-h-12 w-full cursor-pointer items-center gap-3 rounded-xl bg-surface-2 px-3 text-left transition-colors hover:bg-surface-3"
-                >
-                  <Plus className="size-4 text-brand" aria-hidden />
-                  <span className="min-w-0 flex-1">
-                    <span className="block truncate text-sm font-semibold">{r.name}</span>
-                    <span className="num text-xs text-muted">
-                      {r.quantity} · P {Math.round(r.protein)} · C {Math.round(r.carbs)} · F {Math.round(r.fat)}
-                    </span>
-                  </span>
-                  <span className="num text-sm font-semibold">{fmtInt(r.calories)}</span>
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
+      {picked ? (
+        <PortionPicker
+          food={picked}
+          onBack={() => setPicked(null)}
+          saving={save.isPending}
+          onLog={(i) => save.mutate({ items: [i], source: 'search', barcode: picked.barcode })}
+        />
+      ) : (
+        <>
+          <div className="mb-4">
+            <SearchBox value={query} onChange={setQuery} />
+          </div>
+          {searching ? (
+            <FoodSearchResults
+              query={query}
+              onPick={setPicked}
+              onNew={(name) => {
+                setItem({ ...empty, name });
+                setQuery('');
+              }}
+            />
+          ) : (
+            <>
+              {recent && recent.length > 0 && (
+                <div className="mb-5">
+                  <p className="label mb-2">Quick add</p>
+                  <ul className="flex flex-col gap-1.5">
+                    {recent.slice(0, 6).map((r) => (
+                      <li key={r.name}>
+                        <button
+                          type="button"
+                          onClick={() => save.mutate({ items: [r], source: 'manual' })}
+                          className="flex min-h-12 w-full cursor-pointer items-center gap-3 rounded-xl bg-surface-2 px-3 text-left transition-colors hover:bg-surface-3"
+                        >
+                          <Plus className="size-4 text-brand" aria-hidden />
+                          <span className="min-w-0 flex-1">
+                            <span className="block truncate text-sm font-semibold">{r.name}</span>
+                            <span className="num text-xs text-muted">
+                              {r.quantity} · P {Math.round(r.protein)} · C {Math.round(r.carbs)} · F {Math.round(r.fat)}
+                            </span>
+                          </span>
+                          <span className="num text-sm font-semibold">{fmtInt(r.calories)}</span>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              <p className="label mb-2">New food</p>
+              <ul>
+                <ItemEditor item={item} onChange={setItem} onRemove={() => setItem(empty)} />
+              </ul>
+            </>
+          )}
+        </>
       )}
-      <p className="label mb-2">New food</p>
-      <ul>
-        <ItemEditor item={item} onChange={setItem} onRemove={() => setItem({ name: '', quantity: '', calories: '', protein: '', carbs: '', fat: '' })} />
-      </ul>
     </Sheet>
   );
 }

@@ -183,3 +183,26 @@ test('food: the 14-day card never covers the adaptive target card when scrolling
   const b = (await adaptive.boundingBox())!;
   expect(a.y + a.height <= b.y || b.y + b.height <= a.y).toBe(true);
 });
+
+test('food search: find koshari in English or Arabic, pick an amount, log it', async ({ page }) => {
+  // Never call Open Food Facts from tests.
+  await page.route('**/api/food/search/products**', (route) => route.fulfill({ json: { products: [] } }));
+  await loginAsDemo(page);
+  await page.goto('/food');
+  await page.getByRole('button', { name: 'Add food to Lunch' }).click();
+  const sheet = page.getByRole('dialog', { name: 'Add to Lunch' });
+
+  await sheet.getByRole('searchbox', { name: 'Search foods' }).fill('طعمية');
+  await expect(sheet.getByRole('button', { name: /Ta'ameya \(Egyptian falafel\)/ })).toBeVisible();
+
+  await sheet.getByRole('searchbox', { name: 'Search foods' }).fill('koshari');
+  await sheet.getByRole('button', { name: /^Koshari Estimate/ }).click();
+  await sheet.getByRole('button', { name: '2', exact: true }).click();
+  await expect(sheet.getByRole('button', { name: 'Log 990 kcal' })).toBeVisible();
+  await sheet.getByLabel('Serving').selectOption({ label: 'Grams' });
+  await sheet.getByLabel('Grams').fill('150');
+  await sheet.getByRole('button', { name: 'Log 248 kcal' }).click();
+
+  await expect(page.getByText('Koshari', { exact: true })).toBeVisible();
+  await expect(page.getByText(/150 g/).first()).toBeVisible();
+});

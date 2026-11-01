@@ -265,7 +265,7 @@ export type Goal = {
 };
 
 export type Meal = 'breakfast' | 'lunch' | 'dinner' | 'snack';
-export type FoodSource = 'manual' | 'label' | 'screenshot' | 'photo' | 'text' | 'barcode';
+export type FoodSource = 'manual' | 'label' | 'screenshot' | 'photo' | 'text' | 'barcode' | 'search';
 
 export type FoodItem = {
   name: string;
@@ -279,7 +279,7 @@ export type FoodItem = {
 export type FoodEntry = FoodItem & { id: string; date: string; meal: Meal; source: FoodSource };
 
 export type FoodAnalysis = {
-  source: Exclude<FoodSource, 'manual' | 'barcode'>;
+  source: Exclude<FoodSource, 'manual' | 'barcode' | 'search'>;
   confidence: 'high' | 'medium' | 'low';
   mealName: string;
   notes: string;
@@ -293,6 +293,29 @@ export type BarcodeProduct = {
   per100g: { calories: number; protein: number; carbs: number; fat: number } | null;
   serving: { label: string; grams: number } | null;
 };
+
+/** A built-in food (GET /food/search): nutrition is for `serving`, which weighs `grams` when known. */
+export type DbFood = {
+  id: string;
+  name: string;
+  nameAr: string | null;
+  brand: string | null;
+  kind: 'generic' | 'egyptian' | 'restaurant' | 'brand';
+  source: 'usda' | 'estimate' | 'published' | 'off';
+  serving: string;
+  grams: number | null;
+  calories: number;
+  protein: number;
+  carbs: number;
+  fat: number;
+  servings: { label: string; grams: number }[] | null;
+};
+
+/** GET /food/search — the user's own matching past foods, then the built-in database. */
+export type FoodSearch = { mine: FoodItem[]; foods: DbFood[] };
+
+/** GET /food/search/products — packaged products from Open Food Facts. */
+export type ProductSearch = { products: BarcodeProduct[] };
 
 /** GET /food/barcode/:code — `mine` is the user's own last entry for that code (takes priority). */
 export type BarcodeLookup = { code: string; product: BarcodeProduct | null; mine: FoodItem | null };
